@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-03-27T02:23:45.809Z</updated>
+  <updated>2022-03-27T03:52:01.647Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,24 +17,25 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>在西交的四年光影</title>
-    <link href="http://example.com/2022/03/26/xjtu/"/>
-    <id>http://example.com/2022/03/26/xjtu/</id>
-    <published>2022-03-25T16:00:00.000Z</published>
-    <updated>2022-03-27T02:23:45.809Z</updated>
+    <title>MPI Allreduce算法调研</title>
+    <link href="http://example.com/2022/03/27/MPI%20Allreduce/"/>
+    <id>http://example.com/2022/03/27/MPI%20Allreduce/</id>
+    <published>2022-03-26T16:00:00.000Z</published>
+    <updated>2022-03-27T03:52:01.647Z</updated>
     
-    <content type="html"><![CDATA[<p><img src="https://pica.zhimg.com/v2-0cbb8d7df835d25ebc9657d18e3b65b4_r.jpg?source=c8b7c179" alt="avatar"></p>]]></content>
+    <content type="html"><![CDATA[<p>$Allreduce$操作是$MPI$中最常用的集合通信操作，简单的在应用程序中调用MPI_Allreduce就可以完成上述例程，函数定义如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">MPI_Allreduce</span><span class="params">(</span></span><br><span class="line"><span class="params">    <span class="type">const</span> <span class="type">void</span> *sendbuf, </span></span><br><span class="line"><span class="params">    <span class="type">void</span> *recvbuf, </span></span><br><span class="line"><span class="params">    <span class="type">int</span> count, </span></span><br><span class="line"><span class="params">    MPI_Datatype datatype,</span></span><br><span class="line"><span class="params">    MPI_Op op, </span></span><br><span class="line"><span class="params">    MPI_Comm comm)</span>;</span><br></pre></td></tr></table></figure><br><img src="https://gitee.com/chudod/photos/raw/master/MPI_Allreduce/mpi_reduce_2.png" alt="Reduce操作"></p>]]></content>
     
     
       
       
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://pica.zhimg.com/v2-0cbb8d7df835d25ebc9657d18e3b65b4_r.jpg?source=c8b7c179&quot; alt=&quot;avatar&quot;&gt;&lt;/p&gt;
-</summary>
+    <summary type="html">&lt;p&gt;$Allreduce$操作是$MPI$中最常用的集合通信操作，简单的在应用程序中调用MPI_Allreduce就可以完成上述例程，函数定义如下：&lt;br&gt;&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pr</summary>
       
     
     
     
-    <category term="小王同学的杂货铺" scheme="http://example.com/categories/%E5%B0%8F%E7%8E%8B%E5%90%8C%E5%AD%A6%E7%9A%84%E6%9D%82%E8%B4%A7%E9%93%BA/"/>
+    <category term="并行计算" scheme="http://example.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    
+    <category term="MPI程序设计" scheme="http://example.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"/>
     
     
   </entry>
@@ -57,6 +58,29 @@
     
     
     <category term="MPI程序设计" scheme="http://example.com/categories/MPI%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>在西交的四年光影</title>
+    <link href="http://example.com/2022/03/26/xjtu/"/>
+    <id>http://example.com/2022/03/26/xjtu/</id>
+    <published>2022-03-25T16:00:00.000Z</published>
+    <updated>2022-03-27T02:30:28.061Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="https://pica.zhimg.com/v2-0cbb8d7df835d25ebc9657d18e3b65b4_r.jpg?source=c8b7c179" alt="avatar"></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://pica.zhimg.com/v2-0cbb8d7df835d25ebc9657d18e3b65b4_r.jpg?source=c8b7c179&quot; alt=&quot;avatar&quot;&gt;&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    <category term="小王同学的杂货铺" scheme="http://example.com/categories/%E5%B0%8F%E7%8E%8B%E5%90%8C%E5%AD%A6%E7%9A%84%E6%9D%82%E8%B4%A7%E9%93%BA/"/>
     
     
   </entry>
