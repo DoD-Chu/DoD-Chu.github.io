@@ -228,7 +228,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-28 21:40:22" itemprop="dateModified" datetime="2022-03-28T21:40:22+08:00">2022-03-28</time>
+                <time title="修改时间：2022-03-28 23:46:31" itemprop="dateModified" datetime="2022-03-28T23:46:31+08:00">2022-03-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -301,12 +301,13 @@
 <ul>
 <li>当进程数量为2的幂并且发送短消息或者中等规模消息，采用$Recursive\ doubling$算法；</li>
 <li>当发送短消息以及进程数量非2的幂的情况下，采用$Bruck$算法；</li>
-<li>发送大消息，无论进程数量是多少，并且进程数量非2幂且发送中等规模消息，采用$Ring$算法。<h3 id="2、Broadcast操作及算法"><a href="#2、Broadcast操作及算法" class="headerlink" title="2、Broadcast操作及算法"></a>2、Broadcast操作及算法</h3>广播操作由根进程将根进程中的数据广播给所有进程，对应的是$MPI$_$Bcast$函数，可以参考<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-broadcast-and-collective-communication/">MPI_Bcast</a><div style="align: center">
+<li>发送大消息，无论进程数量是多少，并且进程数量非2幂且发送中等规模消息，采用$Ring$算法。  </li>
+</ul>
+<h3 id="2、Broadcast操作及算法"><a href="#2、Broadcast操作及算法" class="headerlink" title="2、Broadcast操作及算法"></a>2、Broadcast操作及算法</h3><p>广播操作由根进程将根进程中的数据广播给所有进程，对应的是$MPI$_$Bcast$函数，可以参考<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-broadcast-and-collective-communication/">MPI_Bcast</a></p>
+<div style="align: center">
 <img src="https://note.youdao.com/yws/api/personal/file/WEBa1d3f66081e6d3666838b6ff37186727?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13"/>
 </div> 
 
-</li>
-</ul>
 <h4 id="Bionomial-Tree"><a href="#Bionomial-Tree" class="headerlink" title="Bionomial Tree"></a>Bionomial Tree</h4><p>$MPICH$中广播操作最初使用二项树算法。在第一步，根进程$root$向目标进程$(root+\frac{p}{2})\%N$发送数据，进程$(root+\frac{p}{2})\%N$以及根进程成为它们子树的根结点，继续递归执行算法。该算法一共执行$\lceil{\lg{p}}\rceil$步，在每一步所有进程发送的数据量均为$n$，因此算法的时间开销为：</p>
 <script type="math/tex; mode=display">T_{tree}=\lceil{\lg{p}}\rceil\cdot(\alpha+n\beta)</script><h4 id="Scatter-Allgather"><a href="#Scatter-Allgather" class="headerlink" title="Scatter + Allgather"></a>Scatter + Allgather</h4><p>这是一种组合算法，又叫$Van\ de\ Geijn$算法，将$Scatter$和$Allgather$两个操作组合成了$Broadcast$操作。$Scatter$（散播）操作与$Broadcast$操作的对比如下:</p>
 <div style="align: center">
@@ -321,10 +322,17 @@
  {T_{Scatter+Allgather}=(\lg{p}+p-1)\alpha+2\frac{p-1}{p}n\beta} 
 \end{matrix}
 \right.</script><p>对比两个式子我们可以很容易得到，当消息两较小（即$n$较小）或者进程数量少时（小于8），我们使用二项树算法，当消息较大时或者进程数量较大时，我们采用$Scatter$+$Allgather$的组合算法。</p>
-<h3 id="3、Reduce-Scatter操作及其算法"><a href="#3、Reduce-Scatter操作及其算法" class="headerlink" title="3、Reduce-Scatter操作及其算法"></a>3、Reduce-Scatter操作及其算法</h3><p>$Reduce_Scatter$操作（多对多规约）是数据规约操作$Reduce$的一个变种，$Reduce$操作的结果保存在根进程中，而$Reduce_Scatter$将结果散发（$Scatter$）给所有进程。<br>在$MPICH$中的老算法中，$Reduce_Scatter$操作先是将所有进程的数据通过二项树规约到$0$号进程，然后通过线性的散发操作将数据分发出去。二项树规约操作的时间为:</p>
+<h3 id="3、Reduce-Scatter操作及其算法"><a href="#3、Reduce-Scatter操作及其算法" class="headerlink" title="3、Reduce-Scatter操作及其算法"></a>3、Reduce-Scatter操作及其算法</h3><p>$Reduce_Scatter$操作（多对多规约）是数据规约操作$Reduce$的一个变种，$Reduce$操作的结果保存在根进程中，而$Reduce_Scatter$将结果散发（$Scatter$）给所有进程。</p>
+<h4 id="二项树Reduce-线性Scatter"><a href="#二项树Reduce-线性Scatter" class="headerlink" title="二项树Reduce+线性Scatter"></a>二项树Reduce+线性Scatter</h4><p>在$MPICH$中的老算法中，$Reduce_Scatter$操作先是将所有进程的数据通过二项树规约到$0$号进程，然后通过线性的散发操作将数据分发出去。二项树规约操作的时间为:</p>
 <script type="math/tex; mode=display">\lg{p}\cdot(\alpha+n\beta+n\gamma)</script><p>线性散发操作的时间为：</p>
 <script type="math/tex; mode=display">(p-1)\alpha+(p-1)\cdot\frac{n}{p}\beta</script><p>总的时间为:</p>
-<script type="math/tex; mode=display">T_{old}=(\lg{p}+p-1)\alpha+(\lg{p}+\frac{p-1}{p})n\beta+\lg{p}\cdot{n}\gamma</script>
+<script type="math/tex; mode=display">T_{old}=(\lg{p}+p-1)\alpha+(\lg{p}+\frac{p-1}{p})n\beta+\lg{p}\cdot{n}\gamma</script><h4 id="Recursive-Halving"><a href="#Recursive-Halving" class="headerlink" title="Recursive Halving"></a>Recursive Halving</h4><p>递归减半算法和前面$Allgather$操作的递归加倍算法互为逆过程。</p>
+<div style="align: center">
+<img src="https://note.youdao.com/yws/api/personal/file/WEB45d2ca1b81056825d285e44a1ec85910?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13"/>
+</div> 
+
+<p>在第1步，进程分为2个子集，每一个进程都和与自己间隔$\frac{p}{2}\%N$的进程交换数据：每一个进程发送另一半集合所有进程都所需要的数据，并且接收自己所在进程集合都需要的数据，然后对收集到的数据进行规约操作。在第2步，每一个进程都和与自己间隔$\frac{p}{4}\%N$的进程交换数据。该过程如此递归进行下去，每一步通信数据也递归减半，进行$\lg{p}$步。算法的时间消耗为：</p>
+<script type="math/tex; mode=display">T_{rec\_halv}=\lg{p}\cdot\alpha+\frac{p-1}{p}(n\beta+n\gamma)</script>
       
     </div>
 
@@ -766,7 +774,7 @@ $(document).ready(function() {
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共5.9k字</span>
+  <span class="post-count">博客全站共6.1k字</span>
 </div>
         
 <div class="busuanzi-count">
