@@ -197,7 +197,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/27/MPI%20Allreduce/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/27/MPI_Allreduce%E6%95%B4%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -211,7 +211,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/03/27/MPI%20Allreduce/" class="post-title-link" itemprop="url">MPI_Allreduce的前世今生</a>
+            <a href="/2022/03/27/MPI_Allreduce%E6%95%B4%E7%90%86/" class="post-title-link" itemprop="url">MPI_Allreduce的前世今生</a>
         </h2>
 
         <div class="post-meta">
@@ -228,7 +228,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-28 11:40:33" itemprop="dateModified" datetime="2022-03-28T11:40:33+08:00">2022-03-28</time>
+                <time title="修改时间：2022-03-28 13:00:45" itemprop="dateModified" datetime="2022-03-28T13:00:45+08:00">2022-03-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -256,26 +256,18 @@
 
       
           <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文介绍$Allreduce$操作在$MPI$中的算法设计和实现，归纳和整理其发展脉络，追溯到最新的研究进展，并分析$MPI$的典型实现$MPICH$库中是怎样实现$Allreduce$例程的。</p>
-<h1 id="Allreduce介绍"><a href="#Allreduce介绍" class="headerlink" title="Allreduce介绍"></a>Allreduce介绍</h1><p>$Allreduce$操作是$MPI$中最常用的集合通信操作，与之相似的是$Reduce$操作，假设有$N$个进程，每个进程都持有一个含$P$个元素的向量，所有的$N$个进程将自己的向量发送给根进程，根进程收集这些向量计算规约的结果（求和、求最大最小值等等），$Reduce$操作结果保存在根进程，$Allreduce$则将根进程的结果再广播出去。简单的在应用程序中调用$MPI$_$Allreduce$就可以完成上述例程，函数定义如下：</p>
-<pre><code class="lang-c">int MPI_Allreduce(const void *sendbuf,    //存放源数据
-                void *recvbuf,            //存放规约结果
-                int count,                //数据个数
-                MPI_Datatype datatype,    //数据类型
-                MPI_Op op,                //规约操作类型
-                MPI_Comm comm);           //一组通信进程
-</code></pre>
-<p>$MPI$_$Reduce$ 和$MPI$_$Allreduce$例程的图解如下所示：</p>
+<h1 id="Allreduce介绍"><a href="#Allreduce介绍" class="headerlink" title="Allreduce介绍"></a>Allreduce介绍</h1><p>$Allreduce$操作是$MPI$中最常用的集合通信操作，与之相似的是$Reduce$操作，假设有$N$个进程，每个进程都持有一个含$P$个元素的向量，所有的$N$个进程将自己的向量发送给根进程，根进程收集这些向量计算规约的结果（求和、求最大最小值等等），$Reduce$操作结果保存在根进程，$Allreduce$则将根进程的结果再广播出去。简单的在应用程序中调用$MPI$_$Allreduce$就可以完成上述例程，函数定义如下：<br>程序可以表示为：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">MPI_Allreduce</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="type">const</span> <span class="type">void</span> *sendbuf,      <span class="comment">//存放源数据</span></span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="type">void</span> *recvbuf,            <span class="comment">//存放规约结果</span></span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="type">int</span> count,                <span class="comment">//数据个数</span></span></span></span><br><span class="line"><span class="params"><span class="function">            MPI_Datatype datatype,    <span class="comment">//数据类型</span></span></span></span><br><span class="line"><span class="params"><span class="function">            MPI_Op op,                <span class="comment">//规约操作类型</span></span></span></span><br><span class="line"><span class="params"><span class="function">            MPI_Comm comm)</span></span>;           <span class="comment">//一组通信进程</span></span><br></pre></td></tr></table></figure><br>$MPI$_$Reduce$ 和$MPI$_$Allreduce$例程的图解如下所示：</p>
 <div style="align: center">
-<img src="https://note.youdao.com/yws/api/personal/file/WEB635e35297acaeac7ad5f79fc97142fab?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="40%" height="40%"/>
+<img src="https://note.youdao.com/yws/api/personal/file/WEB635e35297acaeac7ad5f79fc97142fab?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
 </div>
 
 <div style="align: center">
-<img src="https://note.youdao.com/yws/api/personal/file/WEB8453078f33cba2dcd2ba5b49d8b04daf?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="40%" height="40%"/>
+<img src="https://note.youdao.com/yws/api/personal/file/WEB8453078f33cba2dcd2ba5b49d8b04daf?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
 </div>
 
 <p>图片源网址和$MPI$_$Allreduce$的入门教程在这里：<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/">英文版</a>和<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/zh_cn/">中文版</a>  </p>
 <p>$MPI$_$Allreduce$广泛用于各种并行与分布式应用程序：科学计算、大数据、分布式机器学习、分布式深度学习DNN等等，并且<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/8665758">已有工作</a>表明 $MPI$_$Allreduce$ 是使用频率和运行时间最长的集合通信操作。</p>
-<p>自从$MPI$标准在$1994$年提出以来，$MPI$_$Allreduce$的相关研究从上世纪90年代就已经有很多了，而本文从2005年的一篇综述论文出发，一直追溯到现在，总结$MPI$_$Allreduce$ 的算法激情燃烧的昨天、老骥伏枥的今天和仰望星空过后的明天。</p>
+<p>自从$MPI$标准在$1994$年提出以来，$MPI$_$Allreduce$的相关研究从上世纪90年代就已经有很多了，而本文从2005年的一篇综述论文出发，一直追溯到现在，总结$MPI$_$Allreduce$ 的算法激情燃烧的昨天、老骥伏枥的今天和仰望星空过后的明天。  </p>
 <h1 id="MPI-Allreduce论文梳理"><a href="#MPI-Allreduce论文梳理" class="headerlink" title="MPI_Allreduce论文梳理"></a>MPI_Allreduce论文梳理</h1><h2 id="1、Optimization-of-Collective-Communication-Operations-in-MPICH"><a href="#1、Optimization-of-Collective-Communication-Operations-in-MPICH" class="headerlink" title="1、Optimization of Collective Communication Operations in MPICH"></a>1、<a target="_blank" rel="noopener" href="https://journals.sagepub.com/doi/10.1177/1094342005051521">Optimization of Collective Communication Operations in MPICH</a></h2><p>经典的MPI集合通信论文，介绍了常用的集合通信操作和对应的算法：$Allgather$, $Broadcast$, $All-to-all$, $Reduce-scatter$, $Reduce$和$Allreduce$，并进一步的讨论了 $MPI$_$Reduce$ 和$MPI$_$Allreduce$的优化。我有一门选修课的作业就是将这篇论文全文翻译：<a target="_blank" rel="noopener" href="https://note.youdao.com/ynoteshare/index.html?id=1b5cc29dea0aff44f92bdb69a2763e79&amp;type=notebook&amp;_time=1648432853246#/WEB26278ae64dfc1a52e0ece0dd615075f3">翻译原文</a>。<br>这篇文章采用的性能评估模型是$\alpha+n\beta$，任意两个节点之间发送一条消息的时间可以用$T=\alpha+n\beta$，其中$\alpha$表示延迟（或者说启动时间），与消息大小无关，而$\beta$表示每个字节的传输时间，$n$表示传输消息的字节数。由于MPI基于分布式存储系统，采用$LogP$模型（$L:latency$, $o:overhead$, $g:gap$, $P:processor$），一条长度为$n$的消息传输时间可以计算为:   </p>
 <script type="math/tex; mode=display">T=L+2o+(n-1)b,其中b=min(o, g)</script><p>也就是传输延迟$L$加上两端处理器的处理开销$2o$，和$n$个字节的传输时间，注意$overhead$是任意一个消息的处理开销，$gap$是连续两个字节的传输时间间隔。将上述式子变形，可以得到：  </p>
 <script type="math/tex; mode=display">T=(L+2o-b)+nb=\alpha+n\beta</script><p>这也就是本文性能评估模型的公式，许多文献和教材中也用到了这个公式。我们将用这个公式来形式化的评估集合通信算法的性能。  </p>
@@ -343,7 +335,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-27 19:59:09" itemprop="dateModified" datetime="2022-03-27T19:59:09+08:00">2022-03-27</time>
+                <time title="修改时间：2022-03-28 12:43:32" itemprop="dateModified" datetime="2022-03-28T12:43:32+08:00">2022-03-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -351,7 +343,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B0%8F%E7%8E%8B%E5%90%8C%E5%AD%A6%E7%9A%84%E6%9D%82%E8%B4%A7%E9%93%BA/" itemprop="url" rel="index"><span itemprop="name">小王同学的杂货铺</span></a>
+                  <a href="/categories/%E6%95%B4%E6%B4%BB%E7%B3%BB%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">整活系列</span></a>
                 </span>
             </span>
 
@@ -428,7 +420,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-27 20:02:14" itemprop="dateModified" datetime="2022-03-27T20:02:14+08:00">2022-03-27</time>
+                <time title="修改时间：2022-03-28 12:51:36" itemprop="dateModified" datetime="2022-03-28T12:51:36+08:00">2022-03-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -639,7 +631,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
