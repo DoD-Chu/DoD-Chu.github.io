@@ -3,11 +3,11 @@
   <title>壮志凌云</title>
   
   <subtitle>小王同学的工作站</subtitle>
-  <link href="http://example.com/atom.xml" rel="self"/>
+  <link href="http://synchrosky.com/atom.xml" rel="self"/>
   
-  <link href="http://example.com/"/>
-  <updated>2022-03-28T05:00:45.401Z</updated>
-  <id>http://example.com/</id>
+  <link href="http://synchrosky.com/"/>
+  <updated>2022-03-28T08:15:06.948Z</updated>
+  <id>http://synchrosky.com/</id>
   
   <author>
     <name>虎王</name>
@@ -18,12 +18,12 @@
   
   <entry>
     <title>MPI_Allreduce的前世今生</title>
-    <link href="http://example.com/2022/03/27/MPI_Allreduce%E6%95%B4%E7%90%86/"/>
-    <id>http://example.com/2022/03/27/MPI_Allreduce%E6%95%B4%E7%90%86/</id>
+    <link href="http://synchrosky.com/2022/03/27/MPI_Allreduce%E6%95%B4%E7%90%86/"/>
+    <id>http://synchrosky.com/2022/03/27/MPI_Allreduce%E6%95%B4%E7%90%86/</id>
     <published>2022-03-26T16:00:00.000Z</published>
-    <updated>2022-03-28T05:00:45.401Z</updated>
+    <updated>2022-03-28T08:15:06.948Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文介绍$Allreduce$操作在$MPI$中的算法设计和实现，归纳和整理其发展脉络，追溯到最新的研究进展，并分析$MPI$的典型实现$MPICH$库中是怎样实现$Allreduce$例程的。</p><h1 id="Allreduce介绍"><a href="#Allreduce介绍" class="headerlink" title="Allreduce介绍"></a>Allreduce介绍</h1><p>$Allreduce$操作是$MPI$中最常用的集合通信操作，与之相似的是$Reduce$操作，假设有$N$个进程，每个进程都持有一个含$P$个元素的向量，所有的$N$个进程将自己的向量发送给根进程，根进程收集这些向量计算规约的结果（求和、求最大最小值等等），$Reduce$操作结果保存在根进程，$Allreduce$则将根进程的结果再广播出去。简单的在应用程序中调用$MPI$_$Allreduce$就可以完成上述例程，函数定义如下：<br>程序可以表示为：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">MPI_Allreduce</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="type">const</span> <span class="type">void</span> *sendbuf,      <span class="comment">//存放源数据</span></span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="type">void</span> *recvbuf,            <span class="comment">//存放规约结果</span></span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="type">int</span> count,                <span class="comment">//数据个数</span></span></span></span><br><span class="line"><span class="params"><span class="function">            MPI_Datatype datatype,    <span class="comment">//数据类型</span></span></span></span><br><span class="line"><span class="params"><span class="function">            MPI_Op op,                <span class="comment">//规约操作类型</span></span></span></span><br><span class="line"><span class="params"><span class="function">            MPI_Comm comm)</span></span>;           <span class="comment">//一组通信进程</span></span><br></pre></td></tr></table></figure><br>$MPI$_$Reduce$ 和$MPI$_$Allreduce$例程的图解如下所示：</p><div style="align: center"><img src="https://note.youdao.com/yws/api/personal/file/WEB635e35297acaeac7ad5f79fc97142fab?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/></div><div style="align: center"><img src="https://note.youdao.com/yws/api/personal/file/WEB8453078f33cba2dcd2ba5b49d8b04daf?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/></div><p>图片源网址和$MPI$_$Allreduce$的入门教程在这里：<a href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/">英文版</a>和<a href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/zh_cn/">中文版</a>  </p><p>$MPI$_$Allreduce$广泛用于各种并行与分布式应用程序：科学计算、大数据、分布式机器学习、分布式深度学习DNN等等，并且<a href="https://ieeexplore.ieee.org/document/8665758">已有工作</a>表明 $MPI$_$Allreduce$ 是使用频率和运行时间最长的集合通信操作。</p><p>自从$MPI$标准在$1994$年提出以来，$MPI$_$Allreduce$的相关研究从上世纪90年代就已经有很多了，而本文从2005年的一篇综述论文出发，一直追溯到现在，总结$MPI$_$Allreduce$ 的算法激情燃烧的昨天、老骥伏枥的今天和仰望星空过后的明天。  </p><h1 id="MPI-Allreduce论文梳理"><a href="#MPI-Allreduce论文梳理" class="headerlink" title="MPI_Allreduce论文梳理"></a>MPI_Allreduce论文梳理</h1><h2 id="1、Optimization-of-Collective-Communication-Operations-in-MPICH"><a href="#1、Optimization-of-Collective-Communication-Operations-in-MPICH" class="headerlink" title="1、Optimization of Collective Communication Operations in MPICH"></a>1、<a href="https://journals.sagepub.com/doi/10.1177/1094342005051521">Optimization of Collective Communication Operations in MPICH</a></h2><p>经典的MPI集合通信论文，介绍了常用的集合通信操作和对应的算法：$Allgather$, $Broadcast$, $All-to-all$, $Reduce-scatter$, $Reduce$和$Allreduce$，并进一步的讨论了 $MPI$_$Reduce$ 和$MPI$_$Allreduce$的优化。我有一门选修课的作业就是将这篇论文全文翻译：<a href="https://note.youdao.com/ynoteshare/index.html?id=1b5cc29dea0aff44f92bdb69a2763e79&amp;type=notebook&amp;_time=1648432853246#/WEB26278ae64dfc1a52e0ece0dd615075f3">翻译原文</a>。<br>这篇文章采用的性能评估模型是$\alpha+n\beta$，任意两个节点之间发送一条消息的时间可以用$T=\alpha+n\beta$，其中$\alpha$表示延迟（或者说启动时间），与消息大小无关，而$\beta$表示每个字节的传输时间，$n$表示传输消息的字节数。由于MPI基于分布式存储系统，采用$LogP$模型（$L:latency$, $o:overhead$, $g:gap$, $P:processor$），一条长度为$n$的消息传输时间可以计算为:   </p><script type="math/tex; mode=display">T=L+2o+(n-1)b,其中b=min(o, g)</script><p>也就是传输延迟$L$加上两端处理器的处理开销$2o$，和$n$个字节的传输时间，注意$overhead$是任意一个消息的处理开销，$gap$是连续两个字节的传输时间间隔。将上述式子变形，可以得到：  </p><script type="math/tex; mode=display">T=(L+2o-b)+nb=\alpha+n\beta</script><p>这也就是本文性能评估模型的公式，许多文献和教材中也用到了这个公式。我们将用这个公式来形式化的评估集合通信算法的性能。  </p><h3 id="1、Allgather操作及算法"><a href="#1、Allgather操作及算法" class="headerlink" title="1、Allgather操作及算法"></a>1、Allgather操作及算法</h3><p>$Allgather$操作的图解如下:  </p><div style="align: center"><img src="https://note.youdao.com/yws/api/personal/file/WEB5c825f77e456600e07ef80d2b87f1e17?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13"/></div>  <p>$MPI$_$Allgather$函数可以参考<a href="https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/">MPI教学网站</a>。 </p><h4 id="Ring-Algorithm"><a href="#Ring-Algorithm" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h4><p>在这篇文章之前，MPICH中的$Allgather$操作使用的是$Ring$算法。</p><div style="align: center"><img src="https://note.youdao.com/yws/api/personal/file/WEBb157d10d3be479fb109ae83144da86e9?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="40%" height="40%"/></div> <p>每一个进程$i$发送本地数据给进程$i+1$，并且接受来自$i-1$的数据（环绕方式）。以后每一步，进程$i$都向进程$i+1$发送上一步接收的来自$i-1$号进程的数据。假设有$p$个进程，该算法总共需要$p-1$步来完成。用$n$表示收集的数据总量，每一步每个进程都发送$\frac{n}{p}$的数据，因此算法的时间消耗可以计算为：  </p><script type="math/tex; mode=display">T_{Ring}=(p-1)\alpha+\frac{p-1}{p}n\beta</script>]]></content>
+    <content type="html"><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文介绍$Allreduce$操作在$MPI$中的算法设计和实现，归纳和整理其发展脉络，追溯到最新的研究进展，并分析$MPI$的典型实现$MPICH$库中是怎样实现$Allreduce$例程的。</p><h1 id="Allreduce介绍"><a href="#Allreduce介绍" class="headerlink" title="Allreduce介绍"></a>Allreduce介绍</h1><p>$Allreduce$操作是$MPI$中最常用的集合通信操作，与之相似的是$Reduce$操作，假设有$N$个进程，每个进程都持有一个含$P$个元素的向量，所有的$N$个进程将自己的向量发送给根进程，根进程收集这些向量计算规约的结果（求和、求最大最小值等等），$Reduce$操作结果保存在根进程，$Allreduce$则将根进程的结果再广播出去。简单的在应用程序中调用$MPI$_$Allreduce$就可以完成上述例程，函数定义如下：<br>程序可以表示为：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">MPI_Allreduce</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="type">const</span> <span class="type">void</span> *sendbuf,      <span class="comment">//存放源数据</span></span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="type">void</span> *recvbuf,            <span class="comment">//存放规约结果</span></span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="type">int</span> count,                <span class="comment">//数据个数</span></span></span></span><br><span class="line"><span class="params"><span class="function">            MPI_Datatype datatype,    <span class="comment">//数据类型</span></span></span></span><br><span class="line"><span class="params"><span class="function">            MPI_Op op,                <span class="comment">//规约操作类型</span></span></span></span><br><span class="line"><span class="params"><span class="function">            MPI_Comm comm)</span></span>;           <span class="comment">//一组通信进程</span></span><br></pre></td></tr></table></figure><br>$MPI$_$Reduce$ 和$MPI$_$Allreduce$例程的图解如下所示：</p><div style="align: center"><img src="https://note.youdao.com/yws/api/personal/file/WEB635e35297acaeac7ad5f79fc97142fab?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/></div><div style="align: center"><img src="https://note.youdao.com/yws/api/personal/file/WEB8453078f33cba2dcd2ba5b49d8b04daf?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/></div><p>图片源网址和$MPI$_$Allreduce$的入门教程在这里：<a href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/">英文版</a>和<a href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/zh_cn/">中文版</a>  </p><p>$MPI$_$Allreduce$广泛用于各种并行与分布式应用程序：科学计算、大数据、分布式机器学习、分布式深度学习DNN等等，并且<a href="https://ieeexplore.ieee.org/document/8665758">已有工作</a>表明 $MPI$_$Allreduce$ 是使用频率和运行时间最长的集合通信操作。</p><p>自从$MPI$标准在$1994$年提出以来，$MPI$_$Allreduce$的相关研究从上世纪90年代就已经有很多了，而本文从2005年的一篇综述论文出发，一直追溯到现在，总结$MPI$_$Allreduce$ 的算法激情燃烧的昨天、老骥伏枥的今天和仰望星空过后的明天。  </p><h1 id="MPI-Allreduce论文梳理"><a href="#MPI-Allreduce论文梳理" class="headerlink" title="MPI_Allreduce论文梳理"></a>MPI_Allreduce论文梳理</h1><h2 id="1、Optimization-of-Collective-Communication-Operations-in-MPICH"><a href="#1、Optimization-of-Collective-Communication-Operations-in-MPICH" class="headerlink" title="1、Optimization of Collective Communication Operations in MPICH"></a>1、<a href="https://journals.sagepub.com/doi/10.1177/1094342005051521">Optimization of Collective Communication Operations in MPICH</a></h2><p>经典的MPI集合通信论文，介绍了常用的集合通信操作和对应的算法：$Allgather$, $Broadcast$, $All-to-all$, $Reduce-scatter$, $Reduce$和$Allreduce$，并进一步的讨论了 $MPI$_$Reduce$ 和$MPI$_$Allreduce$的优化。我有一门选修课的作业就是将这篇论文全文翻译：<a href="https://note.youdao.com/ynoteshare/index.html?id=1b5cc29dea0aff44f92bdb69a2763e79&amp;type=notebook&amp;_time=1648432853246#/WEB26278ae64dfc1a52e0ece0dd615075f3">翻译原文</a>。<br>这篇文章采用的性能评估模型是$\alpha+n\beta$，任意两个节点之间发送一条消息的时间可以用$T=\alpha+n\beta$，其中$\alpha$表示延迟（或者说启动时间），与消息大小无关，而$\beta$表示每个字节的传输时间，$n$表示传输消息的字节数。由于MPI基于分布式存储系统，采用$LogP$模型（$L:latency$, $o:overhead$, $g:gap$, $P:processor$），一条长度为$n$的消息传输时间可以计算为:   </p><script type="math/tex; mode=display">T=L+2o+(n-1)b,其中b=min(o, g)</script><p>也就是传输延迟$L$加上两端处理器的处理开销$2o$，和$n$个字节的传输时间，注意$overhead$是任意一个消息的处理开销，$gap$是连续两个字节的传输时间间隔。将上述式子变形，可以得到：  </p><script type="math/tex; mode=display">T=(L+2o-b)+nb=\alpha+n\beta</script><p>这也就是本文性能评估模型的公式，许多文献和教材中也用到了这个公式。我们将$\alpha$称为延迟项$(latency\ term)$，而$n\beta$称为带宽项$(bandwidth\ term)$，并用这个公式来形式化的评估集合通信算法的性能。  </p><h3 id="1、Allgather操作及算法"><a href="#1、Allgather操作及算法" class="headerlink" title="1、Allgather操作及算法"></a>1、Allgather操作及算法</h3><p>$Allgather$操作的图解如下:  </p><div style="align: center"><img src="https://note.youdao.com/yws/api/personal/file/WEB5c825f77e456600e07ef80d2b87f1e17?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13"/></div>  <p>$MPI$_$Allgather$函数可以参考<a href="https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/">MPI教学网站</a>。 </p><h4 id="Ring-Algorithm"><a href="#Ring-Algorithm" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h4><p>MPICH中最初实现$Allgather$操作使用的就是$Ring$算法。</p><div style="align: center"><img src="https://note.youdao.com/yws/api/personal/file/WEBb157d10d3be479fb109ae83144da86e9?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="40%" height="40%"/></div> <p>每一个进程$i$发送本地数据给进程$i+1$，并且接受来自$i-1$的数据（环绕方式）。以后每一步，进程$i$都向进程$i+1$发送上一步接收的来自$i-1$号进程的数据。假设有$p$个进程，该算法总共需要$p-1$步来完成。用$n$表示收集的数据总量，每一步每个进程都发送$\frac{n}{p}$的数据，因此算法的时间消耗可以计算为：  </p><script type="math/tex; mode=display">T_{Ring}=(p-1)\alpha+\frac{p-1}{p}n\beta</script><h4 id="Recursive-Doubling"><a href="#Recursive-Doubling" class="headerlink" title="Recursive Doubling"></a>Recursive Doubling</h4><p>递归加倍算法的流程如下图所示：</p><div style="align: center"><img src="https://note.youdao.com/yws/api/personal/file/WEB0cedb39776a1eb420c04698b214a371e?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="50%" height="50%"/></div> <p>在第一步，彼此间距离为1的进程之间互相交换数据，数据量为$\frac{n}{p}$；第二步，彼此间距离为2的进程之间交换进程自己以及上一步从邻居进程接受的数据，数据量为$\frac{2n}{p}$；在第三步，彼此间距离为4的进程之间交换进程自己以及前两步从其他进程接受的数据，数据量为$\frac{4n}{p}$，以此类推，所有进程会在$lgP$步获得所有数据，执行时间为：  </p><script type="math/tex; mode=display">T_{rec\_dbl}=lgP\cdot\alpha+\frac{p-1}{p}n\beta</script><p>其中带宽项和环算法相同，这是因为：</p><script type="math/tex; mode=display">\frac{n}{p}\beta+\frac{2n}{p}\beta+...+\frac{2^{lgP-1}n}{p}\beta=\frac{p-1}{p}n\beta</script><p>这个等式的内在逻辑是任意一个进程总要接受来自其他$p-1$进程发送的总共$(p-1)\cdot\frac{n}{p}$数据量，也就是说带宽项是不能进一步减少的，但是延迟项可以通过优化算法来减少。递归加倍算法能很好的处理进程数量为2的整数幂的情况，但较难处理进程数量非2的幂次的情况。 </p><h4 id="Bruck-Algorithm"><a href="#Bruck-Algorithm" class="headerlink" title="Bruck Algorithm"></a>Bruck Algorithm</h4><p>$Bruck$算法能够很好的处理进程数非2的幂次的情况，算法的执行步骤为$\lceil{lgP}\rceil$步，算法图解如下所示</p><div style="align: center"><img src="https://note.youdao.com/yws/api/personal/file/WEBe58d78d1a74b305f1da143695784f911?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13"/></div> <p>每个进程都有一片大小为$n$的缓存存放数据，在算法的开始，每个进程将本地数据拷贝到缓存的顶部。在第$k$步，进程$i$向目标进程$i-2^k$发送本地的所有数据，并将接受的数据（来自进程$i+2^k$）添加至本地数据的末尾，一共$\lfloor{lgP}\rfloor$步。如果进程的数量不是2的幂，还需要额外的一步，每个进程向目标进程$i-2^k$发送自己缓存头部的$p-2^{\lfloor{lgP}\rfloor}$块数据（前面步骤都是本地全部数据，这里是头部的部分数据），并将接受的数据添加到本地缓存末尾。<br>现在，所有进程都已经获得了全部数据，但是数据并不是以正确的顺序排列在缓存中：进程$i$中的所有数据块都向上偏移了$i$块。因此简单的将所有数据块循环向下移动$i$块就能将数据块调整到正确的位置上。算法的时间开销为：</p><script type="math/tex; mode=display">T_{Bruck}=\lceil{lgP}\rceil\cdot\alpha+\frac{p-1}{p}n\beta</script>]]></content>
     
     
       
@@ -33,21 +33,21 @@
     
     
     
-    <category term="并行计算" scheme="http://example.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="MPI集合通信算法" scheme="http://example.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/"/>
+    <category term="MPI集合通信算法" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/"/>
     
     
-    <category term="MPI" scheme="http://example.com/tags/MPI/"/>
+    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
     
-    <category term="并行计算" scheme="http://example.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
   </entry>
   
   <entry>
     <title>在西交的四年光影</title>
-    <link href="http://example.com/2022/03/26/xjtu/"/>
-    <id>http://example.com/2022/03/26/xjtu/</id>
+    <link href="http://synchrosky.com/2022/03/26/xjtu/"/>
+    <id>http://synchrosky.com/2022/03/26/xjtu/</id>
     <published>2022-03-25T16:00:00.000Z</published>
     <updated>2022-03-28T05:08:49.941Z</updated>
     
@@ -62,19 +62,19 @@
     
     
     
-    <category term="整活系列" scheme="http://example.com/categories/%E6%95%B4%E6%B4%BB%E7%B3%BB%E5%88%97/"/>
+    <category term="整活系列" scheme="http://synchrosky.com/categories/%E6%95%B4%E6%B4%BB%E7%B3%BB%E5%88%97/"/>
     
     
-    <category term="整活" scheme="http://example.com/tags/%E6%95%B4%E6%B4%BB/"/>
+    <category term="整活" scheme="http://synchrosky.com/tags/%E6%95%B4%E6%B4%BB/"/>
     
-    <category term="生活" scheme="http://example.com/tags/%E7%94%9F%E6%B4%BB/"/>
+    <category term="生活" scheme="http://synchrosky.com/tags/%E7%94%9F%E6%B4%BB/"/>
     
   </entry>
   
   <entry>
     <title>Cannon矩阵乘法</title>
-    <link href="http://example.com/2022/03/26/%E5%88%A9%E7%94%A8MPI%E5%AE%9E%E7%8E%B0Cannon%E7%AE%97%E6%B3%95%E5%B9%B6%E8%A1%8C%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/"/>
-    <id>http://example.com/2022/03/26/%E5%88%A9%E7%94%A8MPI%E5%AE%9E%E7%8E%B0Cannon%E7%AE%97%E6%B3%95%E5%B9%B6%E8%A1%8C%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/</id>
+    <link href="http://synchrosky.com/2022/03/26/%E5%88%A9%E7%94%A8MPI%E5%AE%9E%E7%8E%B0Cannon%E7%AE%97%E6%B3%95%E5%B9%B6%E8%A1%8C%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/"/>
+    <id>http://synchrosky.com/2022/03/26/%E5%88%A9%E7%94%A8MPI%E5%AE%9E%E7%8E%B0Cannon%E7%AE%97%E6%B3%95%E5%B9%B6%E8%A1%8C%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/</id>
     <published>2022-03-25T16:00:00.000Z</published>
     <updated>2022-03-28T04:51:36.311Z</updated>
     
@@ -88,21 +88,21 @@
     
     
     
-    <category term="并行计算" scheme="http://example.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="MPI程序设计" scheme="http://example.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"/>
+    <category term="MPI程序设计" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"/>
     
     
-    <category term="MPI" scheme="http://example.com/tags/MPI/"/>
+    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
     
-    <category term="并行计算" scheme="http://example.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
   </entry>
   
   <entry>
     <title>Hello World</title>
-    <link href="http://example.com/2022/03/25/hello-world/"/>
-    <id>http://example.com/2022/03/25/hello-world/</id>
+    <link href="http://synchrosky.com/2022/03/25/hello-world/"/>
+    <id>http://synchrosky.com/2022/03/25/hello-world/</id>
     <published>2022-03-25T14:55:19.269Z</published>
     <updated>2022-03-25T14:55:19.269Z</updated>
     
