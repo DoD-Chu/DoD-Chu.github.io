@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBa1d3f66081e6d3666838b6ff37186727?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBc635d7af2913d2a188bcd426165b25b5?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
 <meta property="article:published_time" content="2022-03-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-28T09:05:20.795Z">
+<meta property="article:modified_time" content="2022-03-28T13:40:22.099Z">
 <meta property="article:author" content="虎王">
 <meta property="article:tag" content="MPI">
 <meta property="article:tag" content="并行计算">
@@ -240,7 +240,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-28 17:05:20" itemprop="dateModified" datetime="2022-03-28T17:05:20+08:00">2022-03-28</time>
+                <time title="修改时间：2022-03-28 21:40:22" itemprop="dateModified" datetime="2022-03-28T21:40:22+08:00">2022-03-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -287,7 +287,7 @@
 <p>图片源网址和$MPI$_$Allreduce$的入门教程在这里：<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/">英文版</a>和<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/zh_cn/">中文版</a>  </p>
 <p>$MPI$_$Allreduce$广泛用于各种并行与分布式应用程序：科学计算、大数据、分布式机器学习、分布式深度学习DNN等等，并且<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/8665758">已有工作</a>表明 $MPI$_$Allreduce$ 是使用频率和运行时间最长的集合通信操作。</p>
 <p>自从$MPI$标准在$1994$年提出以来，$MPI$_$Allreduce$的相关研究从上世纪90年代就已经有很多了，而本文从2005年的一篇综述论文出发，一直追溯到现在，总结$MPI$_$Allreduce$ 的算法激情燃烧的昨天、老骥伏枥的今天和仰望星空过后的明天。  </p>
-<h1 id="MPI-Allreduce论文梳理"><a href="#MPI-Allreduce论文梳理" class="headerlink" title="MPI_Allreduce论文梳理"></a>MPI_Allreduce论文梳理</h1><h2 id="1、Optimization-of-Collective-Communication-Operations-in-MPICH"><a href="#1、Optimization-of-Collective-Communication-Operations-in-MPICH" class="headerlink" title="1、Optimization of Collective Communication Operations in MPICH"></a>1、<a target="_blank" rel="noopener" href="https://journals.sagepub.com/doi/10.1177/1094342005051521">Optimization of Collective Communication Operations in MPICH</a></h2><p>经典的MPI集合通信论文，介绍了常用的集合通信操作和对应的算法：$Allgather$, $Broadcast$, $All-to-all$, $Reduce-scatter$, $Reduce$和$Allreduce$，并进一步的讨论了 $MPI$_$Reduce$ 和$MPI$_$Allreduce$的优化。我有一门选修课的作业就是将这篇论文全文翻译：<a target="_blank" rel="noopener" href="https://note.youdao.com/ynoteshare/index.html?id=1b5cc29dea0aff44f92bdb69a2763e79&amp;type=notebook&amp;_time=1648432853246#/WEB26278ae64dfc1a52e0ece0dd615075f3">翻译原文</a>。<br>这篇文章采用的性能评估模型是$\alpha+n\beta$，任意两个节点之间发送一条消息的时间可以用$T=\alpha+n\beta$，其中$\alpha$表示延迟（或者说启动时间），与消息大小无关，而$\beta$表示每个字节的传输时间，$n$表示传输消息的字节数。由于MPI基于分布式存储系统，采用$LogP$模型（$L:latency$, $o:overhead$, $g:gap$, $P:processor$），一条长度为$n$的消息传输时间可以计算为:   </p>
+<h1 id="MPI-Allreduce论文梳理"><a href="#MPI-Allreduce论文梳理" class="headerlink" title="MPI_Allreduce论文梳理"></a>MPI_Allreduce论文梳理</h1><h2 id="1、Optimization-of-Collective-Communication-Operations-in-MPICH"><a href="#1、Optimization-of-Collective-Communication-Operations-in-MPICH" class="headerlink" title="1、Optimization of Collective Communication Operations in MPICH"></a>1、<a target="_blank" rel="noopener" href="https://journals.sagepub.com/doi/10.1177/1094342005051521">Optimization of Collective Communication Operations in MPICH</a></h2><p>经典的$MPI$集合通信论文，介绍了常用的集合通信操作和对应的算法：$Allgather$, $Broadcast$, $All$-$to$-$all$, $Reduce$-$Scatter$, $Reduce$和$Allreduce$，并进一步的讨论了 $MPI$_$Reduce$ 和$MPI$_$Allreduce$的优化。我有一门选修课的作业就是将这篇论文全文翻译：<a target="_blank" rel="noopener" href="https://note.youdao.com/ynoteshare/index.html?id=1b5cc29dea0aff44f92bdb69a2763e79&amp;type=notebook&amp;_time=1648432853246#/WEB26278ae64dfc1a52e0ece0dd615075f3">翻译原文</a>。<br>这篇文章采用的性能评估模型是$\alpha+n\beta$，任意两个节点之间发送一条消息的时间可以用$T=\alpha+n\beta$，其中$\alpha$表示延迟（或者说启动时间），与消息大小无关，而$\beta$表示每个字节的传输时间，$n$表示传输消息的字节数，对于规约操作则用$\gamma$表示每个字节执行规约操作的时间消耗。由于$MPI$基于分布式存储系统，采用$LogP$模型（$L:latency$, $o:overhead$, $g:gap$, $P:processor$），一条长度为$n$的消息传输时间可以计算为:   </p>
 <script type="math/tex; mode=display">T=L+2o+(n-1)b,其中b=min(o, g)</script><p>也就是传输延迟$L$加上两端处理器的处理开销$2o$，和$n$个字节的传输时间，注意$overhead$是任意一个消息的处理开销，$gap$是连续两个字节的传输时间间隔。将上述式子变形，可以得到：  </p>
 <script type="math/tex; mode=display">T=(L+2o-b)+nb=\alpha+n\beta</script><p>这也就是本文性能评估模型的公式，许多文献和教材中也用到了这个公式。我们将$\alpha$称为延迟项$(latency\ term)$，而$n\beta$称为带宽项$(bandwidth\ term)$，并用这个公式来形式化的评估集合通信算法的性能。  </p>
 <h3 id="1、Allgather操作及算法"><a href="#1、Allgather操作及算法" class="headerlink" title="1、Allgather操作及算法"></a>1、Allgather操作及算法</h3><p>$Allgather$操作的图解如下:  </p>
@@ -296,12 +296,12 @@
 </div>  
 
 <p>$MPI$_$Allgather$函数可以参考<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/">MPI_Allgather</a>。 </p>
-<h4 id="Ring-Algorithm"><a href="#Ring-Algorithm" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h4><p>MPICH中最初实现$Allgather$操作使用的就是$Ring$算法。</p>
+<h4 id="Ring-Algorithm"><a href="#Ring-Algorithm" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h4><p>$MPICH$中最初实现$Allgather$操作使用的就是$Ring$算法。</p>
 <div style="align: center">
 <img src="https://note.youdao.com/yws/api/personal/file/WEBb157d10d3be479fb109ae83144da86e9?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="40%" height="40%"/>
 </div> 
 
-<p>每一个进程$i$发送本地数据给进程$i+1$，并且接受来自$i-1$的数据（环绕方式）。以后每一步，进程$i$都向进程$i+1$发送上一步接收的来自$i-1$号进程的数据。假设有$p$个进程，该算法总共需要$p-1$步来完成。用$n$表示收集的数据总量，每一步每个进程都发送$\frac{n}{p}$的数据，因此算法的时间消耗可以计算为：  </p>
+<p>每一个进程$i$发送本地数据给进程$(i+1)\%N$，并且接受来自$(i-1)\%N$的数据（环绕方式）。以后每一步，进程$i$都向进程$(i+1)\%N$发送上一步接收的来自$(i-1)\%N$号进程的数据。假设有$p$个进程，该算法总共需要$p-1$步来完成。用$n$表示收集的数据总量，每一步每个进程都发送$\frac{n}{p}$的数据，因此算法的时间消耗可以计算为：  </p>
 <script type="math/tex; mode=display">T_{Ring}=(p-1)\alpha+\frac{p-1}{p}n\beta</script><h4 id="Recursive-Doubling"><a href="#Recursive-Doubling" class="headerlink" title="Recursive Doubling"></a>Recursive Doubling</h4><p>递归加倍算法的流程如下图所示：</p>
 <div style="align: center">
 <img src="https://note.youdao.com/yws/api/personal/file/WEB0cedb39776a1eb420c04698b214a371e?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="50%" height="50%"/>
@@ -315,21 +315,35 @@
 <img src="https://note.youdao.com/yws/api/personal/file/WEBe58d78d1a74b305f1da143695784f911?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13"/>
 </div> 
 
-<p>每个进程都有一片大小为$n$的缓存存放数据，在算法的开始，每个进程将本地数据拷贝到缓存的顶部。在第$k$步，进程$i$向目标进程$i-2^k$发送本地的所有数据，并将接受的数据（来自进程$i+2^k$）添加至本地数据的末尾，一共$\lfloor{lgP}\rfloor$步。如果进程的数量不是2的幂，还需要额外的一步，每个进程向目标进程$i-2^k$发送自己缓存头部的$p-2^{\lfloor{lgP}\rfloor}$块数据（前面步骤都是本地全部数据，这里是头部的部分数据），并将接受的数据添加到本地缓存末尾。<br>现在，所有进程都已经获得了全部数据，但是数据并不是以正确的顺序排列在缓存中：进程$i$中的所有数据块都向上偏移了$i$块。因此简单的将所有数据块循环向下移动$i$块就能将数据块调整到正确的位置上。算法的时间开销为：</p>
-<script type="math/tex; mode=display">T_{Bruck}=\lceil{lgP}\rceil\cdot\alpha+\frac{p-1}{p}n\beta</script><h3 id="2、Broadcast操作及算法"><a href="#2、Broadcast操作及算法" class="headerlink" title="2、Broadcast操作及算法"></a>2、Broadcast操作及算法</h3><p>广播操作由根进程将根进程中的数据广播给所有进程，对应的是$MPI$_$Bcast$函数，可以参考<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-broadcast-and-collective-communication/">MPI_Bcast</a></p>
-<div style="align: center">
+<p>每个进程都有一片大小为$n$的缓存存放数据，在算法的开始，每个进程将本地数据拷贝到缓存的顶部。在第$k$步，进程$i$向目标进程$(i-2^k)\%N$发送本地的所有数据，并将接受的数据（来自进程$(i+2^k)\%N$）添加至本地数据的末尾，一共$\lfloor{lgP}\rfloor$步。如果进程的数量不是2的幂，还需要额外的一步，每个进程向目标进程$(i-2^k)\%N$发送自己缓存头部的$p-2^{\lfloor{lgP}\rfloor}$块数据（前面步骤都是本地全部数据，这里是头部的部分数据），并将接受的数据添加到本地缓存末尾。<br>现在，所有进程都已经获得了全部数据，但是数据并不是以正确的顺序排列在缓存中：进程$i$中的所有数据块都向上偏移了$i$块。因此简单的将所有数据块循环向下移动$i$块就能将数据块调整到正确的位置上。算法的时间开销为：</p>
+<script type="math/tex; mode=display">T_{Bruck}=\lceil{lgP}\rceil\cdot\alpha+\frac{p-1}{p}n\beta</script><p>$Allgather$操作的算法选取策略是：</p>
+<ul>
+<li>当进程数量为2的幂并且发送短消息或者中等规模消息，采用$Recursive\ doubling$算法；</li>
+<li>当发送短消息以及进程数量非2的幂的情况下，采用$Bruck$算法；</li>
+<li>发送大消息，无论进程数量是多少，并且进程数量非2幂且发送中等规模消息，采用$Ring$算法。<h3 id="2、Broadcast操作及算法"><a href="#2、Broadcast操作及算法" class="headerlink" title="2、Broadcast操作及算法"></a>2、Broadcast操作及算法</h3>广播操作由根进程将根进程中的数据广播给所有进程，对应的是$MPI$_$Bcast$函数，可以参考<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-broadcast-and-collective-communication/">MPI_Bcast</a><div style="align: center">
 <img src="https://note.youdao.com/yws/api/personal/file/WEBa1d3f66081e6d3666838b6ff37186727?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13"/>
 </div> 
 
-<h4 id="Bionomial-Tree"><a href="#Bionomial-Tree" class="headerlink" title="Bionomial Tree"></a>Bionomial Tree</h4><p>MPICH中广播操作最初使用二项树算法。在第一步，根进程$root$向目标进程$root+\frac{p}{2}$发送数据，进程$root+\frac{p}{2}$以及根进程成为它们子树的根结点，继续递归执行算法。该算法一共执行$\lceil{\lg{p}}\rceil$步，在每一步所有进程发送的数据量均为$n$，因此算法的时间开销为：</p>
-<script type="math/tex; mode=display">T_{tree}=\lceil{\lg{p}}\rceil\cdot(\alpha+n\beta)</script><h4 id="Scatter-Allgather"><a href="#Scatter-Allgather" class="headerlink" title="Scatter + Allgather"></a>Scatter + Allgather</h4><p>这是一种组合算法，又叫$Van de Geijn$算法，将$Scatter$和$Allgather$两个操作组合成了$Broadcast$操作。$Scatter$（散播）操作与$Broadcast$操作的对比如下:</p>
+</li>
+</ul>
+<h4 id="Bionomial-Tree"><a href="#Bionomial-Tree" class="headerlink" title="Bionomial Tree"></a>Bionomial Tree</h4><p>$MPICH$中广播操作最初使用二项树算法。在第一步，根进程$root$向目标进程$(root+\frac{p}{2})\%N$发送数据，进程$(root+\frac{p}{2})\%N$以及根进程成为它们子树的根结点，继续递归执行算法。该算法一共执行$\lceil{\lg{p}}\rceil$步，在每一步所有进程发送的数据量均为$n$，因此算法的时间开销为：</p>
+<script type="math/tex; mode=display">T_{tree}=\lceil{\lg{p}}\rceil\cdot(\alpha+n\beta)</script><h4 id="Scatter-Allgather"><a href="#Scatter-Allgather" class="headerlink" title="Scatter + Allgather"></a>Scatter + Allgather</h4><p>这是一种组合算法，又叫$Van\ de\ Geijn$算法，将$Scatter$和$Allgather$两个操作组合成了$Broadcast$操作。$Scatter$（散播）操作与$Broadcast$操作的对比如下:</p>
 <div style="align: center">
 <img src="https://note.youdao.com/yws/api/personal/file/WEBc635d7af2913d2a188bcd426165b25b5?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13"/>
 </div> 
 
 <p>在该算法中，要广播的数据先分成若干份，散播到各个进程中，接着，散播的数据又收集到所有进程中，也就是再执行MPI_Allgather操作。其中Scatter操作使用二项树算法，时间消耗为：</p>
-<script type="math/tex; mode=display">T_{Scatter}=\lg{p}\cdot\alpha+\frac{p-1}{p}n\beta</script><p>时间消耗和$Allgather$递归加倍算法相同，仔细观察你会发现两者互为逆过程。而$Allgather$操作可以使用递归加倍算法或者环算法，例如使用环算法，则总的时间消耗为：</p>
-<script type="math/tex; mode=display">T_{sct\_alg}=(\lg{p}+p-1)\alpha+2\frac{p-1}{p}n\beta</script>
+<script type="math/tex; mode=display">T_{Scatter}=\lg{p}\cdot\alpha+\frac{p-1}{p}n\beta</script><p>时间消耗和$Allgather$递归加倍算法相同，仔细观察你会发现两者互为逆过程。而$Allgather$操作可以使用递归加倍算法或者环算法，总时间等于两者之和。<br>因此广播操作的二项树算法和$Scatter+Allgather$算法的时间消耗对比如下：</p>
+<script type="math/tex; mode=display">\left\{
+\begin{matrix}
+ T_{tree}=\lceil{\lg{p}}\rceil\cdot(\alpha+n\beta) \\
+ {T_{Scatter+Allgather}=(\lg{p}+p-1)\alpha+2\frac{p-1}{p}n\beta} 
+\end{matrix}
+\right.</script><p>对比两个式子我们可以很容易得到，当消息两较小（即$n$较小）或者进程数量少时（小于8），我们使用二项树算法，当消息较大时或者进程数量较大时，我们采用$Scatter$+$Allgather$的组合算法。</p>
+<h3 id="3、Reduce-Scatter操作及其算法"><a href="#3、Reduce-Scatter操作及其算法" class="headerlink" title="3、Reduce-Scatter操作及其算法"></a>3、Reduce-Scatter操作及其算法</h3><p>$Reduce_Scatter$操作（多对多规约）是数据规约操作$Reduce$的一个变种，$Reduce$操作的结果保存在根进程中，而$Reduce_Scatter$将结果散发（$Scatter$）给所有进程。<br>在$MPICH$中的老算法中，$Reduce_Scatter$操作先是将所有进程的数据通过二项树规约到$0$号进程，然后通过线性的散发操作将数据分发出去。二项树规约操作的时间为:</p>
+<script type="math/tex; mode=display">\lg{p}\cdot(\alpha+n\beta+n\gamma)</script><p>线性散发操作的时间为：</p>
+<script type="math/tex; mode=display">(p-1)\alpha+(p-1)\cdot\frac{n}{p}\beta</script><p>总的时间为:</p>
+<script type="math/tex; mode=display">T_{old}=(\lg{p}+p-1)\alpha+(\lg{p}+\frac{p-1}{p})n\beta+\lg{p}\cdot{n}\gamma</script>
     </div>
 
     
@@ -471,7 +485,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Allreduce%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">Allreduce介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MPI-Allreduce%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">MPI_Allreduce论文梳理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81Optimization-of-Collective-Communication-Operations-in-MPICH"><span class="nav-number">3.1.</span> <span class="nav-text">1、Optimization of Collective Communication Operations in MPICH</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81Allgather%E6%93%8D%E4%BD%9C%E5%8F%8A%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.1.</span> <span class="nav-text">1、Allgather操作及算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Ring-Algorithm"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">Ring Algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Recursive-Doubling"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">Recursive Doubling</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bruck-Algorithm"><span class="nav-number">3.1.1.3.</span> <span class="nav-text">Bruck Algorithm</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81Broadcast%E6%93%8D%E4%BD%9C%E5%8F%8A%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.2.</span> <span class="nav-text">2、Broadcast操作及算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Bionomial-Tree"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">Bionomial Tree</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Scatter-Allgather"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">Scatter + Allgather</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Allreduce%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">Allreduce介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MPI-Allreduce%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">MPI_Allreduce论文梳理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81Optimization-of-Collective-Communication-Operations-in-MPICH"><span class="nav-number">3.1.</span> <span class="nav-text">1、Optimization of Collective Communication Operations in MPICH</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81Allgather%E6%93%8D%E4%BD%9C%E5%8F%8A%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.1.</span> <span class="nav-text">1、Allgather操作及算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Ring-Algorithm"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">Ring Algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Recursive-Doubling"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">Recursive Doubling</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bruck-Algorithm"><span class="nav-number">3.1.1.3.</span> <span class="nav-text">Bruck Algorithm</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81Broadcast%E6%93%8D%E4%BD%9C%E5%8F%8A%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.2.</span> <span class="nav-text">2、Broadcast操作及算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Bionomial-Tree"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">Bionomial Tree</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Scatter-Allgather"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">Scatter + Allgather</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81Reduce-Scatter%E6%93%8D%E4%BD%9C%E5%8F%8A%E5%85%B6%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.3.</span> <span class="nav-text">3、Reduce-Scatter操作及其算法</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -594,7 +608,7 @@ $(document).ready(function() {
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共5.5k字</span>
+  <span class="post-count">博客全站共5.9k字</span>
 </div>
         
 <div class="busuanzi-count">
