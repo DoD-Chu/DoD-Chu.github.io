@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>壮志凌云</title>
   
-  
+  <subtitle>小王同学的工作站</subtitle>
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-03-27T15:39:48.896Z</updated>
+  <updated>2022-03-28T03:40:33.066Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://example.com/2022/03/27/MPI%20Allreduce/"/>
     <id>http://example.com/2022/03/27/MPI%20Allreduce/</id>
     <published>2022-03-26T16:00:00.000Z</published>
-    <updated>2022-03-27T15:39:48.896Z</updated>
+    <updated>2022-03-28T03:40:33.066Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文介绍$Allreduce$操作在$MPI$中的算法设计和实现，归纳和整理其发展脉络，追溯到最新的研究进展，并分析$MPI$的典型实现$MPICH$库中是怎样实现$Allreduce$例程的。</p><h1 id="Allreduce介绍"><a href="#Allreduce介绍" class="headerlink" title="Allreduce介绍"></a>Allreduce介绍</h1><p>$Allreduce$操作是$MPI$中最常用的集合通信操作，与之相似的是$Reduce$操作，假设有$N$个进程，每个进程都持有一个含$P$个元素的向量，所有的$N$个进程将自己的向量发送给根进程，根进程收集这些向量计算规约的结果（求和、求最大最小值等等），$Reduce$操作结果保存在根进程，$Allreduce$则将根进程的结果再广播出去。简单的在应用程序中调用$MPI$_$Allreduce$就可以完成上述例程，函数定义如下：</p><pre><code class="lang-c">int MPI_Allreduce(const void *sendbuf, void *recvbuf, int count, MPI_Datatype datatype, MPI_Op op, MPI_Comm comm);</code></pre><p>$MPI$_$Reduce$ 和$MPI$_$Allreduce$例程的图解如下所示：<br><img src="https://note.youdao.com/yws/api/personal/file/WEB8453078f33cba2dcd2ba5b49d8b04daf?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt="MPI_Reduce"><br><img src="https://note.youdao.com/yws/api/personal/file/WEB8453078f33cba2dcd2ba5b49d8b04daf?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt="MPI_Allreduce"><br>图片源网址和$MPI$_$Allreduce$的入门教程在这里：<a href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/">英文版</a>和<a href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/zh_cn/">中文版</a>  </p><p>$MPI$_$Allreduce$广泛用于各种并行与分布式应用程序：科学计算、大数据、分布式机器学习、分布式深度学习DNN等等，并且<a href="https://ieeexplore.ieee.org/document/8665758">已有工作</a>表明 $MPI$_$Allreduce$ 是使用频率和运行时间最长的集合通信操作。</p><p>自从$MPI$标准在$1994$年提出以来，$MPI$_$Allreduce$的相关研究从上世纪90年代就已经有很多了，而本文从2005年的<a href="https://journals.sagepub.com/doi/10.1177/1094342005051521">这篇综述论文</a>出发，一直追溯到现在，总结$MPI$_$Allreduce$ 的算法的过去、现在和未来。</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文介绍$Allreduce$操作在$MPI$中的算法设计和实现，归纳和整理其发展脉络，追溯到最新的研究进展，并分析$MPI$的典型实现$MPICH$库中是怎样实现$Allreduce$例程的。</p><h1 id="Allreduce介绍"><a href="#Allreduce介绍" class="headerlink" title="Allreduce介绍"></a>Allreduce介绍</h1><p>$Allreduce$操作是$MPI$中最常用的集合通信操作，与之相似的是$Reduce$操作，假设有$N$个进程，每个进程都持有一个含$P$个元素的向量，所有的$N$个进程将自己的向量发送给根进程，根进程收集这些向量计算规约的结果（求和、求最大最小值等等），$Reduce$操作结果保存在根进程，$Allreduce$则将根进程的结果再广播出去。简单的在应用程序中调用$MPI$_$Allreduce$就可以完成上述例程，函数定义如下：</p><pre><code class="lang-c">int MPI_Allreduce(const void *sendbuf,    //存放源数据                void *recvbuf,            //存放规约结果                int count,                //数据个数                MPI_Datatype datatype,    //数据类型                MPI_Op op,                //规约操作类型                MPI_Comm comm);           //一组通信进程</code></pre><p>$MPI$_$Reduce$ 和$MPI$_$Allreduce$例程的图解如下所示：</p><div style="align: center"><img src="https://note.youdao.com/yws/api/personal/file/WEB635e35297acaeac7ad5f79fc97142fab?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="40%" height="40%"/></div><div style="align: center"><img src="https://note.youdao.com/yws/api/personal/file/WEB8453078f33cba2dcd2ba5b49d8b04daf?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="40%" height="40%"/></div><p>图片源网址和$MPI$_$Allreduce$的入门教程在这里：<a href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/">英文版</a>和<a href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/zh_cn/">中文版</a>  </p><p>$MPI$_$Allreduce$广泛用于各种并行与分布式应用程序：科学计算、大数据、分布式机器学习、分布式深度学习DNN等等，并且<a href="https://ieeexplore.ieee.org/document/8665758">已有工作</a>表明 $MPI$_$Allreduce$ 是使用频率和运行时间最长的集合通信操作。</p><p>自从$MPI$标准在$1994$年提出以来，$MPI$_$Allreduce$的相关研究从上世纪90年代就已经有很多了，而本文从2005年的一篇综述论文出发，一直追溯到现在，总结$MPI$_$Allreduce$ 的算法激情燃烧的昨天、老骥伏枥的今天和仰望星空过后的明天。</p><h1 id="MPI-Allreduce论文梳理"><a href="#MPI-Allreduce论文梳理" class="headerlink" title="MPI_Allreduce论文梳理"></a>MPI_Allreduce论文梳理</h1><h2 id="1、Optimization-of-Collective-Communication-Operations-in-MPICH"><a href="#1、Optimization-of-Collective-Communication-Operations-in-MPICH" class="headerlink" title="1、Optimization of Collective Communication Operations in MPICH"></a>1、<a href="https://journals.sagepub.com/doi/10.1177/1094342005051521">Optimization of Collective Communication Operations in MPICH</a></h2><p>经典的MPI集合通信论文，介绍了常用的集合通信操作和对应的算法：$Allgather$, $Broadcast$, $All-to-all$, $Reduce-scatter$, $Reduce$和$Allreduce$，并进一步的讨论了 $MPI$_$Reduce$ 和$MPI$_$Allreduce$的优化。我有一门选修课的作业就是将这篇论文全文翻译：<a href="https://note.youdao.com/ynoteshare/index.html?id=1b5cc29dea0aff44f92bdb69a2763e79&amp;type=notebook&amp;_time=1648432853246#/WEB26278ae64dfc1a52e0ece0dd615075f3">翻译原文</a>。<br>这篇文章采用的性能评估模型是$\alpha+n\beta$，任意两个节点之间发送一条消息的时间可以用$T=\alpha+n\beta$，其中$\alpha$表示延迟（或者说启动时间），与消息大小无关，而$\beta$表示每个字节的传输时间，$n$表示传输消息的字节数。由于MPI基于分布式存储系统，采用$LogP$模型（$L:latency$, $o:overhead$, $g:gap$, $P:processor$），一条长度为$n$的消息传输时间可以计算为:   </p><script type="math/tex; mode=display">T=L+2o+(n-1)b,其中b=min(o, g)</script><p>也就是传输延迟$L$加上两端处理器的处理开销$2o$，和$n$个字节的传输时间，注意$overhead$是任意一个消息的处理开销，$gap$是连续两个字节的传输时间间隔。将上述式子变形，可以得到：  </p><script type="math/tex; mode=display">T=(L+2o-b)+nb=\alpha+n\beta</script><p>这也就是本文性能评估模型的公式，许多文献和教材中也用到了这个公式。我们将用这个公式来形式化的评估集合通信算法的性能。  </p><h3 id="1、Allgather操作及算法"><a href="#1、Allgather操作及算法" class="headerlink" title="1、Allgather操作及算法"></a>1、Allgather操作及算法</h3><p>$Allgather$操作的图解如下:  </p><div style="align: center"><img src="https://note.youdao.com/yws/api/personal/file/WEB5c825f77e456600e07ef80d2b87f1e17?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13"/></div>  <p>$MPI$_$Allgather$函数可以参考<a href="https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/">MPI教学网站</a>。 </p><h4 id="Ring-Algorithm"><a href="#Ring-Algorithm" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h4><p>在这篇文章之前，MPICH中的$Allgather$操作使用的是$Ring$算法。</p><div style="align: center"><img src="https://note.youdao.com/yws/api/personal/file/WEBb157d10d3be479fb109ae83144da86e9?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="40%" height="40%"/></div> <p>每一个进程$i$发送本地数据给进程$i+1$，并且接受来自$i-1$的数据（环绕方式）。以后每一步，进程$i$都向进程$i+1$发送上一步接收的来自$i-1$号进程的数据。假设有$p$个进程，该算法总共需要$p-1$步来完成。用$n$表示收集的数据总量，每一步每个进程都发送$\frac{n}{p}$的数据，因此算法的时间消耗可以计算为：  </p><script type="math/tex; mode=display">T_{Ring}=(p-1)\alpha+\frac{p-1}{p}n\beta</script>]]></content>
     
     
       
@@ -36,6 +36,33 @@
     <category term="并行计算" scheme="http://example.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
     <category term="MPI集合通信算法" scheme="http://example.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="MPI" scheme="http://example.com/tags/MPI/"/>
+    
+    <category term="并行计算" scheme="http://example.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在西交的四年光影</title>
+    <link href="http://example.com/2022/03/26/xjtu/"/>
+    <id>http://example.com/2022/03/26/xjtu/</id>
+    <published>2022-03-25T16:00:00.000Z</published>
+    <updated>2022-03-27T11:59:09.111Z</updated>
+    
+    <content type="html"><![CDATA[<p>本科快结束时我在知乎记录过我自己<a href="https://www.zhihu.com/question/401648285/answer/1913831750">本科四年在XJTU的生活</a>，每每看到这些照片都甚是怀念。  </p><p>1、$2021$年$7$月$3$日 于$XJTU$兴庆校区 毕业典礼<br><img src="https://pic3.zhimg.com/80/v2-08e0533dcf8552445840444da46f330f_1440w.jpg?source=c8b7c179" alt="毕业典礼">  </p><p>2、固定翼飞机<br>$2019$年$10$月$2$日 于$XJTU$创新港校区 地面抓拍下的飞机俯冲照片：<br><img src="https://pica.zhimg.com/v2-0cbb8d7df835d25ebc9657d18e3b65b4_r.jpg?source=c8b7c179" alt="飞机"><br>$2019$年$10$月$3$日 创新港校区 飞行曲线第一次完美与GPS航线吻合(卫星地图因为网络原因没加载出来)：<br><img src="https://note.youdao.com/yws/api/personal/file/WEBc04c576c0477e79ec40d056cad21e2e1?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="gps"><br>$2$万元在天上飞(还有摄像头、图传等等设备没放出来)<br><img src="https://pic1.zhimg.com/80/v2-f3c5aa9b010c44d0e7329bcb13c2a729_1440w.jpg?source=c8b7c179" alt="飞机零件"><br>$2019$年$7$月$21$日 西安青龙寺 第一次实现自动飞行<br><img src="https://note.youdao.com/yws/api/personal/file/WEB42f30bf30fd615e361f996891170e7e3?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="bigwhite"><br>$2019$年$5$月$25$日 西安青龙寺 场外调试<br><img src="https://note.youdao.com/yws/api/personal/file/WEB64e5cbaefedb292fd180a1335b8e7b4a?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="outside">  </p><p>3、$2020$年$6$月$14$日 用计算机视觉的方法计算出了$XJTU$主楼的高度为110米<br><img src="https://pic2.zhimg.com/80/v2-f8f1eaa664c20b87ead0dedc70349272_1440w.jpg?source=c8b7c179" alt="XJTU主楼">  </p><p>4、$2019$年$7$月$24$日 北京中科院空间所实习(感觉像是去旅游)<br><img src="https://note.youdao.com/yws/api/personal/file/WEBdb1eecd6759a815f8c1f74f09dcf59be?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="csu">  </p><p>5、$2020$年$11$月$16$日 晚上$22:40$的钱学森图书馆<br><img src="https://pic3.zhimg.com/v2-8a25f4a9b0f34d10f00d0ff359057ae4_r.jpg?source=c8b7c179" alt="lib">  </p><p>6、$2018$年$3$月$25$日 校园马拉松<br><img src="https://note.youdao.com/yws/api/personal/file/WEB90095b9151e05e45db79f99cf885975e?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="marathon">  </p><p>7、创新港<br>$2019$年$9$月$13$日 中秋节第一次来创新港旅游，和同学住在豪华的宿舍里<br><img src="https://pic2.zhimg.com/80/v2-051d2f5162723e87186ad29be77105de_1440w.jpg?source=c8b7c179" alt="dormitory"><br><img src="https://pica.zhimg.com/v2-0ddc2f5843e3a6fa49fe989c241e7d28_r.jpg?source=c8b7c179" alt="livingroom"><br>$2019$年$10$月$2$日 国庆期间又来创新港旅游<br>下图为涵英楼<br><img src="https://note.youdao.com/yws/api/personal/file/WEB4e0629322ae26b79af67b93dd5df1b0e?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="again"><br>电信学部大楼和足球场<br><img src="https://note.youdao.com/yws/api/personal/file/WEB6006c969d052a4f4146abcedea406067?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="caoping">  </p><p>8、兴庆校区<br>$2021$年$4$月$5$日 校园里的樱花，前两天刚考完复试<br><img src="https://note.youdao.com/yws/api/personal/file/WEB38194b137e581029cf901c94b3bdc814?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="blossom"><br><img src="https://note.youdao.com/yws/api/personal/file/WEB0fd95bd61ee6e070029b954418612526?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="blossoms"><br>$2017$年$10$月$19$日 上课路上顺手拍的梧桐树<br><img src="https://note.youdao.com/yws/api/personal/file/WEB22226745fe65002feb7075aed5842dde?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="wutong"><br>$2018$年$1$月$4$日 罕见的大雪<br><img src="https://pic2.zhimg.com/80/v2-034c4696526293347e4622f87f4b737b_1440w.jpg?source=c8b7c179" alt="snowman"><br><img src="https://pic1.zhimg.com/80/v2-861edb62b47ab52d60fb333e7dbded04_1440w.jpg?source=c8b7c179" alt="blossom">  </p><p>9、校园周边<br>$2018$年$3$月$2$日 元宵节 大唐芙蓉园<br><img src="https://note.youdao.com/yws/api/personal/file/WEB65908daf3cb1e2a1dd4ea365679dd30b?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="ziyunge"><br><img src="https://note.youdao.com/yws/api/personal/file/WEB74864dff2786bd09010ab882df6e4131?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="lateral"><br><img src="https://note.youdao.com/yws/api/personal/file/WEB0931f7b33ccb31727e56320d3c9b27d8?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="lake"><br>这个是大唐不夜城<br><img src="https://note.youdao.com/yws/api/personal/file/WEB71e65d8535c8446713b47bd28a86c4c5?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="nightlesscity"><br>以此纪念我逝去的大学生活，我逝去的青春！</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;本科快结束时我在知乎记录过我自己&lt;a href=&quot;https://www.zhihu.com/question/401648285/answer/1913831750&quot;&gt;本科四年在XJTU的生活&lt;/a&gt;，每每看到这些照片都甚是怀念。  &lt;/p&gt;
+&lt;p&gt;1、$2021$年$7</summary>
+      
+    
+    
+    
+    <category term="小王同学的杂货铺" scheme="http://example.com/categories/%E5%B0%8F%E7%8E%8B%E5%90%8C%E5%AD%A6%E7%9A%84%E6%9D%82%E8%B4%A7%E9%93%BA/"/>
     
     
   </entry>
@@ -60,29 +87,6 @@
     <category term="并行计算" scheme="http://example.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
     <category term="MPI程序设计" scheme="http://example.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>在西交的四年光影</title>
-    <link href="http://example.com/2022/03/26/xjtu/"/>
-    <id>http://example.com/2022/03/26/xjtu/</id>
-    <published>2022-03-25T16:00:00.000Z</published>
-    <updated>2022-03-27T11:59:09.111Z</updated>
-    
-    <content type="html"><![CDATA[<p>本科快结束时我在知乎记录过我自己<a href="https://www.zhihu.com/question/401648285/answer/1913831750">本科四年在XJTU的生活</a>，每每看到这些照片都甚是怀念。  </p><p>1、$2021$年$7$月$3$日 于$XJTU$兴庆校区 毕业典礼<br><img src="https://pic3.zhimg.com/80/v2-08e0533dcf8552445840444da46f330f_1440w.jpg?source=c8b7c179" alt="毕业典礼">  </p><p>2、固定翼飞机<br>$2019$年$10$月$2$日 于$XJTU$创新港校区 地面抓拍下的飞机俯冲照片：<br><img src="https://pica.zhimg.com/v2-0cbb8d7df835d25ebc9657d18e3b65b4_r.jpg?source=c8b7c179" alt="飞机"><br>$2019$年$10$月$3$日 创新港校区 飞行曲线第一次完美与GPS航线吻合(卫星地图因为网络原因没加载出来)：<br><img src="https://note.youdao.com/yws/api/personal/file/WEBc04c576c0477e79ec40d056cad21e2e1?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="gps"><br>$2$万元在天上飞(还有摄像头、图传等等设备没放出来)<br><img src="https://pic1.zhimg.com/80/v2-f3c5aa9b010c44d0e7329bcb13c2a729_1440w.jpg?source=c8b7c179" alt="飞机零件"><br>$2019$年$7$月$21$日 西安青龙寺 第一次实现自动飞行<br><img src="https://note.youdao.com/yws/api/personal/file/WEB42f30bf30fd615e361f996891170e7e3?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="bigwhite"><br>$2019$年$5$月$25$日 西安青龙寺 场外调试<br><img src="https://note.youdao.com/yws/api/personal/file/WEB64e5cbaefedb292fd180a1335b8e7b4a?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="outside">  </p><p>3、$2020$年$6$月$14$日 用计算机视觉的方法计算出了$XJTU$主楼的高度为110米<br><img src="https://pic2.zhimg.com/80/v2-f8f1eaa664c20b87ead0dedc70349272_1440w.jpg?source=c8b7c179" alt="XJTU主楼">  </p><p>4、$2019$年$7$月$24$日 北京中科院空间所实习(感觉像是去旅游)<br><img src="https://note.youdao.com/yws/api/personal/file/WEBdb1eecd6759a815f8c1f74f09dcf59be?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="csu">  </p><p>5、$2020$年$11$月$16$日 晚上$22:40$的钱学森图书馆<br><img src="https://pic3.zhimg.com/v2-8a25f4a9b0f34d10f00d0ff359057ae4_r.jpg?source=c8b7c179" alt="lib">  </p><p>6、$2018$年$3$月$25$日 校园马拉松<br><img src="https://note.youdao.com/yws/api/personal/file/WEB90095b9151e05e45db79f99cf885975e?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="marathon">  </p><p>7、创新港<br>$2019$年$9$月$13$日 中秋节第一次来创新港旅游，和同学住在豪华的宿舍里<br><img src="https://pic2.zhimg.com/80/v2-051d2f5162723e87186ad29be77105de_1440w.jpg?source=c8b7c179" alt="dormitory"><br><img src="https://pica.zhimg.com/v2-0ddc2f5843e3a6fa49fe989c241e7d28_r.jpg?source=c8b7c179" alt="livingroom"><br>$2019$年$10$月$2$日 国庆期间又来创新港旅游<br>下图为涵英楼<br><img src="https://note.youdao.com/yws/api/personal/file/WEB4e0629322ae26b79af67b93dd5df1b0e?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="again"><br>电信学部大楼和足球场<br><img src="https://note.youdao.com/yws/api/personal/file/WEB6006c969d052a4f4146abcedea406067?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="caoping">  </p><p>8、兴庆校区<br>$2021$年$4$月$5$日 校园里的樱花，前两天刚考完复试<br><img src="https://note.youdao.com/yws/api/personal/file/WEB38194b137e581029cf901c94b3bdc814?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="blossom"><br><img src="https://note.youdao.com/yws/api/personal/file/WEB0fd95bd61ee6e070029b954418612526?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="blossoms"><br>$2017$年$10$月$19$日 上课路上顺手拍的梧桐树<br><img src="https://note.youdao.com/yws/api/personal/file/WEB22226745fe65002feb7075aed5842dde?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="wutong"><br>$2018$年$1$月$4$日 罕见的大雪<br><img src="https://pic2.zhimg.com/80/v2-034c4696526293347e4622f87f4b737b_1440w.jpg?source=c8b7c179" alt="snowman"><br><img src="https://pic1.zhimg.com/80/v2-861edb62b47ab52d60fb333e7dbded04_1440w.jpg?source=c8b7c179" alt="blossom">  </p><p>9、校园周边<br>$2018$年$3$月$2$日 元宵节 大唐芙蓉园<br><img src="https://note.youdao.com/yws/api/personal/file/WEB65908daf3cb1e2a1dd4ea365679dd30b?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="ziyunge"><br><img src="https://note.youdao.com/yws/api/personal/file/WEB74864dff2786bd09010ab882df6e4131?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="lateral"><br><img src="https://note.youdao.com/yws/api/personal/file/WEB0931f7b33ccb31727e56320d3c9b27d8?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="lake"><br>这个是大唐不夜城<br><img src="https://note.youdao.com/yws/api/personal/file/WEB71e65d8535c8446713b47bd28a86c4c5?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt="nightlesscity"><br>以此纪念我逝去的大学生活，我逝去的青春！</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;本科快结束时我在知乎记录过我自己&lt;a href=&quot;https://www.zhihu.com/question/401648285/answer/1913831750&quot;&gt;本科四年在XJTU的生活&lt;/a&gt;，每每看到这些照片都甚是怀念。  &lt;/p&gt;
-&lt;p&gt;1、$2021$年$7</summary>
-      
-    
-    
-    
-    <category term="小王同学的杂货铺" scheme="http://example.com/categories/%E5%B0%8F%E7%8E%8B%E5%90%8C%E5%AD%A6%E7%9A%84%E6%9D%82%E8%B4%A7%E9%93%BA/"/>
     
     
   </entry>
