@@ -46,7 +46,7 @@
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBcc34716f4289d3c74ac7e0bd65786af4?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBa4ff21d874a476bc6a4110496d8d7bbc?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
 <meta property="article:published_time" content="2022-03-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-30T08:05:59.288Z">
+<meta property="article:modified_time" content="2022-03-30T08:37:13.791Z">
 <meta property="article:author" content="虎王">
 <meta property="article:tag" content="MPI">
 <meta property="article:tag" content="并行计算">
@@ -121,7 +121,7 @@
       <h1 class="site-title">Top Gun</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">飞机、巡航导弹和并行计算机设计局</p>
+      <p class="site-subtitle" itemprop="description">小王同学的科技客厅</p>
   </div>
 
   <div class="site-nav-right">
@@ -248,7 +248,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-30 16:05:59" itemprop="dateModified" datetime="2022-03-30T16:05:59+08:00">2022-03-30</time>
+                <time title="修改时间：2022-03-30 16:37:13" itemprop="dateModified" datetime="2022-03-30T16:37:13+08:00">2022-03-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -353,8 +353,8 @@
 <li>当消息两较小（即$n$较小）或者进程数量少时（小于8），我们使用二项树算法；</li>
 <li>当消息较大时或者进程数量较大时，我们采用$Scatter$+$Allgather$的组合算法。  </li>
 </ul>
-<h3 id="3、Reduce-Scatter操作及其算法"><a href="#3、Reduce-Scatter操作及其算法" class="headerlink" title="3、Reduce-Scatter操作及其算法"></a>3、Reduce-Scatter操作及其算法</h3><p>$Reduce_Scatter$操作（多对多规约）是数据规约操作$Reduce$的一个变种，$Reduce$操作的结果保存在根进程中，而$Reduce_Scatter$将结果散发（$Scatter$）给所有进程。</p>
-<h4 id="二项树Reduce-线性Scatter"><a href="#二项树Reduce-线性Scatter" class="headerlink" title="二项树Reduce+线性Scatter"></a>二项树Reduce+线性Scatter</h4><p>在$MPICH$中的老算法中，$Reduce_Scatter$操作先是将所有进程的数据通过二项树规约到$0$号进程，然后通过线性的散发操作将数据分发出去。二项树规约操作的时间为:</p>
+<h3 id="3、Reduce-Scatter操作及其算法"><a href="#3、Reduce-Scatter操作及其算法" class="headerlink" title="3、Reduce-Scatter操作及其算法"></a>3、Reduce-Scatter操作及其算法</h3><p>$Reduce-Scatter$操作（多对多规约）是数据规约操作$Reduce$的一个变种，$Reduce$操作的结果保存在根进程中，而$Reduce-Scatter$将结果散发（$Scatter$）给所有进程。</p>
+<h4 id="二项树Reduce-线性Scatter"><a href="#二项树Reduce-线性Scatter" class="headerlink" title="二项树Reduce+线性Scatter"></a>二项树Reduce+线性Scatter</h4><p>在$MPICH$中的老算法中，$Reduce-Scatter$操作先是将所有进程的数据通过二项树规约到$0$号进程，然后通过线性的散发操作将数据分发出去。二项树规约操作的时间为:</p>
 <script type="math/tex; mode=display">\lg{p}\cdot(\alpha+n\beta+n\gamma)</script><p>线性散发操作的时间为：</p>
 <script type="math/tex; mode=display">(p-1)\alpha+(p-1)\cdot\frac{n}{p}\beta</script><p>总的时间为:</p>
 <script type="math/tex; mode=display">T_{old}=(\lg{p}+p-1)\alpha+(\lg{p}+\frac{p-1}{p})n\beta+\lg{p}\cdot{n}\gamma</script><h4 id="Recursive-Halving"><a href="#Recursive-Halving" class="headerlink" title="Recursive Halving"></a>Recursive Halving</h4><p>递归减半算法和前面$Allgather$操作的递归加倍算法互为逆过程。</p>
@@ -363,7 +363,7 @@
 </div> 
 
 <p>在第1步，进程分为2个子集，每一个进程都和与自己间隔$\frac{p}{2}$的进程交换数据：每一个进程发送另一半集合所有进程都所需要的数据，并且接收自己所在进程集合都需要的数据，然后对收集到的数据进行规约操作。在第2步，每一个进程都和与自己间隔$\frac{p}{4}$的进程交换数据。该过程如此递归进行下去，每一步通信数据也递归减半，进行$\lg{p}$步。算法的时间消耗为：</p>
-<script type="math/tex; mode=display">T_{rec\_halv}=\lg{p}\cdot\alpha+\frac{p-1}{p}(n\beta+n\gamma)</script><p>该算法能够正确执行的前提是规约操作是满足交换率的（$commutative$），满足交换律的规约操作使用频率更高，这是由于$MPI$定义的许多规约操作都是可交换的，例如$MPI_SUM$， $MPI_MAX$。如果进程的数量不是2的幂次，我们首先将进程的数量减少到2的幂次，具体做法是最开始的$x$个偶数编号进程发送数据给最近的奇数编号进程（$rank+1$），使得$p-x$为$2$的幂。奇数编号进程对收集的数据执行规约操作，然后这些奇数号进程和其余的$p-2x$个进程（一共$p-x$个）参与递归减半算法中计算自己的结果，最后，前$x$个奇数进程将结果返回给左邻居结点。这样算法的时间为：</p>
+<script type="math/tex; mode=display">T_{rec\_halv}=\lg{p}\cdot\alpha+\frac{p-1}{p}(n\beta+n\gamma)</script><p>该算法能够正确执行的前提是规约操作是满足交换率的（$commutative$），满足交换律的规约操作使用频率更高，这是由于$MPI$定义的许多规约操作都是可交换的，例如$MPI$_ $SUM$， $MPI$_$MAX$。如果进程的数量不是2的幂次，我们首先将进程的数量减少到2的幂次，具体做法是最开始的$x$个偶数编号进程发送数据给最近的奇数编号进程（$rank+1$），使得$p-x$为$2$的幂。奇数编号进程对收集的数据执行规约操作，然后这些奇数号进程和其余的$p-2x$个进程（一共$p-x$个）参与递归减半算法中计算自己的结果，最后，前$x$个奇数进程将结果返回给左邻居结点。这样算法的时间为：</p>
 <script type="math/tex; mode=display">T_{rec\_halv}=(\lfloor{\lg{p}\rfloor+2)}\alpha+2n\beta+n(1+\frac{p-1}{p})\gamma</script><h4 id="Pairwise-Exchange"><a href="#Pairwise-Exchange" class="headerlink" title="Pairwise Exchange"></a>Pairwise Exchange</h4><p>成对交换算法适用于规约操作不满足交换律，其思想类似于$Allgather$操作递归加倍算法。在第$1$步，每一对邻居进程交换数据；第$2$步，彼此间距为$2$的进程交换数据；在第$3$步，彼此间距为$4$的进程交换数据，如此进行下去。然而它相较于$Allgather$操作，交换的数据更多。在第一步，进程交换除了自己所需要数据以外的所有数据（$n-\frac{n}{p}$数据量），比方说0号进程把除了块0之外的$1{\sim}(p-1)$块发送给$1$号进程，1号进程发送除块1之外的$0$、$2{\sim}(p-1)$块发送给$0$号进程；第二步，进程交换除了自己和上一步通信进程所拥有数据以外的所有数据（$n-\frac{2n}{p}$）；第三步数据量为（$n-\frac{4n}{p}$）。这样算法执行的时间为：</p>
 <script type="math/tex; mode=display">T_{short}=\lg{p}\cdot\alpha+(\lg{p}-\frac{p-1}{p})(n\beta+n\alpha)</script><p>该算法适用于传输的消息量小于256B的情况。对长消息发送（满足交换律的操作是$\geqslant256KB$，不满足交换律的操作是$\geqslant256B$），我们使用执行$p-1$步的成对交换算法。在第$i$步，每一个进程向$(rank+i)\%p$发送数据，接收来自进程$(rank-i)\%p$的数据，并执行局部规约操作。交换的数据仅仅是用于散发结果的的数据量$\frac{n}{p}$，也就是只需要发送每个进程需要的那一部分数据即可。算法执行需要的时间为：</p>
 <script type="math/tex; mode=display">T_{long}=(p-1)\alpha+\frac{p-1}{p}(n\beta+n\gamma)</script><p>策略：</p>
@@ -372,27 +372,27 @@
 <li>操作不满足交换律，消息$&lt;256B$时采用$\lg{p}$步的成对交换算法，$\geqslant{256B}$时采用$(p-1)$步的成对交换算法。</li>
 </ul>
 <h3 id="Reduce操作及其算法"><a href="#Reduce操作及其算法" class="headerlink" title="Reduce操作及其算法"></a>Reduce操作及其算法</h3><h4 id="Bionomial-Tree-1"><a href="#Bionomial-Tree-1" class="headerlink" title="Bionomial Tree"></a>Bionomial Tree</h4><p>$MPICH$中老算法采用二项树算法，执行$\lg{p}$步，每步都交换一个进程的所有$n$字节数据并进行规约计算，算法的时间为：</p>
-<script type="math/tex; mode=display">T_{tree}=\lceil{\lg{p}}\rceil(\alpha+n\beta+n\gamma)</script><h4 id="Reduce-scatter-Gather组合算法"><a href="#Reduce-scatter-Gather组合算法" class="headerlink" title="Reduce_scatter+Gather组合算法"></a>Reduce_scatter+Gather组合算法</h4><p>该算法将$Reduce_scatter$和$Gather$两个操作组合成$Reduce$操作，也叫$Rabenseifner$算法。回顾广播操作的$Scatter+Allgather$组合算法，成功将二项树算法的$\lg{p}\cdot{n\beta}$的带宽项减小到了$2{n\beta}$的数量级，$Reduce$操作类似于广播的逆过程，因此也可以采用类似的思想，$Reduce_scatter$和$Gather$组合的$Reduce$算法也可以将二项树算法的$\lg{p}\cdot{n\beta}$的带宽项减小到了$2{n\beta}$的数量级。算法的时间为$Reduce_scatter$（递归减半算法）和$Gather$（二项树算法）操作的总和，计算为:</p>
+<script type="math/tex; mode=display">T_{tree}=\lceil{\lg{p}}\rceil(\alpha+n\beta+n\gamma)</script><h4 id="Reduce-scatter-Gather组合算法"><a href="#Reduce-scatter-Gather组合算法" class="headerlink" title="Reduce_scatter+Gather组合算法"></a>Reduce_scatter+Gather组合算法</h4><p>该算法将$Reduce-scatter$和$Gather$两个操作组合成$Reduce$操作，也叫$Rabenseifner$算法。回顾广播操作的$Scatter+Allgather$组合算法，成功将二项树算法的$\lg{p}\cdot{n\beta}$的带宽项减小到了$2{n\beta}$的数量级，$Reduce$操作类似于广播的逆过程，因此也可以采用类似的思想，$Reduce-scatter$和$Gather$组合的$Reduce$算法也可以将二项树算法的$\lg{p}\cdot{n\beta}$的带宽项减小到了$2{n\beta}$的数量级。算法的时间为$Reduce-scatter$（递归减半算法）和$Gather$（二项树算法）操作的总和，计算为:</p>
 <script type="math/tex; mode=display">T_{raben}=2\lg{p}\cdot\alpha+\frac{p-1}{p}(2n\beta+n\gamma)</script><p>策略：</p>
 <ul>
 <li>当消息量小（$&lt;2KB$）时，采用二项树算法；</li>
-<li>当消息量大（$\geqslant2KB$）时，采用$Reduce_scatter$+$Gather$算法。  </li>
+<li>当消息量大（$\geqslant2KB$）时，采用$Reduce-scatter$+$Gather$算法。  </li>
 </ul>
 <p>小结：看到这里也应该能摸索出一些规律，大消息发送时（$n$较大）我们要尽量较少带宽项，也就是减少$n\beta$前面的系数，延迟项（也叫启动时间）$\alpha$大一点无所谓；而小消息（$n$较小）发送时我们要尽量较少延迟项。这也就是$Reduce$和$Broadcast$操作选择不同算法时的核心思想。</p>
-<h4 id="Ring-Algorithm-1"><a href="#Ring-Algorithm-1" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h4><p>和下面将要介绍的$Ring Allreduce$类似，使用$Reduce_scatter$+$Gather$的方式，但是$Reduce_scatter$只发送一部分数据（$\frac{n}{p}$）给目标进程，且$Gather$阶段使用环算法。</p>
+<h4 id="Ring-Algorithm-1"><a href="#Ring-Algorithm-1" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h4><p>和下面将要介绍的$Ring Allreduce$类似，使用$Reduce-scatter$+$Gather$的方式，但是$Reduce-scatter$只发送一部分数据（$\frac{n}{p}$）给目标进程，且$Gather$阶段使用环算法。</p>
 <h3 id="Allreduce操作及其算法"><a href="#Allreduce操作及其算法" class="headerlink" title="Allreduce操作及其算法"></a>Allreduce操作及其算法</h3><h4 id="Reduce-Broadcast"><a href="#Reduce-Broadcast" class="headerlink" title="Reduce+Broadcast"></a>Reduce+Broadcast</h4><p>$MPICH$中老算法先将结果$Reduce$到根进程然后再将根进程的结果$Broadcast$到所有进程中。</p>
 <h4 id="Recursive-Doubling-1"><a href="#Recursive-Doubling-1" class="headerlink" title="Recursive Doubling"></a>Recursive Doubling</h4><p>$Allreduce$的递归加倍算法和$Allgather$的递归加倍算法是非常相似的，只是每一步都伴随规约操作且交换的数据量也不同，每次进程间两两交换的数据量都是$n$。因此算法执行的时间为：</p>
-<script type="math/tex; mode=display">T_{rec\_dbl}=\lg{p}(\alpha+n\beta+n\gamma)</script><h4 id="Reduce-scatter-Allgather"><a href="#Reduce-scatter-Allgather" class="headerlink" title="Reduce_scatter+Allgather"></a>Reduce_scatter+Allgather</h4><p>该算法也叫$Rabenseifner$算法。回顾$Reduce$操作我们采用了$Reduce_scatter$+$Gather$算法，这里我们在第二步将$Gather$换成了$Allgather$操作，采用$Reduce_scatter$+$Allgather$算法。算法的总开销为：</p>
-<script type="math/tex; mode=display">T_{raben}=2\lg{p}\cdot\alpha+\frac{p-1}{p}(2n\beta+n\gamma)</script><p>截至目前，上述$Reduce$操作的$Reduce_scatter$+$Gather$算法和$Allgather$操作的$Reduce_scatter$+$Allgather$算法，当进程的数量不是2的幂次的时候需要额外处理。移除$r=p-p^{‘}$个额外进程来将进程数量减少到最接近的2次幂$(p^{‘}=2^{\lfloor{\lg{p}}\rfloor})$。前$2r$个进程（$0$号到$2r-1$号）中，所有的偶数进程将输入向量的后半部分发送给右邻居（$rank+1$），所有的奇数进程将输入向量的前半部分发送给左邻居（$rank-1$）。随后偶数进程对前半部分向量进行规约操作，奇数进程对后半部分向量进行规约操作。奇数进程将规约结果发送给左邻居进程。该步骤结束后，前$2r$个进程的偶数编号进程都拥有了和右邻居进程进行规约的结果，而奇数编号进程不会参与算法的后续过程，这样我们就可以把进程的数量减少到2的幂次：最开始的r个偶数进程和最后面的$p-2r$个进程从$0{\sim}(p^{‘}-1)$编号，是2的幂次。然后这些进程再执行$Reduce_scatter$+$Allgather$算法。最后规约的结果还要发送给第一步就已经移除的$r$个进程，如果是$Reduce$操作，根进程在第一步中就被剔除掉了，那么在$Reduce_scatter$操作之后的第一步，该根进程和邻居进程就要互换位置，这样不会增加额外消耗。<br>下图展示了带有13个进程的$Allreduce$操作算法的例子。输入向量和规约结果被分成了8个部分($A,B,…,H$)，因为$8$是小于且最接近$13$的$2$的幂次，用$A{-}H_{rank}$来表示。前2r个（$r=13-8=5,2r=10$）偶数进程先执行两两$Allreduce$操作，然后前$r$个偶数进程（$0$、$2$、$4$、$6$、$8$号）和剩余的$3$（$p-2r=3$）个进程（$10$、$11$、$12$号）执行$Reduce_scatter+Allgather$，最后，前$r$个偶数进程（$0$、$2$、$4$、$6$、$8$号）将结果发送给前$r$个奇数进程（$1$、$3$、$5$、$7$、$9$号）.<br><img src="https://note.youdao.com/yws/api/personal/file/WEBca42cd1c5c39305518f9b87e91cbcdb4?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""></p>
-<h4 id="Bionary-Block-Algorithm"><a href="#Bionary-Block-Algorithm" class="headerlink" title="Bionary Block Algorithm"></a>Bionary Block Algorithm</h4><p>叫做二方块算法。该算法能够降低进程数量非2幂时$Reduce_scatter+Allgather$算法的负载不均衡问题。以下图为例，在初始阶段对进程划分为若干块，使每一个块内进程子集的数量为2的方幂。每个块内部执行$Reduce_scatter$操作。然后，从最小的块开始，被划分为若干段做为更高一块的输入，更高的一块对收集过来的数据执行规约操作，如$\boxed{2^0}$块作为$\boxed{2^2}$块的输入，两个块进行规约，注意$\boxed{2^0}$块的4个数据拷贝与$\boxed{2^2}$块规约，然后$\boxed{2^2}$块做为$\boxed{2^3}$块的输入再进行两个块的规约。小的进程块会造成负载不均衡。两个连续块的最大差异，会决定负载不均衡的程度。定义$\delta_{expo,max}$做为两个连续块数量（均为2的幂次）的最大差值，如$100=2^6+2^5+2^2$，则$\delta_{expo,max}=max(6-5,5-2)=3$，如果$\delta_{expo,max}$值很小，那么算法的性能会很好。<br>在算法的第二阶段，是$Allgather$操作。上一个更大的块必须向小块发送数据，如图。</p>
+<script type="math/tex; mode=display">T_{rec\_dbl}=\lg{p}(\alpha+n\beta+n\gamma)</script><h4 id="Reduce-scatter-Allgather"><a href="#Reduce-scatter-Allgather" class="headerlink" title="Reduce_scatter+Allgather"></a>Reduce_scatter+Allgather</h4><p>该算法也叫$Rabenseifner$算法。回顾$Reduce$操作我们采用了$Reduce-scatter$+$Gather$算法，这里我们在第二步将$Gather$换成了$Allgather$操作，采用$Reduce-scatter$+$Allgather$算法。算法的总开销为：</p>
+<script type="math/tex; mode=display">T_{raben}=2\lg{p}\cdot\alpha+\frac{p-1}{p}(2n\beta+n\gamma)</script><p>截至目前，上述$Reduce$操作的$Reduce-scatter$+$Gather$算法和$Allgather$操作的$Reduce-scatter$+$Allgather$算法，当进程的数量不是2的幂次的时候需要额外处理。移除$r=p-p^{‘}$个额外进程来将进程数量减少到最接近的2次幂$(p^{‘}=2^{\lfloor{\lg{p}}\rfloor})$。前$2r$个进程（$0$号到$2r-1$号）中，所有的偶数进程将输入向量的后半部分发送给右邻居（$rank+1$），所有的奇数进程将输入向量的前半部分发送给左邻居（$rank-1$）。随后偶数进程对前半部分向量进行规约操作，奇数进程对后半部分向量进行规约操作。奇数进程将规约结果发送给左邻居进程。该步骤结束后，前$2r$个进程的偶数编号进程都拥有了和右邻居进程进行规约的结果，而奇数编号进程不会参与算法的后续过程，这样我们就可以把进程的数量减少到2的幂次：最开始的r个偶数进程和最后面的$p-2r$个进程从$0{\sim}(p^{‘}-1)$编号，是2的幂次。然后这些进程再执行$Reduce-scatter$+$Allgather$算法。最后规约的结果还要发送给第一步就已经移除的$r$个进程，如果是$Reduce$操作，根进程在第一步中就被剔除掉了，那么在$Reduce-scatter$操作之后的第一步，该根进程和邻居进程就要互换位置，这样不会增加额外消耗。<br>下图展示了带有13个进程的$Allreduce$操作算法的例子。输入向量和规约结果被分成了8个部分($A,B,…,H$)，因为$8$是小于且最接近$13$的$2$的幂次，用$A{-}H_{rank}$来表示。前2r个（$r=13-8=5,2r=10$）偶数进程先执行两两$Allreduce$操作，然后前$r$个偶数进程（$0$、$2$、$4$、$6$、$8$号）和剩余的$3$（$p-2r=3$）个进程（$10$、$11$、$12$号）执行$Reduce-scatter+Allgather$，最后，前$r$个偶数进程（$0$、$2$、$4$、$6$、$8$号）将结果发送给前$r$个奇数进程（$1$、$3$、$5$、$7$、$9$号）.<br><img src="https://note.youdao.com/yws/api/personal/file/WEBca42cd1c5c39305518f9b87e91cbcdb4?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""></p>
+<h4 id="Bionary-Block-Algorithm"><a href="#Bionary-Block-Algorithm" class="headerlink" title="Bionary Block Algorithm"></a>Bionary Block Algorithm</h4><p>叫做二方块算法。该算法能够降低进程数量非2幂时$Reduce-scatter+Allgather$算法的负载不均衡问题。以下图为例，在初始阶段对进程划分为若干块，使每一个块内进程子集的数量为2的方幂。每个块内部执行$Reduce-scatter$操作。然后，从最小的块开始，被划分为若干段做为更高一块的输入，更高的一块对收集过来的数据执行规约操作，如$\boxed{2^0}$块作为$\boxed{2^2}$块的输入，两个块进行规约，注意$\boxed{2^0}$块的4个数据拷贝与$\boxed{2^2}$块规约，然后$\boxed{2^2}$块做为$\boxed{2^3}$块的输入再进行两个块的规约。小的进程块会造成负载不均衡。两个连续块的最大差异，会决定负载不均衡的程度。定义$\delta_{expo,max}$做为两个连续块数量（均为2的幂次）的最大差值，如$100=2^6+2^5+2^2$，则$\delta_{expo,max}=max(6-5,5-2)=3$，如果$\delta_{expo,max}$值很小，那么算法的性能会很好。<br>在算法的第二阶段，是$Allgather$操作。上一个更大的块必须向小块发送数据，如图。</p>
 <p><img src="https://note.youdao.com/yws/api/personal/file/WEB493ba0c9657ed9064532a87b08ff8ece?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""></p>
-<h3 id="Ring-Algorithm-2"><a href="#Ring-Algorithm-2" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h3><p>环算法，其实就是$Reduce_scatter+Allgather$算法的变形，在$Reduce_scatter$阶段是各个进程直接将一部分数据发送到其目的节点，并且$Allgather$操作使用环算法来执行。<br>借用$OpenMPI$中的例子来解释$Ring\ Allreduce$算法。<br>假设有5个进程，则进程的输入数据分成5份，先进行$Computation\ stage$（也就是$Reduce_scatter$）然后是$Distribution\ phase$（也就是$Allgather$的环算法）。<br><img src="https://note.youdao.com/yws/api/personal/file/WEBf2832a760d9e4937101fa93ae4410649?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""><br><img src="https://note.youdao.com/yws/api/personal/file/WEB43f5e95a1868d89cbd317169ea87df53?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""><br><img src="https://note.youdao.com/yws/api/personal/file/WEB169bdb1ca360203ba6ff2fdee5ddae24?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""><br>该算法的执行时间为：</p>
-<script type="math/tex; mode=display">T_{ring}=2(p-1)\alpha+\frac{p-1}{p}(2n\beta+n\gamma)</script><h3 id="Allreduce选择最佳算法"><a href="#Allreduce选择最佳算法" class="headerlink" title="Allreduce选择最佳算法"></a>Allreduce选择最佳算法</h3><p>在上面介绍的$Allreduce$的$5$种算法中根据进程数量和消息大小来选择不同算法，这张图是展示不同进程数量和消息大小对应的最佳算法（对$MPI_DOUBLE$型的数据进行$MPI_SUM$求和操作）。$havling+doubling$就是$Reduce_scatter+Allgather$算法。</p>
+<h3 id="Ring-Algorithm-2"><a href="#Ring-Algorithm-2" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h3><p>环算法，其实就是$Reduce-scatter+Allgather$算法的变形，在$Reduce-scatter$阶段是各个进程直接将一部分数据发送到其目的节点，并且$Allgather$操作使用环算法来执行。<br>借用$OpenMPI$中的例子来解释$Ring\ Allreduce$算法。<br>假设有5个进程，则进程的输入数据分成5份，先进行$Computation\ stage$（也就是$Reduce-scatter$）然后是$Distribution\ phase$（也就是$Allgather$的环算法）。<br><img src="https://note.youdao.com/yws/api/personal/file/WEBf2832a760d9e4937101fa93ae4410649?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""><br><img src="https://note.youdao.com/yws/api/personal/file/WEB43f5e95a1868d89cbd317169ea87df53?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""><br><img src="https://note.youdao.com/yws/api/personal/file/WEB169bdb1ca360203ba6ff2fdee5ddae24?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""><br>该算法的执行时间为：</p>
+<script type="math/tex; mode=display">T_{ring}=2(p-1)\alpha+\frac{p-1}{p}(2n\beta+n\gamma)</script><h3 id="Allreduce选择最佳算法"><a href="#Allreduce选择最佳算法" class="headerlink" title="Allreduce选择最佳算法"></a>Allreduce选择最佳算法</h3><p>在上面介绍的$Allreduce$的$5$种算法中根据进程数量和消息大小来选择不同算法，这张图是展示不同进程数量和消息大小对应的最佳算法（对$MPI$_ $DOUBLE$型的数据进行$MPI$_$SUM$求和操作）。$havling+doubling$就是$Reduce-scatter+Allgather$算法。</p>
 <div style="align: center">
 <img src="https://note.youdao.com/yws/api/personal/file/WEBcc34716f4289d3c74ac7e0bd65786af4?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="80%" height="80%"/>
 </div> 
 
-<p>这个是消息大小为$32KB$时对$MPI_DOUBLE$型的数据进行$MPI_SUM$求和操作不同算法的带宽。</p>
+<p>这个是消息大小为$32KB$时对$MPI$_ $DOUBLE$型的数据进行$MPI$_$SUM$求和操作不同算法的带宽。</p>
 <div style="align: center">
 <img src="https://note.youdao.com/yws/api/personal/file/WEBa4ff21d874a476bc6a4110496d8d7bbc?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="80%" height="80%"/>
 </div> 
@@ -400,7 +400,7 @@
 <p>策略：</p>
 <ul>
 <li>对于短消息，使用$Recursive Doubling$算法;</li>
-<li>对于长消息，先进行$Reduce_scatter$（$Recursive_halving$算法），再进行$Allgather$（$Recursive\ Doubling$算法）。</li>
+<li>对于长消息，先进行$Reduce-scatter$（$Recursive-halving$算法），再进行$Allgather$（$Recursive\ Doubling$算法）。</li>
 </ul>
 <p>后面的三种方法只是进一步优化，没有在$MPICH$里集成。</p>
 <h2 id="2017-Scalable-reduction-collectives-with-data-partitioning-based-multi-leader-design"><a href="#2017-Scalable-reduction-collectives-with-data-partitioning-based-multi-leader-design" class="headerlink" title="2017:Scalable reduction collectives with data partitioning-based multi-leader design"></a><a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/3126908.3126954">2017:Scalable reduction collectives with data partitioning-based multi-leader design</a></h2><h2 id="2019-Node-Aware-Improvements-to-Allreduce"><a href="#2019-Node-Aware-Improvements-to-Allreduce" class="headerlink" title="2019:Node-Aware Improvements to Allreduce"></a><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/8955452">2019:Node-Aware Improvements to Allreduce</a></h2><h2 id="2020-Decomposing-MPI-Collectives-for-Exploiting-Multi-lane-Communication"><a href="#2020-Decomposing-MPI-Collectives-for-Exploiting-Multi-lane-Communication" class="headerlink" title="2020:Decomposing MPI Collectives for Exploiting Multi-lane Communication"></a><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/9229624">2020:Decomposing MPI Collectives for Exploiting Multi-lane Communication</a></h2><p>过去的集合通信在执行时都是一个节点上一个进程（这一个进程负责通信），这篇论文的思路是开发硬件$Multi\ lane$的潜力，一个$Lane$就是能够独立的、同时的进行通信的链路，通过在一个节点上增加多个进程来充分的利用$Multi\ lane$来加速集合通信的执行。</p>
