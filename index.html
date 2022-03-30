@@ -228,7 +228,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-29 18:44:38" itemprop="dateModified" datetime="2022-03-29T18:44:38+08:00">2022-03-29</time>
+                <time title="修改时间：2022-03-30 11:41:43" itemprop="dateModified" datetime="2022-03-30T11:41:43+08:00">2022-03-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -355,7 +355,11 @@
 <h3 id="Allreduce操作及其算法"><a href="#Allreduce操作及其算法" class="headerlink" title="Allreduce操作及其算法"></a>Allreduce操作及其算法</h3><h4 id="Reduce-Broadcast"><a href="#Reduce-Broadcast" class="headerlink" title="Reduce+Broadcast"></a>Reduce+Broadcast</h4><p>$MPICH$中老算法先将结果$Reduce$到根进程然后再将根进程的结果$Broadcast$到所有进程中。</p>
 <h4 id="Recursive-Doubling-1"><a href="#Recursive-Doubling-1" class="headerlink" title="Recursive Doubling"></a>Recursive Doubling</h4><p>$Allreduce$的递归加倍算法和$Allgather$的递归加倍算法是非常相似的，只是每一步都伴随规约操作且交换的数据量也不同，每次进程间两两交换的数据量都是$n$。因此算法执行的时间为：</p>
 <script type="math/tex; mode=display">T_{rec\_dbl}=\lg{p}(\alpha+n\beta+n\gamma)</script><h4 id="Reduce-scatter-Allgather"><a href="#Reduce-scatter-Allgather" class="headerlink" title="Reduce_scatter+Allgather"></a>Reduce_scatter+Allgather</h4><p>该算法也叫$Rabenseifner$算法。回顾$Reduce$操作我们采用了$Reduce_scatter$+$Gather$算法，这里我们在第二步将$Gather$换成了$Allgather$操作，采用$Reduce_scatter$+$Allgather$算法。算法的总开销为：</p>
-<script type="math/tex; mode=display">T_{raben}=2\lg{p}\cdot\alpha+\frac{p-1}{p}(2n\beta+n\gamma)</script>
+<script type="math/tex; mode=display">T_{raben}=2\lg{p}\cdot\alpha+\frac{p-1}{p}(2n\beta+n\gamma)</script><p>截至目前，上述$Reduce$操作的$Reduce_scatter$+$Gather$算法和$Allgather$操作的$Reduce_scatter$+$Allgather$算法，当进程的数量不是2的幂次的时候需要额外处理。移除$r=p-p^{‘}$个额外进程来将进程数量减少到最接近的2次幂$(p^{‘}=2^{\lfloor{\lg{p}}\rfloor})$。前$2r$个进程（$0$号到$2r-1$号）中，所有的偶数进程将输入向量的后半部分发送给右邻居（$rank+1$），所有的奇数进程将输入向量的前半部分发送给左邻居（$rank-1$）。随后偶数进程对前半部分向量进行规约操作，奇数进程对后半部分向量进行规约操作。奇数进程将规约结果发送给左邻居进程。该步骤结束后，前$2r$个进程的偶数编号进程都拥有了和右邻居进程进行规约的结果，而奇数编号进程不会参与算法的后续过程，这样我们就可以把进程的数量减少到2的幂次：最开始的r个偶数进程和最后面的$p-2r$个进程从$0{\sim}(p^{‘}-1)$编号，是2的幂次。然后这些进程再执行$Reduce_scatter$+$Allgather$算法。最后规约的结果还要发送给第一步就已经移除的$r$个进程，如果是$Reduce$操作，根进程在第一步中就被剔除掉了，那么在$Reduce_scatter$操作之后的第一步，该根进程和邻居进程就要互换位置，这样不会增加额外消耗。<br>下图展示了带有13个进程的$Allreduce$操作算法的例子。输入向量和规约结果被分成了8个部分($A,B,…,H$)，因为$8$是小于且最接近$13$的$2$的幂次，用$A{-}H_{rank}$来表示。前2r个（$r=13-8=5,2r=10$）偶数进程先执行两两$Allreduce$操作，然后前$r$个偶数进程（$0$、$2$、$4$、$6$、$8$号）和剩余的$3$（$p-2r=3$）个进程（$10$、$11$、$12$号）执行$Reduce_scatter+Allgather$，最后，前$r$个偶数进程（$0$、$2$、$4$、$6$、$8$号）将结果发送给前$r$个奇数进程（$1$、$3$、$5$、$7$、$9$号）.<br><img src="https://note.youdao.com/yws/api/personal/file/WEBca42cd1c5c39305518f9b87e91cbcdb4?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""></p>
+<h4 id="Bionary-Block-Algorithm"><a href="#Bionary-Block-Algorithm" class="headerlink" title="Bionary Block Algorithm"></a>Bionary Block Algorithm</h4><p>叫做二方块算法（小王同学自己的翻译）。该算法能够降低进程数量非2的幂时$Reduce_scatter+Allgather$算法的负载不均衡问题。以下图为例，在算法的初始阶段进行二方拆分，是每一个块内进程子集的数量为2的幂次。每个块内的进程在块内部执行$Reduce_scatter$操作。然后，从最小的块开始，被划分为若干段做为更高一块的中间结果的输入，并向更高一块的进程发送这些数据，这些进程对收集过来的段执行规约操作，在图中也就是$\boxed{2^0}$块作为$\boxed{2^2}$块的输入，两个块进行规约操作，注意$\boxed{2^0}$块的4个数据拷贝与$\boxed{2^2}$块规约，然后$\boxed{2^2}$块做为$\boxed{2^3}$块的输入在进行两个块的规约。与更大块中的进程集合相比，小的进程块会造成计算和通信的负载不均衡。两个连续块的最大差异，尤其是小块，会决定负载不均衡的程度。定义$\delta_{expo,max}$做为两个连续块数量（均为2的幂次）的最大差值，如$100=2^6+2^5+2^2$，则$\delta_{expo,max}=max(6-5,5-2)=3$，如果$\delta_{expo,max}$值很小，那么算法的性能就会很好。<br>在算法的第二阶段，是$Allgather$操作。为了达到这个目的，上一个更大的块必须向小块发送数据，如图。</p>
+<p><img src="https://note.youdao.com/yws/api/personal/file/WEB493ba0c9657ed9064532a87b08ff8ece?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""></p>
+<h3 id="Ring-Algorithm-1"><a href="#Ring-Algorithm-1" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h3><p>环算法，其实就是$Reduce_scatter+Allgather$算法的变形，在$Reduce_scatter$阶段是各个进程直接将一部分数据发送到其目的节点，并且$Allgather$操作使用环算法来执行。<br><img src="https://note.youdao.com/yws/api/personal/file/WEB79a715e6df59dfc1c3254075d966cfd7?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""></p>
+
       
     </div>
 
@@ -797,7 +801,7 @@ $(document).ready(function() {
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共7.4k字</span>
+  <span class="post-count">博客全站共8.4k字</span>
 </div>
         
 <div class="busuanzi-count">
