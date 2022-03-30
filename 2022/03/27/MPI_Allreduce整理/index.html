@@ -40,13 +40,13 @@
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB45d2ca1b81056825d285e44a1ec85910?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBca42cd1c5c39305518f9b87e91cbcdb4?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB493ba0c9657ed9064532a87b08ff8ece?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13">
-<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBf2832a760d9e4937101fa93ae4410649?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13">
-<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB43f5e95a1868d89cbd317169ea87df53?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13">
-<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB169bdb1ca360203ba6ff2fdee5ddae24?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBf2832a760d9e4937101fa93ae4410649?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBf2832a760d9e4937101fa93ae4410649?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB169bdb1ca360203ba6ff2fdee5ddae24?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBcc34716f4289d3c74ac7e0bd65786af4?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBa4ff21d874a476bc6a4110496d8d7bbc?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
 <meta property="article:published_time" content="2022-03-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-30T10:35:42.408Z">
+<meta property="article:modified_time" content="2022-03-30T10:39:19.951Z">
 <meta property="article:author" content="虎王">
 <meta property="article:tag" content="MPI">
 <meta property="article:tag" content="并行计算">
@@ -248,7 +248,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-30 18:35:42" itemprop="dateModified" datetime="2022-03-30T18:35:42+08:00">2022-03-30</time>
+                <time title="修改时间：2022-03-30 18:39:19" itemprop="dateModified" datetime="2022-03-30T18:39:19+08:00">2022-03-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -386,15 +386,28 @@
 <script type="math/tex; mode=display">T_{raben}=2\lg{p}\cdot\alpha+\frac{p-1}{p}(2n\beta+n\gamma)</script><p>截至目前，上述$Reduce$操作的$Reduce-scatter$+$Gather$算法和$Allgather$操作的$Reduce-scatter$+$Allgather$算法，当进程的数量不是2的幂次的时候需要额外处理。移除$r=p-p^{‘}$个额外进程来将进程数量减少到最接近的2次幂$(p^{‘}=2^{\lfloor{\lg{p}}\rfloor})$。前$2r$个进程（$0$号到$2r-1$号）中，所有的偶数进程将输入向量的后半部分发送给右邻居（$rank+1$），所有的奇数进程将输入向量的前半部分发送给左邻居（$rank-1$）。随后偶数进程对前半部分向量进行规约操作，奇数进程对后半部分向量进行规约操作。奇数进程将规约结果发送给左邻居进程。该步骤结束后，前$2r$个进程的偶数编号进程都拥有了和右邻居进程进行规约的结果，而奇数编号进程不会参与算法的后续过程，这样我们就可以把进程的数量减少到2的幂次：最开始的r个偶数进程和最后面的$p-2r$个进程从$0{\sim}(p^{‘}-1)$编号，是2的幂次。然后这些进程再执行$Reduce-scatter$+$Allgather$算法。最后规约的结果还要发送给第一步就已经移除的$r$个进程，如果是$Reduce$操作，根进程在第一步中就被剔除掉了，那么在$Reduce-scatter$操作之后的第一步，该根进程和邻居进程就要互换位置，这样不会增加额外消耗。<br>下图展示了带有13个进程的$Allreduce$操作算法的例子。输入向量和规约结果被分成了8个部分($A,B,…,H$)，因为$8$是小于且最接近$13$的$2$的幂次，用$A{-}H_{rank}$来表示。前2r个（$r=13-8=5,2r=10$）偶数进程先执行两两$Allreduce$操作，然后前$r$个偶数进程（$0$、$2$、$4$、$6$、$8$号）和剩余的$3$（$p-2r=3$）个进程（$10$、$11$、$12$号）执行$Reduce-scatter+Allgather$，最后，前$r$个偶数进程（$0$、$2$、$4$、$6$、$8$号）将结果发送给前$r$个奇数进程（$1$、$3$、$5$、$7$、$9$号）.<br><img src="https://note.youdao.com/yws/api/personal/file/WEBca42cd1c5c39305518f9b87e91cbcdb4?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""></p>
 <h4 id="Bionary-Block-Algorithm"><a href="#Bionary-Block-Algorithm" class="headerlink" title="Bionary Block Algorithm"></a>Bionary Block Algorithm</h4><p>叫做二方块算法。该算法能够降低进程数量非2幂时$Reduce-scatter+Allgather$算法的负载不均衡问题。以下图为例，在初始阶段对进程划分为若干块，使每一个块内进程子集的数量为2的方幂。每个块内部执行$Reduce-scatter$操作。然后，从最小的块开始，被划分为若干段做为更高一块的输入，更高的一块对收集过来的数据执行规约操作，如$\boxed{2^0}$块作为$\boxed{2^2}$块的输入，两个块进行规约，注意$\boxed{2^0}$块的4个数据拷贝与$\boxed{2^2}$块规约，然后$\boxed{2^2}$块做为$\boxed{2^3}$块的输入再进行两个块的规约。小的进程块会造成负载不均衡。两个连续块的最大差异，会决定负载不均衡的程度。定义$\delta_{expo,max}$做为两个连续块数量（均为2的幂次）的最大差值，如$100=2^6+2^5+2^2$，则$\delta_{expo,max}=max(6-5,5-2)=3$，如果$\delta_{expo,max}$值很小，那么算法的性能会很好。<br>在算法的第二阶段，是$Allgather$操作。上一个更大的块必须向小块发送数据，如图。</p>
 <p><img src="https://note.youdao.com/yws/api/personal/file/WEB493ba0c9657ed9064532a87b08ff8ece?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""></p>
-<h3 id="Ring-Algorithm-2"><a href="#Ring-Algorithm-2" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h3><p>环算法，其实就是$Reduce-scatter+Allgather$算法的变形，在$Reduce-scatter$阶段是各个进程直接将一部分数据发送到其目的节点，并且$Allgather$操作使用环算法来执行。<br>借用$OpenMPI$中的例子来解释$Ring\ Allreduce$算法。<br>假设有5个进程，则进程的输入数据分成5份，先进行$Computation\ stage$（也就是$Reduce-scatter$）然后是$Distribution\ phase$（也就是$Allgather$的环算法）。<br><img src="https://note.youdao.com/yws/api/personal/file/WEBf2832a760d9e4937101fa93ae4410649?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""><br><img src="https://note.youdao.com/yws/api/personal/file/WEB43f5e95a1868d89cbd317169ea87df53?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""><br><img src="https://note.youdao.com/yws/api/personal/file/WEB169bdb1ca360203ba6ff2fdee5ddae24?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""><br>该算法的执行时间为：</p>
+<h3 id="Ring-Algorithm-2"><a href="#Ring-Algorithm-2" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h3><p>环算法，其实就是$Reduce-scatter+Allgather$算法的变形，在$Reduce-scatter$阶段是各个进程直接将一部分数据发送到其目的节点，并且$Allgather$操作使用环算法来执行。<br>借用$OpenMPI$中的例子来解释$Ring\ Allreduce$算法。<br>假设有5个进程，则进程的输入数据分成5份，先进行$Computation\ stage$（也就是$Reduce-scatter$）然后是$Distribution\ phase$（也就是$Allgather$的环算法）。</p>
+<div style="align: center">
+<img src="https://note.youdao.com/yws/api/personal/file/WEBf2832a760d9e4937101fa93ae4410649?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
+</div> 
+
+<div style="align: center">
+<img src="https://note.youdao.com/yws/api/personal/file/WEBf2832a760d9e4937101fa93ae4410649?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
+</div> 
+
+<div style="align: center">
+<img src="https://note.youdao.com/yws/api/personal/file/WEB169bdb1ca360203ba6ff2fdee5ddae24?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
+</div> 
+
+<p>该算法的执行时间为：</p>
 <script type="math/tex; mode=display">T_{ring}=2(p-1)\alpha+\frac{p-1}{p}(2n\beta+n\gamma)</script><h3 id="Allreduce选择最佳算法"><a href="#Allreduce选择最佳算法" class="headerlink" title="Allreduce选择最佳算法"></a>Allreduce选择最佳算法</h3><p>在上面介绍的$Allreduce$的$5$种算法中根据进程数量和消息大小来选择不同算法，这张图是展示不同进程数量和消息大小对应的最佳算法（对$MPI$_ $DOUBLE$型的数据进行$MPI$_$SUM$求和操作）。$havling+doubling$就是$Reduce-scatter+Allgather$算法。</p>
 <div style="align: center">
-<img src="https://note.youdao.com/yws/api/personal/file/WEBcc34716f4289d3c74ac7e0bd65786af4?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="50%" height="50%"/>
+<img src="https://note.youdao.com/yws/api/personal/file/WEBcc34716f4289d3c74ac7e0bd65786af4?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
 </div> 
 
 <p>这个是消息大小为$32KB$时对$MPI$_ $DOUBLE$型的数据进行$MPI$_$SUM$求和操作不同算法的带宽。</p>
 <div style="align: center">
-<img src="https://note.youdao.com/yws/api/personal/file/WEBa4ff21d874a476bc6a4110496d8d7bbc?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="50%" height="50%"/>
+<img src="https://note.youdao.com/yws/api/personal/file/WEBa4ff21d874a476bc6a4110496d8d7bbc?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
 </div> 
 
 <p>策略：</p>
@@ -479,8 +492,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/26/xjtu/" rel="prev" title="在西交的四年光影">
-      <i class="fa fa-chevron-left"></i> 在西交的四年光影
+    <a href="/2022/03/26/%E5%88%A9%E7%94%A8MPI%E5%AE%9E%E7%8E%B0Cannon%E7%AE%97%E6%B3%95%E5%B9%B6%E8%A1%8C%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/" rel="prev" title="Cannon矩阵乘法">
+      <i class="fa fa-chevron-left"></i> Cannon矩阵乘法
     </a></div>
       <div class="post-nav-item">
     <a href="/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/" rel="next" title="深入理解MPI实现">
