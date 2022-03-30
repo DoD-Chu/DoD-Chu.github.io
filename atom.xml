@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>壮志凌云</title>
+  <title>Top Gun</title>
   
-  <subtitle>小王同学的工作站</subtitle>
+  <subtitle>小王同学的飞机、巡航导弹、并行计算机设计局</subtitle>
   <link href="http://synchrosky.com/atom.xml" rel="self"/>
   
   <link href="http://synchrosky.com/"/>
-  <updated>2022-03-30T07:14:22.178Z</updated>
+  <updated>2022-03-30T07:49:24.956Z</updated>
   <id>http://synchrosky.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深入理解MPI实现</title>
+    <link href="http://synchrosky.com/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/"/>
+    <id>http://synchrosky.com/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/</id>
+    <published>2022-03-29T16:00:00.000Z</published>
+    <updated>2022-03-30T07:49:24.956Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇文章讨论MPI集合通信的各个层次的实现：从用户接口到硬件实现。<br><img src="https://note.youdao.com/yws/api/personal/file/WEB53b70dc12111821a8ae1e0f1f1319988?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;本篇文章讨论MPI集合通信的各个层次的实现：从用户接口到硬件实现。&lt;br&gt;&lt;img src=&quot;https://note.youdao.com/yws/api/personal/file/WEB53b70dc12111821a8ae1e0f1f1319988?method=d</summary>
+      
+    
+    
+    
+    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    
+    <category term="MPI集合通信算法" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
+    
+    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    
+  </entry>
   
   <entry>
     <title>MPI_Allreduce的前世今生</title>
