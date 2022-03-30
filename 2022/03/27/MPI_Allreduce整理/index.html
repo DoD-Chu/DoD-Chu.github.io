@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"synchrosky.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="摘要本文介绍$Allreduce$操作在$MPI$中的算法设计和实现，归纳和整理其发展脉络，追溯到最新的研究进展，并分析$MPI$的典型实现$MPICH$库中是怎样实现$Allreduce$例程的。 Allreduce介绍$Allreduce$操作是$MPI$中最常用的集合通信操作，与之相似的是$Reduce$操作，假设有$p$个进程，每个进程都持有一个含$n$个元素的向量，所有的$p$个进程将自">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MPI_Allreduce的前世今生">
+<meta property="og:url" content="http://synchrosky.com/2022/03/27/MPI_Allreduce%E6%95%B4%E7%90%86/index.html">
+<meta property="og:site_name" content="Top Gun">
+<meta property="og:description" content="摘要本文介绍$Allreduce$操作在$MPI$中的算法设计和实现，归纳和整理其发展脉络，追溯到最新的研究进展，并分析$MPI$的典型实现$MPICH$库中是怎样实现$Allreduce$例程的。 Allreduce介绍$Allreduce$操作是$MPI$中最常用的集合通信操作，与之相似的是$Reduce$操作，假设有$p$个进程，每个进程都持有一个含$n$个元素的向量，所有的$p$个进程将自">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB635e35297acaeac7ad5f79fc97142fab?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB8453078f33cba2dcd2ba5b49d8b04daf?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB5c825f77e456600e07ef80d2b87f1e17?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBb157d10d3be479fb109ae83144da86e9?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB0cedb39776a1eb420c04698b214a371e?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBe58d78d1a74b305f1da143695784f911?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBa1d3f66081e6d3666838b6ff37186727?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBc635d7af2913d2a188bcd426165b25b5?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB45d2ca1b81056825d285e44a1ec85910?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBca42cd1c5c39305518f9b87e91cbcdb4?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB493ba0c9657ed9064532a87b08ff8ece?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBf2832a760d9e4937101fa93ae4410649?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBf2832a760d9e4937101fa93ae4410649?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB169bdb1ca360203ba6ff2fdee5ddae24?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBcc34716f4289d3c74ac7e0bd65786af4?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBa4ff21d874a476bc6a4110496d8d7bbc?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="article:published_time" content="2022-03-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-30T13:45:13.859Z">
+<meta property="article:author" content="虎王">
+<meta property="article:tag" content="MPI">
+<meta property="article:tag" content="并行计算">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB635e35297acaeac7ad5f79fc97142fab?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
+
+<link rel="canonical" href="http://synchrosky.com/2022/03/27/MPI_Allreduce%E6%95%B4%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>MPI_Allreduce的前世今生 | Top Gun</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Top Gun" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Top Gun</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">小王同学的科技客厅</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-schedule">
+
+    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+      
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/yourname" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://synchrosky.com/2022/03/27/MPI_Allreduce%E6%95%B4%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="虎王">
+      <meta itemprop="description" content="喜欢造飞机、导弹和计算机的大学生">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Top Gun">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MPI_Allreduce的前世今生
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-27 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-27T00:00:00+08:00">2022-03-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-30 21:45:13" itemprop="dateModified" datetime="2022-03-30T21:45:13+08:00">2022-03-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/" itemprop="url" rel="index"><span itemprop="name">并行计算</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">MPI集合通信算法</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文介绍$Allreduce$操作在$MPI$中的算法设计和实现，归纳和整理其发展脉络，追溯到最新的研究进展，并分析$MPI$的典型实现$MPICH$库中是怎样实现$Allreduce$例程的。</p>
+<h1 id="Allreduce介绍"><a href="#Allreduce介绍" class="headerlink" title="Allreduce介绍"></a>Allreduce介绍</h1><p>$Allreduce$操作是$MPI$中最常用的集合通信操作，与之相似的是$Reduce$操作，假设有$p$个进程，每个进程都持有一个含$n$个元素的向量，所有的$p$个进程将自己的向量发送给根进程，根进程收集这些向量计算规约的结果（求和、求最大最小值等等），$Reduce$操作结果保存在根进程，$Allreduce$则将根进程的结果再广播出去。简单的在应用程序中调用$MPI$_$Allreduce$就可以完成上述例程，函数定义如下：<br>程序可以表示为：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">MPI_Allreduce</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="type">const</span> <span class="type">void</span> *sendbuf,      <span class="comment">//存放源数据</span></span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="type">void</span> *recvbuf,            <span class="comment">//存放规约结果</span></span></span></span><br><span class="line"><span class="params"><span class="function">            <span class="type">int</span> count,                <span class="comment">//数据个数</span></span></span></span><br><span class="line"><span class="params"><span class="function">            MPI_Datatype datatype,    <span class="comment">//数据类型</span></span></span></span><br><span class="line"><span class="params"><span class="function">            MPI_Op op,                <span class="comment">//规约操作类型</span></span></span></span><br><span class="line"><span class="params"><span class="function">            MPI_Comm comm)</span></span>;           <span class="comment">//一组通信进程</span></span><br></pre></td></tr></table></figure><br>$MPI$_$Reduce$ 和$MPI$_$Allreduce$例程的图解如下所示：</p>
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEB635e35297acaeac7ad5f79fc97142fab?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
+</div>
+
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEB8453078f33cba2dcd2ba5b49d8b04daf?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
+</div>
+
+<p>图片源网址和$MPI$_$Allreduce$的入门教程在这里：<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/">英文版</a>和<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/zh_cn/">中文版</a>  </p>
+<p>$MPI$_$Allreduce$广泛用于各种并行与分布式应用程序：科学计算、大数据、分布式机器学习、分布式深度学习DNN等等，并且<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/8665758">已有工作</a>表明 $MPI$_$Allreduce$ 是使用频率和运行时间最长的集合通信操作。</p>
+<p>自从$MPI$标准在$1994$年提出以来，$MPI$_$Allreduce$的相关研究从上世纪90年代就已经有很多了，而本文从2005年的一篇综述论文出发，一直追溯到现在，总结$MPI$_$Allreduce$ 的算法激情燃烧的昨天、老骥伏枥的今天和仰望星空过后的明天。  </p>
+<h1 id="MPI-Allreduce论文梳理"><a href="#MPI-Allreduce论文梳理" class="headerlink" title="MPI_Allreduce论文梳理"></a>MPI_Allreduce论文梳理</h1><h2 id="2005-Optimization-of-Collective-Communication-Operations-in-MPICH"><a href="#2005-Optimization-of-Collective-Communication-Operations-in-MPICH" class="headerlink" title="2005:Optimization of Collective Communication Operations in MPICH"></a><a target="_blank" rel="noopener" href="https://journals.sagepub.com/doi/10.1177/1094342005051521">2005:Optimization of Collective Communication Operations in MPICH</a></h2><p>经典的$MPI$集合通信论文，介绍了常用的集合通信操作和对应的算法：$Allgather$, $Broadcast$, $All$-$to$-$all$, $Reduce$-$Scatter$, $Reduce$和$Allreduce$，并进一步的讨论了 $MPI$_$Reduce$ 和$MPI$_$Allreduce$的优化。我有一门选修课的作业就是将这篇论文全文翻译：<a target="_blank" rel="noopener" href="https://note.youdao.com/ynoteshare/index.html?id=1b5cc29dea0aff44f92bdb69a2763e79&amp;type=notebook&amp;_time=1648432853246#/WEB26278ae64dfc1a52e0ece0dd615075f3">翻译原文</a>。<br>这篇文章采用的性能评估模型是$\alpha+n\beta$，任意两个节点之间发送一条消息的时间可以用$T=\alpha+n\beta$，其中$\alpha$表示延迟（或者说启动时间），与消息大小无关，而$\beta$表示每个字节的传输时间，$n$表示传输消息的字节数，对于规约操作则用$\gamma$表示每个字节执行规约操作的时间消耗。由于$MPI$基于分布式存储系统，采用$LogP$模型（$L:latency$, $o:overhead$, $g:gap$, $P:processor$），一条长度为$n$的消息传输时间可以计算为:   </p>
+<script type="math/tex; mode=display">T=L+2o+(n-1)b,其中b=min(o, g)</script><p>也就是传输延迟$L$加上两端处理器的处理开销$2o$，和$n$个字节的传输时间，注意$overhead$是任意一个消息的处理开销，$gap$是连续两个字节的传输时间间隔。将上述式子变形，可以得到：  </p>
+<script type="math/tex; mode=display">T=(L+2o-b)+nb=\alpha+n\beta</script><p>这也就是本文性能评估模型的公式，许多文献和教材中也用到了这个公式。我们将$\alpha$称为延迟项$(latency\ term)$，而$n\beta$称为带宽项$(bandwidth\ term)$，并用这个公式来形式化的评估集合通信算法的性能。  </p>
+<h3 id="1、Allgather操作及算法"><a href="#1、Allgather操作及算法" class="headerlink" title="1、Allgather操作及算法"></a>1、Allgather操作及算法</h3><p>$Allgather$操作的图解如下:  </p>
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEB5c825f77e456600e07ef80d2b87f1e17?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13"/>
+</div>  
+
+<p>$MPI$_$Allgather$函数可以参考<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-scatter-gather-and-allgather/">MPI_Allgather</a>。 </p>
+<h4 id="Ring-Algorithm"><a href="#Ring-Algorithm" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h4><p>$MPICH$中最初实现$Allgather$操作使用的就是$Ring$算法。</p>
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEBb157d10d3be479fb109ae83144da86e9?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="40%" height="40%"/>
+</div> 
+
+<p>每一个进程$i$发送本地数据给进程$(i+1)\%p$，并且接受来自$(i-1)\%p$的数据（环绕方式）。以后每一步，进程$i$都向进程$(i+1)\%p$发送上一步接收的来自$(i-1)\%p$号进程的数据。假设有$p$个进程，该算法总共需要$p-1$步来完成。用$n$表示收集的数据总量，每一步每个进程都发送$\frac{n}{p}$的数据，因此算法的时间消耗可以计算为：  </p>
+<script type="math/tex; mode=display">T_{Ring}=(p-1)\alpha+\frac{p-1}{p}n\beta</script><h4 id="Recursive-Doubling"><a href="#Recursive-Doubling" class="headerlink" title="Recursive Doubling"></a>Recursive Doubling</h4><p>递归加倍算法的流程如下图所示：</p>
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEB0cedb39776a1eb420c04698b214a371e?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="50%" height="50%"/>
+</div> 
+
+<p>在第一步，彼此间距离为1的进程之间互相交换数据，数据量为$\frac{n}{p}$；第二步，彼此间距离为2的进程之间交换进程自己以及上一步从邻居进程接受的数据，数据量为$\frac{2n}{p}$；在第三步，彼此间距离为4的进程之间交换进程自己以及前两步从其他进程接受的数据，数据量为$\frac{4n}{p}$，以此类推，所有进程会在$lgP$步获得所有数据，执行时间为：  </p>
+<script type="math/tex; mode=display">T_{rec\_dbl}=lgP\cdot\alpha+\frac{p-1}{p}n\beta</script><p>其中带宽项和环算法相同，这是因为：</p>
+<script type="math/tex; mode=display">\frac{n}{p}\beta+\frac{2n}{p}\beta+...+\frac{2^{lgP-1}n}{p}\beta=\frac{p-1}{p}n\beta</script><p>这个等式的内在逻辑是任意一个进程总要接受来自其他$p-1$进程发送的总共$(p-1)\cdot\frac{n}{p}$数据量，也就是说带宽项是不能进一步减少的，但是延迟项可以通过优化算法来减少。递归加倍算法能很好的处理进程数量为2的整数幂的情况，但较难处理进程数量非2的幂次的情况。 </p>
+<h4 id="Bruck-Algorithm"><a href="#Bruck-Algorithm" class="headerlink" title="Bruck Algorithm"></a>Bruck Algorithm</h4><p>$Bruck$算法能够很好的处理进程数非2的幂次的情况，算法的执行步骤为$\lceil{lgP}\rceil$步，算法图解如下所示</p>
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEBe58d78d1a74b305f1da143695784f911?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13"/>
+</div> 
+
+<p>每个进程都有一片大小为$n$的缓存存放数据，在算法的开始，每个进程将本地数据拷贝到缓存的顶部。在第$k$步，进程$i$向目标进程$(i-2^k)\%p$发送本地的所有数据，并将接受的数据（来自进程$(i+2^k)\%p$）添加至本地数据的末尾，一共$\lfloor{lgP}\rfloor$步。如果进程的数量不是2的幂，还需要额外的一步，每个进程向目标进程$(i-2^k)\%p$发送自己缓存头部的$p-2^{\lfloor{lgP}\rfloor}$块数据（前面步骤都是本地全部数据，这里是头部的部分数据），并将接受的数据添加到本地缓存末尾。<br>现在，所有进程都已经获得了全部数据，但是数据并不是以正确的顺序排列在缓存中：进程$i$中的所有数据块都向上偏移了$i$块。因此简单的将所有数据块循环向下移动$i$块就能将数据块调整到正确的位置上。算法的时间开销为：</p>
+<script type="math/tex; mode=display">T_{Bruck}=\lceil{lgP}\rceil\cdot\alpha+\frac{p-1}{p}n\beta</script><p>$Allgather$操作的算法选取策略是：</p>
+<ul>
+<li>当进程数量为2的幂并且发送短消息或者中等规模消息，采用$Recursive\ doubling$算法；</li>
+<li>当发送短消息以及进程数量非2的幂的情况下，采用$Bruck$算法；</li>
+<li>发送大消息，无论进程数量是多少，并且进程数量非2幂且发送中等规模消息，采用$Ring$算法。  </li>
+</ul>
+<h3 id="2、Broadcast操作及算法"><a href="#2、Broadcast操作及算法" class="headerlink" title="2、Broadcast操作及算法"></a>2、Broadcast操作及算法</h3><p>广播操作由根进程将根进程中的数据广播给所有进程，对应的是$MPI$_$Bcast$函数，可以参考<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-broadcast-and-collective-communication/">MPI_Bcast</a></p>
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEBa1d3f66081e6d3666838b6ff37186727?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13"/>
+</div> 
+
+<h4 id="Bionomial-Tree"><a href="#Bionomial-Tree" class="headerlink" title="Bionomial Tree"></a>Bionomial Tree</h4><p>$MPICH$中广播操作最初使用二项树算法。在第一步，根进程$root$向目标进程$(root+\frac{p}{2})\%p$发送数据，进程$(root+\frac{p}{2})\%p$以及根进程成为它们子树的根结点，继续递归执行算法。该算法一共执行$\lceil{\lg{p}}\rceil$步，在每一步所有进程发送的数据量均为$n$，因此算法的时间开销为：</p>
+<script type="math/tex; mode=display">T_{tree}=\lceil{\lg{p}}\rceil\cdot(\alpha+n\beta)</script><h4 id="Scatter-Allgather"><a href="#Scatter-Allgather" class="headerlink" title="Scatter + Allgather"></a>Scatter + Allgather</h4><p>这是一种组合算法，又叫$Van\ de\ Geijn$算法，将$Scatter$和$Allgather$两个操作组合成了$Broadcast$操作。$Scatter$（散播）操作与$Broadcast$操作的对比如下:</p>
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEBc635d7af2913d2a188bcd426165b25b5?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13"/>
+</div> 
+
+<p>在该算法中，要广播的数据先分成若干份，散播到各个进程中，接着，散播的数据又收集到所有进程中，也就是再执行MPI_Allgather操作。其中Scatter操作使用二项树算法，时间消耗为：</p>
+<script type="math/tex; mode=display">T_{Scatter}=\lg{p}\cdot\alpha+\frac{p-1}{p}n\beta</script><p>时间消耗和$Allgather$递归加倍算法相同，仔细观察你会发现两者互为逆过程。而$Allgather$操作可以使用递归加倍算法或者环算法，总时间等于两者之和。<br>因此广播操作的二项树算法和$Scatter+Allgather$算法的时间消耗对比如下：</p>
+<script type="math/tex; mode=display">\left\{
+\begin{matrix}
+ T_{tree}=\lceil{\lg{p}}\rceil\cdot(\alpha+n\beta) \\
+ {T_{Scatter+Allgather}=(\lg{p}+p-1)\alpha+2\frac{p-1}{p}n\beta} 
+\end{matrix}
+\right.</script><p>对比两个式子我们可以很容易得到：</p>
+<ul>
+<li>当消息两较小（即$n$较小）或者进程数量少时（小于8），我们使用二项树算法；</li>
+<li>当消息较大时或者进程数量较大时，我们采用$Scatter$+$Allgather$的组合算法。  </li>
+</ul>
+<h3 id="3、Reduce-Scatter操作及其算法"><a href="#3、Reduce-Scatter操作及其算法" class="headerlink" title="3、Reduce-Scatter操作及其算法"></a>3、Reduce-Scatter操作及其算法</h3><p>$Reduce-Scatter$操作（多对多规约）是数据规约操作$Reduce$的一个变种，$Reduce$操作的结果保存在根进程中，而$Reduce-Scatter$将结果散发（$Scatter$）给所有进程。</p>
+<h4 id="二项树Reduce-线性Scatter"><a href="#二项树Reduce-线性Scatter" class="headerlink" title="二项树Reduce+线性Scatter"></a>二项树Reduce+线性Scatter</h4><p>在$MPICH$中的老算法中，$Reduce-Scatter$操作先是将所有进程的数据通过二项树规约到$0$号进程，然后通过线性的散发操作将数据分发出去。二项树规约操作的时间为:</p>
+<script type="math/tex; mode=display">\lg{p}\cdot(\alpha+n\beta+n\gamma)</script><p>线性散发操作的时间为：</p>
+<script type="math/tex; mode=display">(p-1)\alpha+(p-1)\cdot\frac{n}{p}\beta</script><p>总的时间为:</p>
+<script type="math/tex; mode=display">T_{old}=(\lg{p}+p-1)\alpha+(\lg{p}+\frac{p-1}{p})n\beta+\lg{p}\cdot{n}\gamma</script><h4 id="Recursive-Halving"><a href="#Recursive-Halving" class="headerlink" title="Recursive Halving"></a>Recursive Halving</h4><p>递归减半算法和前面$Allgather$操作的递归加倍算法互为逆过程。</p>
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEB45d2ca1b81056825d285e44a1ec85910?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13"/>
+</div> 
+
+<p>在第1步，进程分为2个子集，每一个进程都和与自己间隔$\frac{p}{2}$的进程交换数据：每一个进程发送另一半集合所有进程都所需要的数据，并且接收自己所在进程集合都需要的数据，然后对收集到的数据进行规约操作。在第2步，每一个进程都和与自己间隔$\frac{p}{4}$的进程交换数据。该过程如此递归进行下去，每一步通信数据也递归减半，进行$\lg{p}$步。算法的时间消耗为：</p>
+<script type="math/tex; mode=display">T_{rec\_halv}=\lg{p}\cdot\alpha+\frac{p-1}{p}(n\beta+n\gamma)</script><p>该算法能够正确执行的前提是规约操作是满足交换率的（$commutative$），满足交换律的规约操作使用频率更高，这是由于$MPI$定义的许多规约操作都是可交换的，例如$MPI$_ $SUM$， $MPI$_$MAX$。如果进程的数量不是2的幂次，我们首先将进程的数量减少到2的幂次，具体做法是最开始的$x$个偶数编号进程发送数据给最近的奇数编号进程（$rank+1$），使得$p-x$为$2$的幂。奇数编号进程对收集的数据执行规约操作，然后这些奇数号进程和其余的$p-2x$个进程（一共$p-x$个）参与递归减半算法中计算自己的结果，最后，前$x$个奇数进程将结果返回给左邻居结点。这样算法的时间为：</p>
+<script type="math/tex; mode=display">T_{rec\_halv}=(\lfloor{\lg{p}\rfloor+2)}\alpha+2n\beta+n(1+\frac{p-1}{p})\gamma</script><h4 id="Pairwise-Exchange"><a href="#Pairwise-Exchange" class="headerlink" title="Pairwise Exchange"></a>Pairwise Exchange</h4><p>成对交换算法适用于规约操作不满足交换律，其思想类似于$Allgather$操作递归加倍算法。在第$1$步，每一对邻居进程交换数据；第$2$步，彼此间距为$2$的进程交换数据；在第$3$步，彼此间距为$4$的进程交换数据，如此进行下去。然而它相较于$Allgather$操作，交换的数据更多。在第一步，进程交换除了自己所需要数据以外的所有数据（$n-\frac{n}{p}$数据量），比方说0号进程把除了块0之外的$1{\sim}(p-1)$块发送给$1$号进程，1号进程发送除块1之外的$0$、$2{\sim}(p-1)$块发送给$0$号进程；第二步，进程交换除了自己和上一步通信进程所拥有数据以外的所有数据（$n-\frac{2n}{p}$）；第三步数据量为（$n-\frac{4n}{p}$）。这样算法执行的时间为：</p>
+<script type="math/tex; mode=display">T_{short}=\lg{p}\cdot\alpha+(\lg{p}-\frac{p-1}{p})(n\beta+n\alpha)</script><p>该算法适用于传输的消息量小于256B的情况。对长消息发送（满足交换律的操作是$\geqslant256KB$，不满足交换律的操作是$\geqslant256B$），我们使用执行$p-1$步的成对交换算法。在第$i$步，每一个进程向$(rank+i)\%p$发送数据，接收来自进程$(rank-i)\%p$的数据，并执行局部规约操作。交换的数据仅仅是用于散发结果的的数据量$\frac{n}{p}$，也就是只需要发送每个进程需要的那一部分数据即可。算法执行需要的时间为：</p>
+<script type="math/tex; mode=display">T_{long}=(p-1)\alpha+\frac{p-1}{p}(n\beta+n\gamma)</script><p>策略：</p>
+<ul>
+<li>当操作满足交换律，消息$&lt;{256KB}$采用递归减半算法，$\geqslant{256KB}$则采用$(p-1)$步的成对交换算法；</li>
+<li>操作不满足交换律，消息$&lt;256B$时采用$\lg{p}$步的成对交换算法，$\geqslant{256B}$时采用$(p-1)$步的成对交换算法。</li>
+</ul>
+<h3 id="Reduce操作及其算法"><a href="#Reduce操作及其算法" class="headerlink" title="Reduce操作及其算法"></a>Reduce操作及其算法</h3><h4 id="Bionomial-Tree-1"><a href="#Bionomial-Tree-1" class="headerlink" title="Bionomial Tree"></a>Bionomial Tree</h4><p>$MPICH$中老算法采用二项树算法，执行$\lg{p}$步，每步都交换一个进程的所有$n$字节数据并进行规约计算，算法的时间为：</p>
+<script type="math/tex; mode=display">T_{tree}=\lceil{\lg{p}}\rceil(\alpha+n\beta+n\gamma)</script><h4 id="Reduce-scatter-Gather组合算法"><a href="#Reduce-scatter-Gather组合算法" class="headerlink" title="Reduce_scatter+Gather组合算法"></a>Reduce_scatter+Gather组合算法</h4><p>该算法将$Reduce-scatter$和$Gather$两个操作组合成$Reduce$操作，也叫$Rabenseifner$算法。回顾广播操作的$Scatter+Allgather$组合算法，成功将二项树算法的$\lg{p}\cdot{n\beta}$的带宽项减小到了$2{n\beta}$的数量级，$Reduce$操作类似于广播的逆过程，因此也可以采用类似的思想，$Reduce-scatter$和$Gather$组合的$Reduce$算法也可以将二项树算法的$\lg{p}\cdot{n\beta}$的带宽项减小到了$2{n\beta}$的数量级。算法的时间为$Reduce-scatter$（递归减半算法）和$Gather$（二项树算法）操作的总和，计算为:</p>
+<script type="math/tex; mode=display">T_{raben}=2\lg{p}\cdot\alpha+\frac{p-1}{p}(2n\beta+n\gamma)</script><p>策略：</p>
+<ul>
+<li>当消息量小（$&lt;2KB$）时，采用二项树算法；</li>
+<li>当消息量大（$\geqslant2KB$）时，采用$Reduce-scatter$+$Gather$算法。  </li>
+</ul>
+<p>小结：看到这里也应该能摸索出一些规律，大消息发送时（$n$较大）我们要尽量较少带宽项，也就是减少$n\beta$前面的系数，延迟项（也叫启动时间）$\alpha$大一点无所谓；而小消息（$n$较小）发送时我们要尽量较少延迟项。这也就是$Reduce$和$Broadcast$操作选择不同算法时的核心思想。</p>
+<h4 id="Ring-Algorithm-1"><a href="#Ring-Algorithm-1" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h4><p>和下面将要介绍的$Ring Allreduce$类似，使用$Reduce-scatter$+$Gather$的方式，但是$Reduce-scatter$只发送一部分数据（$\frac{n}{p}$）给目标进程，且$Gather$阶段使用环算法。</p>
+<h3 id="Allreduce操作及其算法"><a href="#Allreduce操作及其算法" class="headerlink" title="Allreduce操作及其算法"></a>Allreduce操作及其算法</h3><h4 id="Reduce-Broadcast"><a href="#Reduce-Broadcast" class="headerlink" title="Reduce+Broadcast"></a>Reduce+Broadcast</h4><p>$MPICH$中老算法先将结果$Reduce$到根进程然后再将根进程的结果$Broadcast$到所有进程中。</p>
+<h4 id="Recursive-Doubling-1"><a href="#Recursive-Doubling-1" class="headerlink" title="Recursive Doubling"></a>Recursive Doubling</h4><p>$Allreduce$的递归加倍算法和$Allgather$的递归加倍算法是非常相似的，只是每一步都伴随规约操作且交换的数据量也不同，每次进程间两两交换的数据量都是$n$。因此算法执行的时间为：</p>
+<script type="math/tex; mode=display">T_{rec\_dbl}=\lg{p}(\alpha+n\beta+n\gamma)</script><h4 id="Reduce-scatter-Allgather"><a href="#Reduce-scatter-Allgather" class="headerlink" title="Reduce_scatter+Allgather"></a>Reduce_scatter+Allgather</h4><p>该算法也叫$Rabenseifner$算法。回顾$Reduce$操作我们采用了$Reduce-scatter$+$Gather$算法，这里我们在第二步将$Gather$换成了$Allgather$操作，采用$Reduce-scatter$+$Allgather$算法。算法的总开销为：</p>
+<script type="math/tex; mode=display">T_{raben}=2\lg{p}\cdot\alpha+\frac{p-1}{p}(2n\beta+n\gamma)</script><p>截至目前，上述$Reduce$操作的$Reduce-scatter$+$Gather$算法和$Allgather$操作的$Reduce-scatter$+$Allgather$算法，当进程的数量不是2的幂次的时候需要额外处理。移除$r=p-p^{‘}$个额外进程来将进程数量减少到最接近的2次幂$(p^{‘}=2^{\lfloor{\lg{p}}\rfloor})$。前$2r$个进程（$0$号到$2r-1$号）中，所有的偶数进程将输入向量的后半部分发送给右邻居（$rank+1$），所有的奇数进程将输入向量的前半部分发送给左邻居（$rank-1$）。随后偶数进程对前半部分向量进行规约操作，奇数进程对后半部分向量进行规约操作。奇数进程将规约结果发送给左邻居进程。该步骤结束后，前$2r$个进程的偶数编号进程都拥有了和右邻居进程进行规约的结果，而奇数编号进程不会参与算法的后续过程，这样我们就可以把进程的数量减少到2的幂次：最开始的r个偶数进程和最后面的$p-2r$个进程从$0{\sim}(p^{‘}-1)$编号，是2的幂次。然后这些进程再执行$Reduce-scatter$+$Allgather$算法。最后规约的结果还要发送给第一步就已经移除的$r$个进程，如果是$Reduce$操作，根进程在第一步中就被剔除掉了，那么在$Reduce-scatter$操作之后的第一步，该根进程和邻居进程就要互换位置，这样不会增加额外消耗。<br>下图展示了带有13个进程的$Allreduce$操作算法的例子。输入向量和规约结果被分成了8个部分($A,B,…,H$)，因为$8$是小于且最接近$13$的$2$的幂次，用$A{-}H_{rank}$来表示。前2r个（$r=13-8=5,2r=10$）偶数进程先执行两两$Allreduce$操作，然后前$r$个偶数进程（$0$、$2$、$4$、$6$、$8$号）和剩余的$3$（$p-2r=3$）个进程（$10$、$11$、$12$号）执行$Reduce-scatter+Allgather$，最后，前$r$个偶数进程（$0$、$2$、$4$、$6$、$8$号）将结果发送给前$r$个奇数进程（$1$、$3$、$5$、$7$、$9$号）.<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBca42cd1c5c39305518f9b87e91cbcdb4?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""></p>
+<h4 id="Bionary-Block-Algorithm"><a href="#Bionary-Block-Algorithm" class="headerlink" title="Bionary Block Algorithm"></a>Bionary Block Algorithm</h4><p>叫做二方块算法。该算法能够降低进程数量非2幂时$Reduce-scatter+Allgather$算法的负载不均衡问题。以下图为例，在初始阶段对进程划分为若干块，使每一个块内进程子集的数量为2的方幂。每个块内部执行$Reduce-scatter$操作。然后，从最小的块开始，被划分为若干段做为更高一块的输入，更高的一块对收集过来的数据执行规约操作，如$\boxed{2^0}$块作为$\boxed{2^2}$块的输入，两个块进行规约，注意$\boxed{2^0}$块的4个数据拷贝与$\boxed{2^2}$块规约，然后$\boxed{2^2}$块做为$\boxed{2^3}$块的输入再进行两个块的规约。小的进程块会造成负载不均衡。两个连续块的最大差异，会决定负载不均衡的程度。定义$\delta_{expo,max}$做为两个连续块数量（均为2的幂次）的最大差值，如$100=2^6+2^5+2^2$，则$\delta_{expo,max}=max(6-5,5-2)=3$，如果$\delta_{expo,max}$值很小，那么算法的性能会很好。<br>在算法的第二阶段，是$Allgather$操作。上一个更大的块必须向小块发送数据，如图。</p>
+<p><img data-src="https://note.youdao.com/yws/api/personal/file/WEB493ba0c9657ed9064532a87b08ff8ece?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""></p>
+<h3 id="Ring-Algorithm-2"><a href="#Ring-Algorithm-2" class="headerlink" title="Ring Algorithm"></a>Ring Algorithm</h3><p>环算法，其实就是$Reduce-scatter+Allgather$算法的变形，在$Reduce-scatter$阶段是各个进程直接将一部分数据发送到其目的节点，并且$Allgather$操作使用环算法来执行。<br>借用$OpenMPI$中的例子来解释$Ring\ Allreduce$算法。<br>假设有5个进程，则进程的输入数据分成5份，先进行$Computation\ stage$（也就是$Reduce-scatter$）然后是$Distribution\ phase$（也就是$Allgather$的环算法）。</p>
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEBf2832a760d9e4937101fa93ae4410649?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
+</div> 
+
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEBf2832a760d9e4937101fa93ae4410649?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
+</div> 
+
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEB169bdb1ca360203ba6ff2fdee5ddae24?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
+</div> 
+
+<p>该算法的执行时间为：</p>
+<script type="math/tex; mode=display">T_{ring}=2(p-1)\alpha+\frac{p-1}{p}(2n\beta+n\gamma)</script><h3 id="Allreduce选择最佳算法"><a href="#Allreduce选择最佳算法" class="headerlink" title="Allreduce选择最佳算法"></a>Allreduce选择最佳算法</h3><p>在上面介绍的$Allreduce$的$5$种算法中根据进程数量和消息大小来选择不同算法，这张图是展示不同进程数量和消息大小对应的最佳算法（对$MPI$_ $DOUBLE$型的数据进行$MPI$_$SUM$求和操作）。$havling+doubling$就是$Reduce-scatter+Allgather$算法。</p>
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEBcc34716f4289d3c74ac7e0bd65786af4?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
+</div> 
+
+<p>这个是消息大小为$32KB$时对$MPI$_ $DOUBLE$型的数据进行$MPI$_$SUM$求和操作不同算法的带宽。</p>
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEBa4ff21d874a476bc6a4110496d8d7bbc?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
+</div> 
+
+<p>策略：</p>
+<ul>
+<li>对于短消息，使用$Recursive Doubling$算法;</li>
+<li>对于长消息，先进行$Reduce-scatter$（$Recursive-halving$算法），再进行$Allgather$（$Recursive\ Doubling$算法）。</li>
+</ul>
+<p>后面的三种方法只是进一步优化，没有在$MPICH$里集成。</p>
+<h2 id="2017-Scalable-reduction-collectives-with-data-partitioning-based-multi-leader-design"><a href="#2017-Scalable-reduction-collectives-with-data-partitioning-based-multi-leader-design" class="headerlink" title="2017:Scalable reduction collectives with data partitioning-based multi-leader design"></a><a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/3126908.3126954">2017:Scalable reduction collectives with data partitioning-based multi-leader design</a></h2><h2 id="2019-Node-Aware-Improvements-to-Allreduce"><a href="#2019-Node-Aware-Improvements-to-Allreduce" class="headerlink" title="2019:Node-Aware Improvements to Allreduce"></a><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/8955452">2019:Node-Aware Improvements to Allreduce</a></h2><h2 id="2020-Decomposing-MPI-Collectives-for-Exploiting-Multi-lane-Communication"><a href="#2020-Decomposing-MPI-Collectives-for-Exploiting-Multi-lane-Communication" class="headerlink" title="2020:Decomposing MPI Collectives for Exploiting Multi-lane Communication"></a><a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/9229624">2020:Decomposing MPI Collectives for Exploiting Multi-lane Communication</a></h2><p>过去的集合通信在执行时都是一个节点上一个进程（这一个进程负责通信），这篇论文的思路是开发硬件$Multi\ lane$的潜力，一个$Lane$就是能够独立的、同时的进行通信的链路，通过在一个节点上增加多个进程来充分的利用$Multi\ lane$来加速集合通信的执行。</p>
+
+    </div>
+
+    
+    
+    
+
+    
+    <div>
+      <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:24px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+    </div>
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>虎王
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://synchrosky.com/2022/03/27/MPI_Allreduce%E6%95%B4%E7%90%86/" title="MPI_Allreduce的前世今生">http://synchrosky.com/2022/03/27/MPI_Allreduce整理/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/images/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MPI/" rel="tag"># MPI</a>
+              <a href="/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/" rel="tag"># 并行计算</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/26/xjtu/" rel="prev" title="在西交的四年光影">
+      <i class="fa fa-chevron-left"></i> 在西交的四年光影
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/" rel="next" title="深入理解MPI实现">
+      深入理解MPI实现 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81NTg1Mi8zMjMxNg=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Allreduce%E4%BB%8B%E7%BB%8D"><span class="nav-number">2.</span> <span class="nav-text">Allreduce介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MPI-Allreduce%E8%AE%BA%E6%96%87%E6%A2%B3%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">MPI_Allreduce论文梳理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2005-Optimization-of-Collective-Communication-Operations-in-MPICH"><span class="nav-number">3.1.</span> <span class="nav-text">2005:Optimization of Collective Communication Operations in MPICH</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81Allgather%E6%93%8D%E4%BD%9C%E5%8F%8A%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.1.</span> <span class="nav-text">1、Allgather操作及算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Ring-Algorithm"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">Ring Algorithm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Recursive-Doubling"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">Recursive Doubling</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bruck-Algorithm"><span class="nav-number">3.1.1.3.</span> <span class="nav-text">Bruck Algorithm</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81Broadcast%E6%93%8D%E4%BD%9C%E5%8F%8A%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.2.</span> <span class="nav-text">2、Broadcast操作及算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Bionomial-Tree"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">Bionomial Tree</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Scatter-Allgather"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">Scatter + Allgather</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81Reduce-Scatter%E6%93%8D%E4%BD%9C%E5%8F%8A%E5%85%B6%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.3.</span> <span class="nav-text">3、Reduce-Scatter操作及其算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E9%A1%B9%E6%A0%91Reduce-%E7%BA%BF%E6%80%A7Scatter"><span class="nav-number">3.1.3.1.</span> <span class="nav-text">二项树Reduce+线性Scatter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Recursive-Halving"><span class="nav-number">3.1.3.2.</span> <span class="nav-text">Recursive Halving</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pairwise-Exchange"><span class="nav-number">3.1.3.3.</span> <span class="nav-text">Pairwise Exchange</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Reduce%E6%93%8D%E4%BD%9C%E5%8F%8A%E5%85%B6%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.4.</span> <span class="nav-text">Reduce操作及其算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Bionomial-Tree-1"><span class="nav-number">3.1.4.1.</span> <span class="nav-text">Bionomial Tree</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reduce-scatter-Gather%E7%BB%84%E5%90%88%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.4.2.</span> <span class="nav-text">Reduce_scatter+Gather组合算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ring-Algorithm-1"><span class="nav-number">3.1.4.3.</span> <span class="nav-text">Ring Algorithm</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Allreduce%E6%93%8D%E4%BD%9C%E5%8F%8A%E5%85%B6%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.5.</span> <span class="nav-text">Allreduce操作及其算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Reduce-Broadcast"><span class="nav-number">3.1.5.1.</span> <span class="nav-text">Reduce+Broadcast</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Recursive-Doubling-1"><span class="nav-number">3.1.5.2.</span> <span class="nav-text">Recursive Doubling</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reduce-scatter-Allgather"><span class="nav-number">3.1.5.3.</span> <span class="nav-text">Reduce_scatter+Allgather</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bionary-Block-Algorithm"><span class="nav-number">3.1.5.4.</span> <span class="nav-text">Bionary Block Algorithm</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ring-Algorithm-2"><span class="nav-number">3.1.6.</span> <span class="nav-text">Ring Algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Allreduce%E9%80%89%E6%8B%A9%E6%9C%80%E4%BD%B3%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.7.</span> <span class="nav-text">Allreduce选择最佳算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2017-Scalable-reduction-collectives-with-data-partitioning-based-multi-leader-design"><span class="nav-number">3.2.</span> <span class="nav-text">2017:Scalable reduction collectives with data partitioning-based multi-leader design</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2019-Node-Aware-Improvements-to-Allreduce"><span class="nav-number">3.3.</span> <span class="nav-text">2019:Node-Aware Improvements to Allreduce</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2020-Decomposing-MPI-Collectives-for-Exploiting-Multi-lane-Communication"><span class="nav-number">3.4.</span> <span class="nav-text">2020:Decomposing MPI Collectives for Exploiting Multi-lane Communication</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="虎王"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">虎王</p>
+  <div class="site-description" itemprop="description">喜欢造飞机、导弹和计算机的大学生</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/DoD-Chu/" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;DoD-Chu&#x2F;" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:1368095113@qq.com" title="E-Mail → mailto:1368095113@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/pu-ti-shan-cheng-zhu" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;pu-ti-shan-cheng-zhu" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>知乎</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      其他站点
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.zhihu.com/people/pu-ti-shan-cheng-zhu" title="https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;pu-ti-shan-cheng-zhu" rel="noopener" target="_blank">知乎主页</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; Fri Mar 25 2022 08:00:00 GMT+0800 (中国标准时间) – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">虎王</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共9.8k字</span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+  <script defer src="/lib/three/three.min.js"></script>
+    <script defer src="/lib/three/three-waves.min.js"></script>
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+if (document.querySelectorAll('pre.mermaid').length) {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
+    mermaid.initialize({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    });
+  }, window.mermaid);
+}
+</script>
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
