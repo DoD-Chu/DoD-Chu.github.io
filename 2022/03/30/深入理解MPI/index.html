@@ -23,21 +23,21 @@
     var CONFIG = {"hostname":"synchrosky.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="这篇文章主要深入探讨MPICH通信栈的各个层次以及制约MPI的因素">
+  <meta name="description" content="本文主要深入探讨典型MPI通信栈的各个层次以及制约MPI的因素">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入理解MPI实现">
 <meta property="og:url" content="http://synchrosky.com/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/index.html">
 <meta property="og:site_name" content="Top Gun">
-<meta property="og:description" content="这篇文章主要深入探讨MPICH通信栈的各个层次以及制约MPI的因素">
+<meta property="og:description" content="本文主要深入探讨典型MPI通信栈的各个层次以及制约MPI的因素">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB53b70dc12111821a8ae1e0f1f1319988?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB53b70dc12111821a8ae1e0f1f1319988?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
 <meta property="article:published_time" content="2022-03-29T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-31T03:12:38.811Z">
+<meta property="article:modified_time" content="2022-03-31T09:08:22.101Z">
 <meta property="article:author" content="虎王">
 <meta property="article:tag" content="MPI">
 <meta property="article:tag" content="并行计算">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB53b70dc12111821a8ae1e0f1f1319988?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB53b70dc12111821a8ae1e0f1f1319988?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
 
 <link rel="canonical" href="http://synchrosky.com/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/">
 
@@ -234,7 +234,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-31 11:12:38" itemprop="dateModified" datetime="2022-03-31T11:12:38+08:00">2022-03-31</time>
+                <time title="修改时间：2022-03-31 17:08:22" itemprop="dateModified" datetime="2022-03-31T17:08:22+08:00">2022-03-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -246,7 +246,7 @@
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">MPI集合通信算法</span></a>
+                  <a href="/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E8%BD%AF%E4%BB%B6%E6%A0%88%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">MPI软件栈设计</span></a>
                 </span>
             </span>
 
@@ -258,7 +258,7 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
-            <div class="post-description">这篇文章主要深入探讨MPICH通信栈的各个层次以及制约MPI的因素</div>
+            <div class="post-description">本文主要深入探讨典型MPI通信栈的各个层次以及制约MPI的因素</div>
 
         </div>
       </header>
@@ -269,7 +269,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>本篇文章讨论MPI集合通信的各个层次的实现：从用户接口到硬件实现。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEB53b70dc12111821a8ae1e0f1f1319988?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""></p>
+        <p>本篇文章讨论MPI通信栈的各个层次以及制约MPI性能的主要因素。<br><a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/3126908.3126963">(SC17) Why is MPI so slow?: Analyzing the fundamental limits in implementing MPI-3.1</a><br>这篇文章主要介绍了MPI-3.1标准的主要制约因素，对于深入理解MPI的实现很有帮助。其他的优化MPI的论文都是关注于MPI的典型实现（例如在MPICH或者OpenMPI里优化），而这篇文章则关注MPI-3.1标准的优化，并提出了一个基于MPI-3.1标准的高度优化的MPI实现，工作在MPICH的环境下实现的，主要工作是重新设计了MPICH通信栈里的ch4，如下图所示。</p>
+<div style="align: center">
+<img data-src="https://note.youdao.com/yws/api/personal/file/WEB53b70dc12111821a8ae1e0f1f1319988?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/>
+</div>
+
+<p>MPICH是一个典型的多层次的软件栈。在MPI的用户接口层下面，最上层是“MPI Layer”，执行的都是机器无关代码，往下走是机器相关代码，也被叫做抽象设备层或者设备层，旧的MPICH提供两种设备：CH3（对于大多数平台）以及PAMID（IBM的蓝色基因）。CH4是本文重新设计的设备层，包括CH4 Core和Shmmods（共享内存模式通信）以及Netmods（网络互连模式通信）。一个MPI_PUT操作的控制流如下：（1）在MPI Layer层中检查参数错误、检查描述了访问进程和内存的MPI窗口对象、通信应该使用线程安全路径还是非安全路径；（2）CH4 Core检查局部性，如果目的进程就是自己，CH4 Core直接处理，如果通信发生在同一个节点上，就采用Shmmods，否则采用Netmods，控制流进入模块；（3）在Netmods或者Shmmods中分析操作，并判断是否可以直接在硬件实现还是要基于活动消息回退（没搞懂这个是在干嘛）。比如MPI_PUT操作，在Netmods模式下硬件能直接完成的操作仅限于：连续内存数据的RDMA操作，对于复杂的数据类型会回退到CH4 Core中的活动消息回退处理模块（active-message fallback）。在硬件上完成MPI_PUT操作时会将MPI级别的参数转化为网络级别的参数（比如将MPI中的目标偏移量转化为操作系统的虚拟地址），然后根据对应的MPI操作来完成一个或者多个网络操作。</p>
 
     </div>
 
@@ -437,7 +442,7 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -537,7 +542,7 @@ $(document).ready(function() {
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共10k字</span>
+  <span class="post-count">博客全站共10.6k字</span>
 </div>
         
 <div class="busuanzi-count">
