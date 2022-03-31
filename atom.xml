@@ -6,7 +6,7 @@
   <link href="http://synchrosky.com/atom.xml" rel="self"/>
   
   <link href="http://synchrosky.com/"/>
-  <updated>2022-03-31T03:01:27.937Z</updated>
+  <updated>2022-03-31T03:06:13.114Z</updated>
   <id>http://synchrosky.com/</id>
   
   <author>
@@ -15,31 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>深入理解MPI实现</title>
-    <link href="http://synchrosky.com/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/"/>
-    <id>http://synchrosky.com/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/</id>
-    <published>2022-03-29T16:00:00.000Z</published>
-    <updated>2022-03-31T03:01:27.937Z</updated>
-    
-    <content type="html"><![CDATA[<p>本篇文章讨论MPI集合通信的各个层次的实现：从用户接口到硬件实现。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEB53b70dc12111821a8ae1e0f1f1319988?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""></p>]]></content>
-    
-    
-    <summary type="html">这篇文章主要深入探讨MPICH通信栈的各个层次以及制约MPI的因素</summary>
-    
-    
-    
-    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
-    
-    <category term="MPI集合通信算法" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/"/>
-    
-    
-    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
-    
-    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
-    
-  </entry>
   
   <entry>
     <title>First Allreduce Application</title>
@@ -58,6 +33,31 @@
     <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
     <category term="MPI程序设计" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"/>
+    
+    
+    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
+    
+    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深入理解MPI实现</title>
+    <link href="http://synchrosky.com/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/"/>
+    <id>http://synchrosky.com/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/</id>
+    <published>2022-03-29T16:00:00.000Z</published>
+    <updated>2022-03-31T03:12:38.811Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇文章讨论MPI集合通信的各个层次的实现：从用户接口到硬件实现。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEB53b70dc12111821a8ae1e0f1f1319988?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""></p>]]></content>
+    
+    
+    <summary type="html">这篇文章主要深入探讨MPICH通信栈的各个层次以及制约MPI的因素</summary>
+    
+    
+    
+    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    
+    <category term="MPI集合通信算法" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/"/>
     
     
     <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
