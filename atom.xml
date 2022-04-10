@@ -36,31 +36,6 @@
   </entry>
   
   <entry>
-    <title>MPI集合通信论文整理</title>
-    <link href="http://synchrosky.com/2022/04/10/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E8%AE%BA%E6%96%87%E6%95%B4%E7%90%86/"/>
-    <id>http://synchrosky.com/2022/04/10/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E8%AE%BA%E6%96%87%E6%95%B4%E7%90%86/</id>
-    <published>2022-04-09T16:00:00.000Z</published>
-    <updated>2022-04-10T03:48:45.231Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文全面列举出了MPI集合通信的相关论文，对每篇论文做出一个概述而不是详细介绍，详细的MPI集合通信算法设计可以参考：<a href="https://synchrosky.com/2022/03/27/MPI_Allreduce%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">MPI_Allreuce的前世今生</a>。  </p><h1 id="MPI集合通信论文"><a href="#MPI集合通信论文" class="headerlink" title="MPI集合通信论文"></a>MPI集合通信论文</h1><h2 id="1、2005-Optimization-of-Collective-Communication-Operations-in-MPICH"><a href="#1、2005-Optimization-of-Collective-Communication-Operations-in-MPICH" class="headerlink" title="1、2005: Optimization of Collective Communication Operations in MPICH"></a><a href="https://journals.sagepub.com/doi/10.1177/1094342005051521">1、2005: Optimization of Collective Communication Operations in MPICH</a></h2><p>经典的$MPI$集合通信综述论文，介绍了常用的集合通信操作和对应的算法：$Allgather$, $Broadcast$, $All$-$to$-$all$, $Reduce$-$Scatter$, $Reduce$和$Allreduce$，并进一步的讨论了 $MPI$_$Reduce$ 和$MPI$_$Allreduce$的优化。评估模型为：$T=\alpha+n\beta$。  </p><h2 id="2、-SC17-Why-is-MPI-so-slow-Analyzing-the-fundamental-limits-in-implementing-MPI-3-1"><a href="#2、-SC17-Why-is-MPI-so-slow-Analyzing-the-fundamental-limits-in-implementing-MPI-3-1" class="headerlink" title="2、(SC17) Why is MPI so slow?: Analyzing the fundamental limits in implementing MPI-3.1"></a><a href="https://dl.acm.org/doi/10.1145/3126908.3126963">2、(SC17) Why is MPI so slow?: Analyzing the fundamental limits in implementing MPI-3.1</a></h2><p>这篇文章主要介绍了MPI-3.1标准的主要制约因素，针对MPI-3.1标准的不足重新设计了MPI-CH4软件栈，实现对于深入理解MPI的实现很有帮助。</p>]]></content>
-    
-    
-    <summary type="html">本文全面列举出了MPI集合通信的相关论文，对每篇论文做出一个概述而不是详细介绍</summary>
-    
-    
-    
-    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
-    
-    <category term="MPI集合通信算法" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/"/>
-    
-    
-    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
-    
-    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
-    
-  </entry>
-  
-  <entry>
     <title>In-Network Collective Communication</title>
     <link href="http://synchrosky.com/2022/04/10/In-Network_Collective_Communication/"/>
     <id>http://synchrosky.com/2022/04/10/In-Network_Collective_Communication/</id>
@@ -88,13 +63,38 @@
   </entry>
   
   <entry>
+    <title>MPI集合通信论文整理</title>
+    <link href="http://synchrosky.com/2022/04/10/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E8%AE%BA%E6%96%87%E6%95%B4%E7%90%86/"/>
+    <id>http://synchrosky.com/2022/04/10/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E8%AE%BA%E6%96%87%E6%95%B4%E7%90%86/</id>
+    <published>2022-04-09T16:00:00.000Z</published>
+    <updated>2022-04-10T03:48:45.231Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文全面列举出了MPI集合通信的相关论文，对每篇论文做出一个概述而不是详细介绍，详细的MPI集合通信算法设计可以参考：<a href="https://synchrosky.com/2022/03/27/MPI_Allreduce%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">MPI_Allreuce的前世今生</a>。  </p><h1 id="MPI集合通信论文"><a href="#MPI集合通信论文" class="headerlink" title="MPI集合通信论文"></a>MPI集合通信论文</h1><h2 id="1、2005-Optimization-of-Collective-Communication-Operations-in-MPICH"><a href="#1、2005-Optimization-of-Collective-Communication-Operations-in-MPICH" class="headerlink" title="1、2005: Optimization of Collective Communication Operations in MPICH"></a><a href="https://journals.sagepub.com/doi/10.1177/1094342005051521">1、2005: Optimization of Collective Communication Operations in MPICH</a></h2><p>经典的$MPI$集合通信综述论文，介绍了常用的集合通信操作和对应的算法：$Allgather$, $Broadcast$, $All$-$to$-$all$, $Reduce$-$Scatter$, $Reduce$和$Allreduce$，并进一步的讨论了 $MPI$_$Reduce$ 和$MPI$_$Allreduce$的优化。评估模型为：$T=\alpha+n\beta$。  </p><h2 id="2、-SC17-Why-is-MPI-so-slow-Analyzing-the-fundamental-limits-in-implementing-MPI-3-1"><a href="#2、-SC17-Why-is-MPI-so-slow-Analyzing-the-fundamental-limits-in-implementing-MPI-3-1" class="headerlink" title="2、(SC17) Why is MPI so slow?: Analyzing the fundamental limits in implementing MPI-3.1"></a><a href="https://dl.acm.org/doi/10.1145/3126908.3126963">2、(SC17) Why is MPI so slow?: Analyzing the fundamental limits in implementing MPI-3.1</a></h2><p>这篇文章主要介绍了MPI-3.1标准的主要制约因素，针对MPI-3.1标准的不足重新设计了MPI-CH4软件栈，实现对于深入理解MPI的实现很有帮助。</p>]]></content>
+    
+    
+    <summary type="html">本文全面列举出了MPI集合通信的相关论文，对每篇论文做出一个概述而不是详细介绍</summary>
+    
+    
+    
+    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    
+    <category term="MPI集合通信算法" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
+    
+    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    
+  </entry>
+  
+  <entry>
     <title>操作系统启动过程简述</title>
     <link href="http://synchrosky.com/2022/04/10/OS%E5%90%AF%E5%8A%A8/"/>
     <id>http://synchrosky.com/2022/04/10/OS%E5%90%AF%E5%8A%A8/</id>
     <published>2022-04-09T16:00:00.000Z</published>
-    <updated>2022-04-10T13:46:43.647Z</updated>
+    <updated>2022-04-10T13:48:24.357Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="一、操作系统启动生成的进程树"><a href="#一、操作系统启动生成的进程树" class="headerlink" title="一、操作系统启动生成的进程树"></a>一、操作系统启动生成的进程树</h1><p>下图是我在做实验时调试出来的操作系统生成的进程树，计算机在刚开始启动时执行的是汇编代码，然后执行的第一行C代码是<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start_kernel</span><br></pre></td></tr></table></figure><br>在执行这个函数之后，正在执行的程序成为0号进程，0号进程会先后调用<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__do_fork</span><br><span class="line">do_execve</span><br></pre></td></tr></table></figure><br>两个函数去执行$\verb+fork+$和$\verb+exec+$两个系统调用，生成1号和2号进程，1号进程就是大名鼎鼎的$init$进程，所有用户程序的根进程（包括$shell$进程和用户登录进程等等）。2号进程负责创建和维护所有内核线程（在本图中是960号及之前的进程）。最后0号进程调用<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cpu_dile</span><br></pre></td></tr></table></figure><br>函数进入休眠状态，CPU在没有活跃任务可调度时就执行它。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBaa78b81deaec02c397484e8a2a5b43d4?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt="操作系统启动时生成的进程树"></p><p>二、计算机启动过程<br>本科做实验时画的图，描绘的时MBR启动的图，计算机先执行BIOS，然后跳转到$\verb+0x7c00+$地址执行MBR，然后执行Loader，完成实模式向保护模式切换、页表初始化等工作，然后进入内核。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEB06869dacb48da066cbcdabfb88241216?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt="MBRqidongguocheng "></p>]]></content>
+    <content type="html"><![CDATA[<h1 id="一、操作系统启动生成的进程树"><a href="#一、操作系统启动生成的进程树" class="headerlink" title="一、操作系统启动生成的进程树"></a>一、操作系统启动生成的进程树</h1><p>下图是我在做实验时调试出来的操作系统生成的进程树，计算机在刚开始启动时执行的是汇编代码，然后执行的第一行C代码是<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start_kernel</span><br></pre></td></tr></table></figure><br>在执行这个函数之后，正在执行的程序成为0号进程，0号进程会先后调用<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__do_fork</span><br><span class="line">do_execve</span><br></pre></td></tr></table></figure><br>两个函数去执行$\verb+fork+$和$\verb+exec+$两个系统调用，生成1号和2号进程，1号进程就是大名鼎鼎的$init$进程，所有用户程序的根进程（包括$shell$进程和用户登录进程等等）。2号进程负责创建和维护所有内核线程（在本图中是960号及之前的进程）。最后0号进程调用<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cpu_dile</span><br></pre></td></tr></table></figure><br>函数进入休眠状态，CPU在没有活跃任务可调度时就执行它。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBaa78b81deaec02c397484e8a2a5b43d4?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt="操作系统启动时生成的进程树"></p><h1 id="二、计算机启动过程"><a href="#二、计算机启动过程" class="headerlink" title="二、计算机启动过程"></a>二、计算机启动过程</h1><p>本科做实验时画的图，描绘的时MBR启动的图，计算机先执行BIOS，然后跳转到$\verb+0x7c00+$地址执行MBR，然后执行Loader，完成实模式向保护模式切换、页表初始化等工作，然后进入内核。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEB06869dacb48da066cbcdabfb88241216?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt="MBRqidongguocheng "></p>]]></content>
     
     
     <summary type="html">操作系统启动的皮毛知识</summary>
@@ -138,31 +138,6 @@
   </entry>
   
   <entry>
-    <title>深入理解MPI实现</title>
-    <link href="http://synchrosky.com/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/"/>
-    <id>http://synchrosky.com/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/</id>
-    <published>2022-03-29T16:00:00.000Z</published>
-    <updated>2022-03-31T09:08:22.101Z</updated>
-    
-    <content type="html"><![CDATA[<p>本篇文章讨论MPI通信栈的各个层次以及制约MPI性能的主要因素。<br><a href="https://dl.acm.org/doi/10.1145/3126908.3126963">(SC17) Why is MPI so slow?: Analyzing the fundamental limits in implementing MPI-3.1</a><br>这篇文章主要介绍了MPI-3.1标准的主要制约因素，对于深入理解MPI的实现很有帮助。其他的优化MPI的论文都是关注于MPI的典型实现（例如在MPICH或者OpenMPI里优化），而这篇文章则关注MPI-3.1标准的优化，并提出了一个基于MPI-3.1标准的高度优化的MPI实现，工作在MPICH的环境下实现的，主要工作是重新设计了MPICH通信栈里的ch4，如下图所示。</p><div style="align: center"><img data-src="https://note.youdao.com/yws/api/personal/file/WEB53b70dc12111821a8ae1e0f1f1319988?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/></div><p>MPICH是一个典型的多层次的软件栈。在MPI的用户接口层下面，最上层是“MPI Layer”，执行的都是机器无关代码，往下走是机器相关代码，也被叫做抽象设备层或者设备层，旧的MPICH提供两种设备：CH3（对于大多数平台）以及PAMID（IBM的蓝色基因）。CH4是本文重新设计的设备层，包括CH4 Core和Shmmods（共享内存模式通信）以及Netmods（网络互连模式通信）。一个MPI_PUT操作的控制流如下：（1）在MPI Layer层中检查参数错误、检查描述了访问进程和内存的MPI窗口对象、通信应该使用线程安全路径还是非安全路径；（2）CH4 Core检查局部性，如果目的进程就是自己，CH4 Core直接处理，如果通信发生在同一个节点上，就采用Shmmods，否则采用Netmods，控制流进入模块；（3）在Netmods或者Shmmods中分析操作，并判断是否可以直接在硬件实现还是要基于活动消息回退（没搞懂这个是在干嘛）。比如MPI_PUT操作，在Netmods模式下硬件能直接完成的操作仅限于：连续内存数据的RDMA操作，对于复杂的数据类型会回退到CH4 Core中的活动消息回退处理模块（active-message fallback）。在硬件上完成MPI_PUT操作时会将MPI级别的参数转化为网络级别的参数（比如将MPI中的目标偏移量转化为操作系统的虚拟地址），然后根据对应的MPI操作来完成一个或者多个网络操作。</p>]]></content>
-    
-    
-    <summary type="html">本文主要深入探讨典型MPI通信栈的各个层次以及制约MPI的因素</summary>
-    
-    
-    
-    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
-    
-    <category term="MPI软件栈设计" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E8%BD%AF%E4%BB%B6%E6%A0%88%E8%AE%BE%E8%AE%A1/"/>
-    
-    
-    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
-    
-    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
-    
-  </entry>
-  
-  <entry>
     <title>First Allreduce Application</title>
     <link href="http://synchrosky.com/2022/03/30/First_MPI_Program/"/>
     <id>http://synchrosky.com/2022/03/30/First_MPI_Program/</id>
@@ -179,6 +154,31 @@
     <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
     <category term="MPI程序设计" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"/>
+    
+    
+    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
+    
+    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>深入理解MPI实现</title>
+    <link href="http://synchrosky.com/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/"/>
+    <id>http://synchrosky.com/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/</id>
+    <published>2022-03-29T16:00:00.000Z</published>
+    <updated>2022-03-31T09:08:22.101Z</updated>
+    
+    <content type="html"><![CDATA[<p>本篇文章讨论MPI通信栈的各个层次以及制约MPI性能的主要因素。<br><a href="https://dl.acm.org/doi/10.1145/3126908.3126963">(SC17) Why is MPI so slow?: Analyzing the fundamental limits in implementing MPI-3.1</a><br>这篇文章主要介绍了MPI-3.1标准的主要制约因素，对于深入理解MPI的实现很有帮助。其他的优化MPI的论文都是关注于MPI的典型实现（例如在MPICH或者OpenMPI里优化），而这篇文章则关注MPI-3.1标准的优化，并提出了一个基于MPI-3.1标准的高度优化的MPI实现，工作在MPICH的环境下实现的，主要工作是重新设计了MPICH通信栈里的ch4，如下图所示。</p><div style="align: center"><img data-src="https://note.youdao.com/yws/api/personal/file/WEB53b70dc12111821a8ae1e0f1f1319988?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13" width="70%" height="70%"/></div><p>MPICH是一个典型的多层次的软件栈。在MPI的用户接口层下面，最上层是“MPI Layer”，执行的都是机器无关代码，往下走是机器相关代码，也被叫做抽象设备层或者设备层，旧的MPICH提供两种设备：CH3（对于大多数平台）以及PAMID（IBM的蓝色基因）。CH4是本文重新设计的设备层，包括CH4 Core和Shmmods（共享内存模式通信）以及Netmods（网络互连模式通信）。一个MPI_PUT操作的控制流如下：（1）在MPI Layer层中检查参数错误、检查描述了访问进程和内存的MPI窗口对象、通信应该使用线程安全路径还是非安全路径；（2）CH4 Core检查局部性，如果目的进程就是自己，CH4 Core直接处理，如果通信发生在同一个节点上，就采用Shmmods，否则采用Netmods，控制流进入模块；（3）在Netmods或者Shmmods中分析操作，并判断是否可以直接在硬件实现还是要基于活动消息回退（没搞懂这个是在干嘛）。比如MPI_PUT操作，在Netmods模式下硬件能直接完成的操作仅限于：连续内存数据的RDMA操作，对于复杂的数据类型会回退到CH4 Core中的活动消息回退处理模块（active-message fallback）。在硬件上完成MPI_PUT操作时会将MPI级别的参数转化为网络级别的参数（比如将MPI中的目标偏移量转化为操作系统的虚拟地址），然后根据对应的MPI操作来完成一个或者多个网络操作。</p>]]></content>
+    
+    
+    <summary type="html">本文主要深入探讨典型MPI通信栈的各个层次以及制约MPI的因素</summary>
+    
+    
+    
+    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    
+    <category term="MPI软件栈设计" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E8%BD%AF%E4%BB%B6%E6%A0%88%E8%AE%BE%E8%AE%A1/"/>
     
     
     <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
