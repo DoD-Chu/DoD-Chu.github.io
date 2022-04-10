@@ -47,7 +47,7 @@
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBcc34716f4289d3c74ac7e0bd65786af4?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBa4ff21d874a476bc6a4110496d8d7bbc?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
 <meta property="article:published_time" content="2022-03-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-10T03:22:53.606Z">
+<meta property="article:modified_time" content="2022-04-10T03:42:16.320Z">
 <meta property="article:author" content="虎王">
 <meta property="article:tag" content="MPI">
 <meta property="article:tag" content="并行计算">
@@ -249,7 +249,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-10 11:22:53" itemprop="dateModified" datetime="2022-04-10T11:22:53+08:00">2022-04-10</time>
+                <time title="修改时间：2022-04-10 11:42:16" itemprop="dateModified" datetime="2022-04-10T11:42:16+08:00">2022-04-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -297,7 +297,7 @@
 <p>图片源网址和$MPI$_$Allreduce$的入门教程在这里：<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/">英文版</a>和<a target="_blank" rel="noopener" href="https://mpitutorial.com/tutorials/mpi-reduce-and-allreduce/zh_cn/">中文版</a>  </p>
 <p>$MPI$_$Allreduce$广泛用于各种并行与分布式应用程序：科学计算、大数据、分布式机器学习、分布式深度学习DNN等等，并且<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/document/8665758">已有工作</a>表明 $MPI$_$Allreduce$ 是使用频率和运行时间最长的集合通信操作。</p>
 <p>自从$MPI$标准在$1994$年提出以来，$MPI$_$Allreduce$的相关研究从上世纪90年代就已经有很多了，而本文从2005年的一篇综述论文出发，一直追溯到现在，总结$MPI$_$Allreduce$ 的算法激情燃烧的昨天、老骥伏枥的今天和仰望星空过后的明天。  </p>
-<h1 id="经典数据结构与算法"><a href="#经典数据结构与算法" class="headerlink" title="经典数据结构与算法"></a>经典数据结构与算法</h1><h2 id="0、评估模型：-T-alpha-n-beta"><a href="#0、评估模型：-T-alpha-n-beta" class="headerlink" title="0、评估模型：$T=\alpha+n\beta$"></a>0、评估模型：$T=\alpha+n\beta$</h2><p><a target="_blank" rel="noopener" href="https://journals.sagepub.com/doi/10.1177/1094342005051521">2005:Optimization of Collective Communication Operations in MPICH</a>是一篇经典的$MPI$集合通信论文，介绍了常用的集合通信操作和对应的算法：$Allgather$, $Broadcast$, $All$-$to$-$all$, $Reduce$-$Scatter$, $Reduce$和$Allreduce$，并进一步的讨论了 $MPI$_$Reduce$ 和$MPI$_$Allreduce$的优化。我有一门选修课的作业就是将这篇论文全文翻译：<a target="_blank" rel="noopener" href="https://note.youdao.com/ynoteshare/index.html?id=1b5cc29dea0aff44f92bdb69a2763e79&amp;type=notebook&amp;_time=1648432853246#/WEB26278ae64dfc1a52e0ece0dd615075f3">翻译原文</a>。<br>这篇文章采用的性能评估模型是$\alpha+n\beta$，任意两个节点之间发送一条消息的时间可以用$T=\alpha+n\beta$，其中$\alpha$表示延迟（或者说启动时间），与消息大小无关，而$\beta$表示每个字节的传输时间，$n$表示传输消息的字节数，对于规约操作则用$\gamma$表示每个字节执行规约操作的时间消耗。由于$MPI$基于分布式存储系统，采用$LogP$模型（$L:latency$, $o:overhead$, $g:gap$, $P:processor$），一条长度为$n$的消息传输时间可以计算为:   </p>
+<h1 id="经典数据结构与算法"><a href="#经典数据结构与算法" class="headerlink" title="经典数据结构与算法"></a>经典数据结构与算法</h1><h2 id="0、评估模型：-T-alpha-n-beta"><a href="#0、评估模型：-T-alpha-n-beta" class="headerlink" title="0、评估模型：$T=\alpha+n\beta$"></a>0、评估模型：$T=\alpha+n\beta$</h2><p><a target="_blank" rel="noopener" href="https://journals.sagepub.com/doi/10.1177/1094342005051521">2005:Optimization of Collective Communication Operations in MPICH</a>是一篇经典的$MPI$集合通信论文，介绍了常用的集合通信操作和对应的算法：$Allgather$, $Broadcast$, $All$-$to$-$all$, $Reduce$-$Scatter$, $Reduce$和$Allreduce$，并进一步的讨论了 $MPI$_$Reduce$ 和$MPI$_$Allreduce$的优化。我有一门选修课的作业就是将这篇论文全文翻译：<a target="_blank" rel="noopener" href="https://note.youdao.com/ynoteshare/index.html?id=1b5cc29dea0aff44f92bdb69a2763e79&amp;type=notebook&amp;_time=1648432853246#/WEB26278ae64dfc1a52e0ece0dd615075f3">翻译原文</a>。<br>这篇文章采用的性能评估模型是$T=\alpha+n\beta$，任意两个节点之间发送一条消息的时间可以用$T=\alpha+n\beta$，其中$\alpha$表示延迟（或者说启动时间），与消息大小无关，而$\beta$表示每个字节的传输时间，$n$表示传输消息的字节数，对于规约操作则用$\gamma$表示每个字节执行规约操作的时间消耗。由于$MPI$基于分布式存储系统，采用$LogP$模型（$L:latency$, $o:overhead$, $g:gap$, $P:processor$），一条长度为$n$的消息传输时间可以计算为:   </p>
 <script type="math/tex; mode=display">T=L+2o+(n-1)b,其中b=min(o, g)</script><p>也就是传输延迟$L$加上两端处理器的处理开销$2o$，和$n$个字节的传输时间，注意$overhead$是任意一个消息的处理开销，$gap$是连续两个字节的传输时间间隔。将上述式子变形，可以得到：  </p>
 <script type="math/tex; mode=display">T=(L+2o-b)+nb=\alpha+n\beta</script><p>这也就是本文性能评估模型的公式，许多文献和教材中也用到了这个公式。我们将$\alpha$称为延迟项$(latency\ term)$，而$n\beta$称为带宽项$(bandwidth\ term)$，并用这个公式来形式化的评估集合通信算法的性能。<br>下面深入讨论这篇论文介绍的集合通信算法。  </p>
 <h2 id="1、-Allgather-操作及算法"><a href="#1、-Allgather-操作及算法" class="headerlink" title="1、$Allgather$操作及算法"></a>1、$Allgather$操作及算法</h2><p>$Allgather$操作的图解如下:  </p>
@@ -579,7 +579,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -686,7 +686,7 @@ $(document).ready(function() {
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共10.5k字</span>
+  <span class="post-count">博客全站共10.7k字</span>
 </div>
         
 <div class="busuanzi-count">
