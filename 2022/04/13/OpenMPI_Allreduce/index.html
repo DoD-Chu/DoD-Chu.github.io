@@ -23,22 +23,24 @@
     var CONFIG = {"hostname":"synchrosky.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="本网站内容的基本介绍">
+  <meta name="description" content="该页面整理了MPI_Allreduce在OpenMP和MPICH中的设计与最佳算法选择。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Read Me（导航栏）">
-<meta property="og:url" content="http://synchrosky.com/2022/04/10/Guiding_Board/index.html">
+<meta property="og:title" content="MPI_Allreduce的在OpenMPI、MPICH中的实现">
+<meta property="og:url" content="http://synchrosky.com/2022/04/13/OpenMPI_Allreduce/index.html">
 <meta property="og:site_name" content="Top Gun">
-<meta property="og:description" content="本网站内容的基本介绍">
+<meta property="og:description" content="该页面整理了MPI_Allreduce在OpenMP和MPICH中的设计与最佳算法选择。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB8a52193ab1800fc09b72a30eedd0319b?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2">
-<meta property="article:published_time" content="2022-04-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-10T13:46:57.660Z">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBe72f862168bf8e1b1160921fdaa777e5?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBaf678527cc22aef2ee843df01b5d78d4?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13">
+<meta property="article:published_time" content="2022-04-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-13T03:02:22.615Z">
 <meta property="article:author" content="虎王">
-<meta property="article:tag" content="固定翼飞机、巡航导弹、计算机、并行计算、操作系统">
+<meta property="article:tag" content="MPI">
+<meta property="article:tag" content="并行计算">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB8a52193ab1800fc09b72a30eedd0319b?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2">
+<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEBe72f862168bf8e1b1160921fdaa777e5?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13">
 
-<link rel="canonical" href="http://synchrosky.com/2022/04/10/Guiding_Board/">
+<link rel="canonical" href="http://synchrosky.com/2022/04/13/OpenMPI_Allreduce/">
 
 
 <script id="page-configurations">
@@ -51,7 +53,7 @@
   };
 </script>
 
-  <title>Read Me（导航栏） | Top Gun</title>
+  <title>MPI_Allreduce的在OpenMPI、MPICH中的实现 | Top Gun</title>
   
 
 
@@ -203,7 +205,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://synchrosky.com/2022/04/10/Guiding_Board/">
+    <link itemprop="mainEntityOfPage" href="http://synchrosky.com/2022/04/13/OpenMPI_Allreduce/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -216,7 +218,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Read Me（导航栏）
+          MPI_Allreduce的在OpenMPI、MPICH中的实现
         </h1>
 
         <div class="post-meta">
@@ -227,7 +229,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-04-10 00:00:00 / 修改时间：21:46:57" itemprop="dateCreated datePublished" datetime="2022-04-10T00:00:00+08:00">2022-04-10</time>
+              <time title="创建时间：2022-04-13 00:00:00 / 修改时间：11:02:22" itemprop="dateCreated datePublished" datetime="2022-04-13T00:00:00+08:00">2022-04-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,7 +237,11 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AF%BC%E8%88%AA/" itemprop="url" rel="index"><span itemprop="name">导航</span></a>
+                  <a href="/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/" itemprop="url" rel="index"><span itemprop="name">并行计算</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">MPI集合通信算法</span></a>
                 </span>
             </span>
 
@@ -247,7 +253,7 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
-            <div class="post-description">本网站内容的基本介绍</div>
+            <div class="post-description">该页面整理了MPI_Allreduce在OpenMP和MPICH中的设计与最佳算法选择。</div>
 
         </div>
       </header>
@@ -258,14 +264,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="搭建该网站的目的"><a href="#搭建该网站的目的" class="headerlink" title="搭建该网站的目的"></a>搭建该网站的目的</h1><p>小王同学做网站的初衷有两点：第一，为了写一篇综述论文，我做的方向是并行计算和互连网络的结合，由于我自己要写的综述论文涵盖的面非常广，也深入到了MPI和互连网络的最底层，所以难度相当大，为了积累材料和做笔记，我打算自己搭建一个网站；第二，我希望自己整理的工作和思路不仅能够被组里的老师和师兄师姐看到，引起大家的讨论和思考，也希望更多的人能够了解到。随着时间的推移，网站的内容也会越来越多，越来也丰富。我不仅总结了自己读过的论文，自己的部分想法和工作，还记录了自己做过的一些实验以及计算机的一些基础知识，甚至还有一些奇怪的知识、整过的活、现在和曾经的生活面貌，我逐渐认识到这个世界是复杂的，是值得我们奋斗的。  </p>
-<h1 id="网站内容导航"><a href="#网站内容导航" class="headerlink" title="网站内容导航"></a>网站内容导航</h1><h2 id="一、并行计算系列"><a href="#一、并行计算系列" class="headerlink" title="一、并行计算系列"></a>一、并行计算系列</h2><h3 id="1、MPI程序设计基础与并行算法"><a href="#1、MPI程序设计基础与并行算法" class="headerlink" title="1、MPI程序设计基础与并行算法"></a>1、MPI程序设计基础与并行算法</h3><p><a href="https://synchrosky.com/2022/03/30/First_MPI_Program/">MPICH的安装和第一个Allreduce程序</a><br><a href="https://synchrosky.com/2022/03/26/%E5%88%A9%E7%94%A8MPI%E5%AE%9E%E7%8E%B0Cannon%E7%AE%97%E6%B3%95%E5%B9%B6%E8%A1%8C%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95/">并行矩阵乘法：Cannon算法</a>  </p>
-<h3 id="2、MPI集合通信算法"><a href="#2、MPI集合通信算法" class="headerlink" title="2、MPI集合通信算法"></a>2、MPI集合通信算法</h3><p><a href="https://synchrosky.com/2022/03/27/MPI_Allreduce%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">MPI_Allreduce的前世今生</a><br><a href="https://synchrosky.com/2022/04/10/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E8%AE%BA%E6%96%87%E6%95%B4%E7%90%86/">MPI集合通信论文整理</a><br><a href="https://synchrosky.com/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/">深入理解MPI实现</a>  </p>
-<h3 id="3、在网计算-In-Network-集合通信"><a href="#3、在网计算-In-Network-集合通信" class="headerlink" title="3、在网计算(In-Network)集合通信"></a>3、在网计算(In-Network)集合通信</h3><p><a href="https://synchrosky.com/2022/04/10/In-Network_Collective_Communication/">在网计算集合通信</a><br><a href="https://synchrosky.com/2022/04/10/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E4%B9%8B%E5%9C%A8%E7%BD%91%E8%AE%A1%E7%AE%97%E8%AE%BA%E6%96%87%E6%95%B4%E7%90%86/">在网计算集合通信论文整理</a></p>
-<h2 id="二、计算机基础知识系列"><a href="#二、计算机基础知识系列" class="headerlink" title="二、计算机基础知识系列"></a>二、计算机基础知识系列</h2><h3 id="1、操作系统"><a href="#1、操作系统" class="headerlink" title="1、操作系统"></a>1、操作系统</h3><p><a href="https://synchrosky.com/2022/04/10/OS%E5%90%AF%E5%8A%A8/">操作系统启动的皮毛知识</a></p>
-<h2 id="三、奇怪知识系列"><a href="#三、奇怪知识系列" class="headerlink" title="三、奇怪知识系列"></a>三、奇怪知识系列</h2><h2 id="四、整活系列"><a href="#四、整活系列" class="headerlink" title="四、整活系列"></a>四、整活系列</h2><p>1、<a href="https://synchrosky.com/2022/03/26/xjtu/">XJTU的旧时光</a>    </p>
-<p>本网站内容持续更新中…<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEB8a52193ab1800fc09b72a30eedd0319b?method=download&amp;shareKey=db01fa57b10b434ada861e14c93e6ff2" alt=""></p>
-
+        <h1 id="OpenMPI中的Allreduce算法"><a href="#OpenMPI中的Allreduce算法" class="headerlink" title="OpenMPI中的Allreduce算法"></a>OpenMPI中的Allreduce算法</h1><h2 id="1、OpenMPI-4-1的MPI-Allreduce实现"><a href="#1、OpenMPI-4-1的MPI-Allreduce实现" class="headerlink" title="1、OpenMPI-4.1的MPI_Allreduce实现"></a>1、OpenMPI-4.1的MPI_Allreduce实现</h2><p>$\verb+OpenMPI-4.1.2+$是最新版本的$\verb+OpenMPI+$，算法的具体选择在$\verb+ompi/mca/coll/tuned/coll_tuned_decision_fixed.c+$和$\verb+ompi/mca/coll/tuned/coll_tuned_decision_dynamic.c+$文件里，用户可以指定规则以及选择使用的算法，并且$\verb+OpenMPI+$使用了6种算法，分别是<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Algorithms:</span><br><span class="line">   &#123;<span class="number">1</span>, <span class="string">&quot;basic_linear&quot;</span>&#125;: Reduce + Broadcast</span><br><span class="line">   &#123;<span class="number">2</span>, <span class="string">&quot;nonoverlapping&quot;</span>&#125;: Reduce +Broadcast</span><br><span class="line">   &#123;<span class="number">3</span>, <span class="string">&quot;recursive_doubling&quot;</span>&#125;: Recursive Doubling</span><br><span class="line">   &#123;<span class="number">4</span>, <span class="string">&quot;ring&quot;</span>&#125;: Ring(Segmented Messages) + Allgather(Ring)</span><br><span class="line">   &#123;<span class="number">5</span>, <span class="string">&quot;segmented_ring&quot;</span>&#125;: Segmented Ring</span><br><span class="line">   &#123;<span class="number">6</span>, <span class="string">&quot;rabenseifner&quot;</span>&#125;: Reduce-Scatter + Allgather</span><br><span class="line">   <span class="comment">/* Currently, ring, segmented ring, and rabenseifner do not support non-commutative operations. */</span></span><br></pre></td></tr></table></figure><br>默认使用$\verb+/coll_tuned_decision_fixed.c+$里的规则，具体的选择方法如下(原代码是100多行的$else-if$，贼暴力)：<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBe72f862168bf8e1b1160921fdaa777e5?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""><br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBaf678527cc22aef2ee843df01b5d78d4?method=download&amp;shareKey=0412dcb1d5f95516723864a4f1a48a13" alt=""><br>除了默认的规则之外，用户还可以指定参数来选择对应的算法。6种算法的实现分别如下：</p>
+<h3 id="1、basic-linear函数：Reduce-Broadcast操作"><a href="#1、basic-linear函数：Reduce-Broadcast操作" class="headerlink" title="1、basic_linear函数：Reduce+Broadcast操作"></a>1、basic_linear函数：Reduce+Broadcast操作</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">ompi_coll_base_allreduce_intra_basic_linear</span><span class="params">(...)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* Reduce to 0 and broadcast. */</span></span><br><span class="line">    <span class="keyword">return</span> ompi_coll_base_reduce_intra_basic_linear(sbuf, rbuf, count, dtype, op, <span class="number">0</span>, comm, module);</span><br><span class="line">    <span class="keyword">return</span> ompi_coll_base_bcast_intra_basic_linear(rbuf, count, dtype, <span class="number">0</span>, comm, module);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2、recursive-doubling函数"><a href="#2、recursive-doubling函数" class="headerlink" title="2、recursive_doubling函数"></a>2、recursive_doubling函数</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">ompi_coll_base_allreduce_intra_nonoverlapping</span><span class="params">(...)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> comm-&gt;c_coll-&gt;coll_reduce (sbuf, rbuf, count, dtype, op, <span class="number">0</span>, comm, comm-&gt;c_coll-&gt;coll_reduce_module);</span><br><span class="line">    <span class="keyword">return</span> comm-&gt;c_coll-&gt;coll_bcast (rbuf, count, dtype, <span class="number">0</span>, comm, comm-&gt;c_coll-&gt;coll_bcast_module);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3、nonoverlapping函数：Reduce-Broadcast操作"><a href="#3、nonoverlapping函数：Reduce-Broadcast操作" class="headerlink" title="3、nonoverlapping函数：Reduce+Broadcast操作"></a>3、nonoverlapping函数：Reduce+Broadcast操作</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*The algorithm preserves order of operations so it can be used both by commutative and non-commutative operations.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *         Example on 7 nodes:</span></span><br><span class="line"><span class="comment"> *         Initial state</span></span><br><span class="line"><span class="comment"> *         #      0       1      2       3      4       5      6</span></span><br><span class="line"><span class="comment"> *               [0]     [1]    [2]     [3]    [4]     [5]    [6]</span></span><br><span class="line"><span class="comment"> *         Initial adjustment step for non-power of two nodes.</span></span><br><span class="line"><span class="comment"> *         old rank      1              3              5      6</span></span><br><span class="line"><span class="comment"> *         new rank      0              1              2      3</span></span><br><span class="line"><span class="comment"> *                     [0+1]          [2+3]          [4+5]   [6]</span></span><br><span class="line"><span class="comment"> *         Step 1</span></span><br><span class="line"><span class="comment"> *         old rank      1              3              5      6</span></span><br><span class="line"><span class="comment"> *         new rank      0              1              2      3</span></span><br><span class="line"><span class="comment"> *                     [0+1+]         [0+1+]         [4+5+]  [4+5+]</span></span><br><span class="line"><span class="comment"> *                     [2+3+]         [2+3+]         [6   ]  [6   ]</span></span><br><span class="line"><span class="comment"> *         Step 2</span></span><br><span class="line"><span class="comment"> *         old rank      1              3              5      6</span></span><br><span class="line"><span class="comment"> *         new rank      0              1              2      3</span></span><br><span class="line"><span class="comment"> *                     [0+1+]         [0+1+]         [0+1+]  [0+1+]</span></span><br><span class="line"><span class="comment"> *                     [2+3+]         [2+3+]         [2+3+]  [2+3+]</span></span><br><span class="line"><span class="comment"> *                     [4+5+]         [4+5+]         [4+5+]  [4+5+]</span></span><br><span class="line"><span class="comment"> *                     [6   ]         [6   ]         [6   ]  [6   ]</span></span><br><span class="line"><span class="comment"> *         Final adjustment step for non-power of two nodes</span></span><br><span class="line"><span class="comment"> *         #      0       1      2       3      4       5      6</span></span><br><span class="line"><span class="comment"> *              [0+1+] [0+1+] [0+1+]  [0+1+] [0+1+]  [0+1+] [0+1+]</span></span><br><span class="line"><span class="comment"> *              [2+3+] [2+3+] [2+3+]  [2+3+] [2+3+]  [2+3+] [2+3+]</span></span><br><span class="line"><span class="comment"> *              [4+5+] [4+5+] [4+5+]  [4+5+] [4+5+]  [4+5+] [4+5+]</span></span><br><span class="line"><span class="comment"> *              [6   ] [6   ] [6   ]  [6   ] [6   ]  [6   ] [6   ]</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">ompi_coll_base_allreduce_intra_recursivedoubling</span><span class="params">(...)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="number">1</span> == comm_size) <span class="keyword">return</span> MPI_SUCCESS;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Determine nearest power of two less than or equal to size */</span></span><br><span class="line">    adjsize = opal_next_poweroftwo (size);</span><br><span class="line">    adjsize &gt;&gt;= <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Handle non-power-of-two case:</span></span><br><span class="line"><span class="comment">       - Even ranks less than 2 * extra_ranks send their data to (rank + 1), and</span></span><br><span class="line"><span class="comment">       sets new rank to -1.</span></span><br><span class="line"><span class="comment">       - Odd ranks less than 2 * extra_ranks receive data from (rank - 1),</span></span><br><span class="line"><span class="comment">       apply appropriate operation, and set new rank to rank/2</span></span><br><span class="line"><span class="comment">       - Everyone else sets rank to rank - extra_ranks</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -290,7 +292,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://synchrosky.com/2022/04/10/Guiding_Board/" title="Read Me（导航栏）">http://synchrosky.com/2022/04/10/Guiding_Board/</a>
+    <a href="http://synchrosky.com/2022/04/13/OpenMPI_Allreduce/" title="MPI_Allreduce的在OpenMPI、MPICH中的实现">http://synchrosky.com/2022/04/13/OpenMPI_Allreduce/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -329,6 +331,10 @@
 
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MPI/" rel="tag"># MPI</a>
+              <a href="/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/" rel="tag"># 并行计算</a>
+          </div>
 
         
 
@@ -336,13 +342,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/10/In-Network_Collective_Communication/" rel="prev" title="In-Network Collective Communication">
-      <i class="fa fa-chevron-left"></i> In-Network Collective Communication
+    <a href="/2022/04/10/Guiding_Board/" rel="prev" title="Read Me（导航栏）">
+      <i class="fa fa-chevron-left"></i> Read Me（导航栏）
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/04/13/OpenMPI_Allreduce/" rel="next" title="MPI_Allreduce的在OpenMPI、MPICH中的实现">
-      MPI_Allreduce的在OpenMPI、MPICH中的实现 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -406,7 +409,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E8%AF%A5%E7%BD%91%E7%AB%99%E7%9A%84%E7%9B%AE%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">搭建该网站的目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E5%86%85%E5%AE%B9%E5%AF%BC%E8%88%AA"><span class="nav-number">2.</span> <span class="nav-text">网站内容导航</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97%E7%B3%BB%E5%88%97"><span class="nav-number">2.1.</span> <span class="nav-text">一、并行计算系列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81MPI%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%9F%BA%E7%A1%80%E4%B8%8E%E5%B9%B6%E8%A1%8C%E7%AE%97%E6%B3%95"><span class="nav-number">2.1.1.</span> <span class="nav-text">1、MPI程序设计基础与并行算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95"><span class="nav-number">2.1.2.</span> <span class="nav-text">2、MPI集合通信算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E5%9C%A8%E7%BD%91%E8%AE%A1%E7%AE%97-In-Network-%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1"><span class="nav-number">2.1.3.</span> <span class="nav-text">3、在网计算(In-Network)集合通信</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E7%B3%BB%E5%88%97"><span class="nav-number">2.2.</span> <span class="nav-text">二、计算机基础知识系列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.2.1.</span> <span class="nav-text">1、操作系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%A5%87%E6%80%AA%E7%9F%A5%E8%AF%86%E7%B3%BB%E5%88%97"><span class="nav-number">2.3.</span> <span class="nav-text">三、奇怪知识系列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%95%B4%E6%B4%BB%E7%B3%BB%E5%88%97"><span class="nav-number">2.4.</span> <span class="nav-text">四、整活系列</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenMPI%E4%B8%AD%E7%9A%84Allreduce%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">OpenMPI中的Allreduce算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81OpenMPI-4-1%E7%9A%84MPI-Allreduce%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.</span> <span class="nav-text">1、OpenMPI-4.1的MPI_Allreduce实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81basic-linear%E5%87%BD%E6%95%B0%EF%BC%9AReduce-Broadcast%E6%93%8D%E4%BD%9C"><span class="nav-number">1.1.1.</span> <span class="nav-text">1、basic_linear函数：Reduce+Broadcast操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81recursive-doubling%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">2、recursive_doubling函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81nonoverlapping%E5%87%BD%E6%95%B0%EF%BC%9AReduce-Broadcast%E6%93%8D%E4%BD%9C"><span class="nav-number">1.1.3.</span> <span class="nav-text">3、nonoverlapping函数：Reduce+Broadcast操作</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
