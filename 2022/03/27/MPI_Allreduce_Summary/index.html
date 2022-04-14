@@ -26,7 +26,7 @@
   <meta name="description" content="该文章系统整理了MPI Allreduce的算法设计，从2005年及更早以前的MPI集合通信算法开始整理，并且跟进了最新的集合通信算法设计。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MPI_Allreduce的前世今生">
-<meta property="og:url" content="http://synchrosky.com/2022/03/27/MPI_Allreduce%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/index.html">
+<meta property="og:url" content="http://synchrosky.com/2022/03/27/MPI_Allreduce_Summary/index.html">
 <meta property="og:site_name" content="Top Gun">
 <meta property="og:description" content="该文章系统整理了MPI Allreduce的算法设计，从2005年及更早以前的MPI集合通信算法开始整理，并且跟进了最新的集合通信算法设计。">
 <meta property="og:locale" content="zh_CN">
@@ -56,7 +56,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEB635e35297acaeac7ad5f79fc97142fab?method=download&shareKey=0412dcb1d5f95516723864a4f1a48a13">
 
-<link rel="canonical" href="http://synchrosky.com/2022/03/27/MPI_Allreduce%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">
+<link rel="canonical" href="http://synchrosky.com/2022/03/27/MPI_Allreduce_Summary/">
 
 
 <script id="page-configurations">
@@ -221,7 +221,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://synchrosky.com/2022/03/27/MPI_Allreduce%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">
+    <link itemprop="mainEntityOfPage" href="http://synchrosky.com/2022/03/27/MPI_Allreduce_Summary/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -452,7 +452,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://synchrosky.com/2022/03/27/MPI_Allreduce%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/" title="MPI_Allreduce的前世今生">http://synchrosky.com/2022/03/27/MPI_Allreduce的前世今生/</a>
+    <a href="http://synchrosky.com/2022/03/27/MPI_Allreduce_Summary/" title="MPI_Allreduce的前世今生">http://synchrosky.com/2022/03/27/MPI_Allreduce_Summary/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -502,12 +502,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/26/xjtu/" rel="prev" title="在西交的四年光影">
-      <i class="fa fa-chevron-left"></i> 在西交的四年光影
+    <a href="/2022/03/26/Cannon/" rel="prev" title="Cannon矩阵乘法">
+      <i class="fa fa-chevron-left"></i> Cannon矩阵乘法
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/03/30/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3MPI/" rel="next" title="深入理解MPI实现">
-      深入理解MPI实现 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/03/30/First_MPI_Program/" rel="next" title="First Allreduce Application">
+      First Allreduce Application <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -588,7 +588,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -695,7 +695,7 @@ $(document).ready(function() {
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共13.2k字</span>
+  <span class="post-count">博客全站共13.5k字</span>
 </div>
         
 <div class="busuanzi-count">
