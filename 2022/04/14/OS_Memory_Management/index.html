@@ -23,21 +23,25 @@
     var CONFIG = {"hostname":"synchrosky.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="这是小王同学的第2篇操作系统知识：OS内存管理">
+  <meta name="description" content="本篇为小王同学的第2篇操作系统知识：OS内存管理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="操作系统内存管理">
 <meta property="og:url" content="http://synchrosky.com/2022/04/14/OS_Memory_Management/index.html">
 <meta property="og:site_name" content="Top Gun">
-<meta property="og:description" content="这是小王同学的第2篇操作系统知识：OS内存管理">
+<meta property="og:description" content="本篇为小王同学的第2篇操作系统知识：OS内存管理">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBd2c6f9aa2aba4711f240fc93e0d8b0f9?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBaa4e07bd5ea8a36a7fee1b719e45e1e8?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929">
 <meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBeef4de30e9a491b8e5e67f7ac6a28611?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB4e818deadc690a92531ae4b7dd59f4f9?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEB2ba0e77ad04bc1d9cac6fbc86f2116b9?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/WEBb64067bdc921cd6d793f8f6287df9cb6?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929">
 <meta property="article:published_time" content="2022-04-13T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-14T14:52:20.869Z">
+<meta property="article:modified_time" content="2022-04-16T14:58:09.026Z">
 <meta property="article:author" content="虎王">
 <meta property="article:tag" content="操作系统">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEBaa4e07bd5ea8a36a7fee1b719e45e1e8?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929">
+<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/WEBd2c6f9aa2aba4711f240fc93e0d8b0f9?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929">
 
 <link rel="canonical" href="http://synchrosky.com/2022/04/14/OS_Memory_Management/">
 
@@ -226,10 +230,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-04-14 00:00:00 / 修改时间：22:52:20" itemprop="dateCreated datePublished" datetime="2022-04-14T00:00:00+08:00">2022-04-14</time>
+              <time title="创建时间：2022-04-14 00:00:00" itemprop="dateCreated datePublished" datetime="2022-04-14T00:00:00+08:00">2022-04-14</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-16 22:58:09" itemprop="dateModified" datetime="2022-04-16T22:58:09+08:00">2022-04-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -252,7 +262,7 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
-            <div class="post-description">这是小王同学的第2篇操作系统知识：OS内存管理</div>
+            <div class="post-description">本篇为小王同学的第2篇操作系统知识：OS内存管理</div>
 
         </div>
       </header>
@@ -263,7 +273,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="一、分页系统"><a href="#一、分页系统" class="headerlink" title="一、分页系统"></a>一、分页系统</h1><h2 id="1、自己做的页目录表和页表"><a href="#1、自己做的页目录表和页表" class="headerlink" title="1、自己做的页目录表和页表"></a>1、自己做的页目录表和页表</h2><p>下图是我本科做实验时自己做的页目录和页表。其中用户程序使用$\verb+0x00~0xcfffffff+$这3GB逻辑地址空间，而系统程序使用$\verb+0xc0000000~0xffffffff+$这1GB逻辑地址空间。在物理内存中，$\verb+0x00~0xfffff+$这1MB空间留给BIOS、MBR、Loader、中断向量表，页目录表位于内存$\verb+0x100000~0x100fff+$，大小共1KB，含1024个页目录项。页表紧跟着页目录表后面，页表0的地址为$\verb+0x101000~0x101fff+$，页表1的地址为$\verb+0x102000~0x102fff+$，依次类推。<br>页目录表中的第$\verb+0~767+$页目录项映射到低3GB逻辑内存中，而第$\verb+768~1022+$页目录项映射到高1GB逻辑内存中，1023号页目录项指向页目录表自己，而768号页目录项指向页表0，769号页目录项指向页表1，以此类推。页表0的第一个页表项指向地址$\verb+0x00+$为起始的4KB物理页（最上面的物理页0）。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBaa4e07bd5ea8a36a7fee1b719e45e1e8?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt="页目录和页表"><br>注意所有用户的页目录表的$\verb+768~1022+$项完全相同，因为都指向共享的内核空间。创建进程时从页目录表的第$\verb+768~1022+$拷贝即可（图片中写错字了，应该是页目录表而不是页表）。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBeef4de30e9a491b8e5e67f7ac6a28611?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt=""></p>
+        <h1 id="一、分页系统"><a href="#一、分页系统" class="headerlink" title="一、分页系统"></a>一、分页系统</h1><h2 id="1、段页式系统"><a href="#1、段页式系统" class="headerlink" title="1、段页式系统"></a>1、段页式系统</h2><p>段页式内存管理的模型如下所示(途中只画出了一级分页模型)，$Linux$采用了4级分页模型来适应多种硬件环境，但在x86 CPU中（IA-32架构）中使用二级分页模型，即页目录表和页表结合。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBd2c6f9aa2aba4711f240fc93e0d8b0f9?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt=""></p>
+<h2 id="2、自己做的页目录表和页表"><a href="#2、自己做的页目录表和页表" class="headerlink" title="2、自己做的页目录表和页表"></a>2、自己做的页目录表和页表</h2><p>下图是我本科做实验时自己做的页目录和页表。其中用户程序使用$\verb+0x00~0xcfffffff+$这3GB逻辑地址空间，而系统程序使用$\verb+0xc0000000~0xffffffff+$这1GB逻辑地址空间。在物理内存中，$\verb+0x00~0xfffff+$这1MB空间留给BIOS、MBR、Loader、中断向量表，页目录表位于内存$\verb+0x100000~0x100fff+$，大小共1KB，含1024个页目录项。页表紧跟着页目录表后面，页表0的地址为$\verb+0x101000~0x101fff+$，页表1的地址为$\verb+0x102000~0x102fff+$，依次类推。<br>页目录表中的第$\verb+0~767+$页目录项映射到低3GB逻辑内存中，而第$\verb+768~1022+$页目录项映射到高1GB逻辑内存中，1023号页目录项指向页目录表自己，而768号页目录项指向页表0，769号页目录项指向页表1，以此类推。页表0的第一个页表项指向地址$\verb+0x00+$为起始的4KB物理页（最上面的物理页0）。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBaa4e07bd5ea8a36a7fee1b719e45e1e8?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt="页目录和页表"><br>注意所有用户的页目录表的$\verb+768~1022+$项完全相同，因为都指向共享的内核空间。创建进程时从页目录表的第$\verb+768~1022+$拷贝即可（图片中写错字了，应该是页目录表而不是页表）。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBeef4de30e9a491b8e5e67f7ac6a28611?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt="">  </p>
+<h1 id="二、Linux内存管理"><a href="#二、Linux内存管理" class="headerlink" title="二、Linux内存管理"></a>二、Linux内存管理</h1><p>这里以一个用户程序$\verb+abc.c+$为例来探究Linux系统的内存管理策略。程序如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">char</span> bar[<span class="number">3968</span>]=<span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="type">char</span> foo[<span class="number">4096</span>]=<span class="string">&quot;this is not a test\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">output_loop</span><span class="params">(<span class="type">char</span> * str)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> i;</span><br><span class="line">  <span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">20</span>; i++)&#123;</span><br><span class="line">    write(<span class="number">2</span>, str, <span class="built_in">strlen</span>(str));</span><br><span class="line">    sched_yield();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">  <span class="type">int</span> pid1, pid2, status;</span><br><span class="line"></span><br><span class="line">  write(<span class="number">2</span>, foo, <span class="built_in">strlen</span>(foo));</span><br><span class="line">  <span class="built_in">strcpy</span>(foo, <span class="string">&quot;you are modified\n&quot;</span>);</span><br><span class="line">  write(<span class="number">2</span>, foo, <span class="built_in">strlen</span>(foo));</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">if</span> (!(pid1 = fork()))&#123;</span><br><span class="line">    output_loop(<span class="string">&quot;B  &quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!(pid2 = fork()))&#123;</span><br><span class="line">    output_loop(<span class="string">&quot;C  &quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  output_loop(<span class="string">&quot;A  &quot;</span>);</span><br><span class="line">  waitpid(pid1, &amp;status, <span class="number">0</span>);</span><br><span class="line">  waitpid(pid2, &amp;status, <span class="number">0</span>);</span><br><span class="line">  write(<span class="number">2</span>, <span class="string">&quot;\n&quot;</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span>(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<h2 id="1、进程地址空间"><a href="#1、进程地址空间" class="headerlink" title="1、进程地址空间"></a>1、进程地址空间</h2><p>$Linux$的二级分页系统以及abc程序的逻辑地址空间（右侧）如下图所示。其中用户程序只能使用$\verb+0x00-0xcfffffff+$这3GB逻辑地址空间，$\verb+abc+$程序的代码段为$\verb+0x08048000-0x080e8fff+$这161个页面，代码段为$\verb+0x080e9000-0x080ecfff+$这4个页面。数据段只包含$bar$和$foo$这两个变量对应的字符串，$bar$的地址为$\verb+0x080e9000+$，虽然只有3968个字节，但是也分配了2个页面（4096个字节），占用数据段中的第0、1个页面，$foo$的地址为$\verb+0x080eb000+$，占用数据段中的第2、3个页面。$\verb+task_struct+$为Linux的进程控制块PCB，里面包含指向内存控制块$\verb+mm_struct+$（所有内核进程的$\verb+mm_struct+$全部内容均为0）的指针。$\verb+mm_struct+$包含指向页目录表的指针$\verb+pgd+$以及指向$\verb+vm_area_struct+$线性区结构的指针$\verb+mmap+$，结构体$\verb+vm_area_struct+$描述的对应逻辑段的起始和结束逻辑地址等信息。所有$\verb+vm_area_struct+$组织成一棵红黑树。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEB4e818deadc690a92531ae4b7dd59f4f9?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt="Linux分页系统以及abc程序的地址空间"><br>$foo$字符串的逻辑地址为$\verb+0x080eb000+$，高10位$\verb+0x20+$表示从页目录表的第$\verb+0x20+$项（对应的偏移为$\verb+0x80+$，一个页表项4个字节）取出页表地址，注意该处的$\verb+0x07518067+$的低12位为标志，不表示地址，页表的单位为4KB，故页表地址的低12位总是0。然后从$foo$字符串的中间10位$\verb+0xeb+$对应的偏移$\verb+0x3ac+$从页表中取出页帧的起始地址$\verb+0x065c6000+$，最后与$foo$字符串低12位页内偏移$\verb+0x000+$直接相加就可以得到$foo$字符串的物理地址。</p>
+<h2 id="2、Linux的页描述符和页高速缓存"><a href="#2、Linux的页描述符和页高速缓存" class="headerlink" title="2、Linux的页描述符和页高速缓存"></a>2、Linux的页描述符和页高速缓存</h2><p>内存中的一个页称为页帧($page\ frame$)，一个页帧对应一个32字节的页描述符$\verb+struct page+$来描述，页帧描述符数组$\verb+struct page mem_map[]+$来描述所有的页帧，占整个内存空间的$\frac{32}{4096}=\frac{1}{128}$。<br>为了更快速的读取文件，Linux在$\verb+abc+$程序刚开始运行时，数据段还没有被访问前就已经把文件中的数据段缓存入了内存中，但是页目录表和页表并没有内容指向这部分缓存，Linux只会在访问数据段中的变量时才会分配页目录项和页表项（这也叫做“请求调页”），缓存的页框称为页高速缓存。页高速缓存的每一个页框对应一个页描述符，页描述符用基树组织起来，如下图所示。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEB2ba0e77ad04bc1d9cac6fbc86f2116b9?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt=""><br>本例中$\verb+abc+$程序的基树如下图所示：<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBb64067bdc921cd6d793f8f6287df9cb6?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt=""><br>图中数据段的页描述符的偏移为$\verb+0xa0+$，应该位于第2个基树叶子节点的第32个槽，该槽中的指针指向对应的$\verb+struct page+$，再指向对应的页帧缓存。  </p>
 
     </div>
 
@@ -405,7 +419,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">一、分页系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E8%87%AA%E5%B7%B1%E5%81%9A%E7%9A%84%E9%A1%B5%E7%9B%AE%E5%BD%95%E8%A1%A8%E5%92%8C%E9%A1%B5%E8%A1%A8"><span class="nav-number">1.1.</span> <span class="nav-text">1、自己做的页目录表和页表</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%88%86%E9%A1%B5%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">一、分页系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E6%AE%B5%E9%A1%B5%E5%BC%8F%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.1.</span> <span class="nav-text">1、段页式系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E8%87%AA%E5%B7%B1%E5%81%9A%E7%9A%84%E9%A1%B5%E7%9B%AE%E5%BD%95%E8%A1%A8%E5%92%8C%E9%A1%B5%E8%A1%A8"><span class="nav-number">1.2.</span> <span class="nav-text">2、自己做的页目录表和页表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Linux%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">二、Linux内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E8%BF%9B%E7%A8%8B%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="nav-number">2.1.</span> <span class="nav-text">1、进程地址空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81Linux%E7%9A%84%E9%A1%B5%E6%8F%8F%E8%BF%B0%E7%AC%A6%E5%92%8C%E9%A1%B5%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98"><span class="nav-number">2.2.</span> <span class="nav-text">2、Linux的页描述符和页高速缓存</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -528,7 +542,7 @@ $(document).ready(function() {
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共13.6k字</span>
+  <span class="post-count">博客全站共14.6k字</span>
 </div>
         
 <div class="busuanzi-count">
