@@ -6,7 +6,7 @@
   <link href="http://synchrosky.com/atom.xml" rel="self"/>
   
   <link href="http://synchrosky.com/"/>
-  <updated>2022-04-25T03:44:38.514Z</updated>
+  <updated>2022-04-25T08:53:10.526Z</updated>
   <id>http://synchrosky.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://synchrosky.com/2022/04/25/Topology_Aware_Collectives/"/>
     <id>http://synchrosky.com/2022/04/25/Topology_Aware_Collectives/</id>
     <published>2022-04-24T16:00:00.000Z</published>
-    <updated>2022-04-25T03:44:38.514Z</updated>
+    <updated>2022-04-25T08:53:10.526Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>拓扑感知(Topology-Aware)的集合通信算法是近些年兴起的一个研究方向，顾名思义，就是将MPI的集合通信算法部署到高性能计算网络上，来充分发挥网络的性能，并且针对不同网络的拓扑结构和协议特点来设计不同的集合通信算法。这一页面列举了最近时髦的一些HPC网络以及对应的拓扑感知算法。</p><h1 id="Gragonfly网络"><a href="#Gragonfly网络" class="headerlink" title="Gragonfly网络"></a>Gragonfly网络</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Gragonfly（蜻蜓）网络是最近非常时髦的一种HPC网络，在2008年提出：<a href="https://dl-acm-org-s.nudtproxy.yitlink.com/doi/10.1145/1394608.1382129">Technology-Driven, Highly-Scalable Dragonfly Topology</a>。其优点是高度的可伸缩性(high scalability)，低网络直径(low diameter)、成本低(low cost)等等。目前许多HPC系统都使用了Dragonfly网络拓扑。<br>下图是一个9组路由器72个终端节点的Dragonfly网络的例子（图片来源:<a href="https://ieeexplore-ieee-org-s.nudtproxy.yitlink.com/document/9644896">文献链接</a>）。</p><p><div style="align: center"><br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBc0e3f19d5bb9c51887b22cf2f8c218ba?method=download&shareKey=4561f9353c0edc6f6b5daa810174cdbe" width="70%" height="70%"/>   </p><p>Dragonfly网络分成Switch层、Group层、System层：</p><ul><li>Switch层：一个交换机（或路由器）连接着$p$个计算节点，上图中一个路由器连接两个计算节点。</li><li>Group层：组内一共$a$个交换机，$a$个交换机都是全连接的，上图中的9个虚线框代表着9个Group层，每个Group层有4个全连接的路由器。</li><li>System层：一共有$g$个Group，每个Group之间进行全连接。在图中就是9个Group进行全连接。并且组内的每个交换机与其他交换机的连接中，有$a-1$条连接到组内的交换机，还有$\frac{g-1}{a}$条连接是连接到了其他Group之中。在上图中，每个路由器有3条线连接到组内的路由器，还有2条连接到了其他Group中的路由器。</li></ul><h1 id="Bcube网络"><a href="#Bcube网络" class="headerlink" title="Bcube网络"></a>Bcube网络</h1>]]></content>
+    <content type="html"><![CDATA[<h1 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h1><p>拓扑感知(Topology-Aware)的集合通信算法是近些年兴起的一个研究方向，顾名思义，就是将MPI的集合通信算法部署到高性能计算网络上，来充分发挥网络的性能，并且针对不同网络的拓扑结构和协议特点来设计不同的集合通信算法。这一页面列举了最近时髦的一些HPC网络以及对应的拓扑感知算法。</p><h1 id="Gragonfly网络"><a href="#Gragonfly网络" class="headerlink" title="Gragonfly网络"></a>Gragonfly网络</h1><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Gragonfly（蜻蜓）网络是最近非常时髦的一种HPC网络，在2008年提出：<a href="https://dl-acm-org-s.nudtproxy.yitlink.com/doi/10.1145/1394608.1382129">Technology-Driven, Highly-Scalable Dragonfly Topology</a>。其优点是高度的可伸缩性(high scalability)，低网络直径(low diameter)、成本低(low cost)等等。目前许多HPC系统都使用了$Dragonfly$网络拓扑。<br>下图是一个9组路由器72个终端节点的$Dragonfly$网络的例子（图片来源:<a href="https://ieeexplore-ieee-org-s.nudtproxy.yitlink.com/document/9644896">文献链接</a>）。</p><p><div style="align: center"><br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBc0e3f19d5bb9c51887b22cf2f8c218ba?method=download&shareKey=4561f9353c0edc6f6b5daa810174cdbe" width="70%" height="70%"/>   </p><p>$Dragonfly$网络分成$Group$层、$System$层这两层：</p><ul><li>$Group$层：一个$Group$内一共$a$个交换机（或路由器），$a$个交换机都是全连接的，一个交换机连接着$p$个计算节点，上图中一个路由器连接两个计算节点。上图中的$9$个虚线框代表着$9$个$Group$层，每个$Group$层有$4$个全连接的路由器。</li><li>$System$层：一共有$g$个$Group$，每个$Group$视为一个虚拟的交换机，$Group$之间进行全连接，在图中就是$9$个$Group$进行全连接。组内的每个交换机与其他交换机的连接中，有$a-1$条链路连接到组内的交换机，还有$h=\frac{g-1}{a}$条链路是与其他$Group$之中的交换机相连结。在上图中，每个路由器有$3$条线连接到组内的路由器，还有$2$条连接到了其他$Group$中的路由器。并且组内的链路($intra-group$)的延迟比组间链路($inter-group$)的延迟高不少。  </li></ul><h2 id="网络属性与形式化表达"><a href="#网络属性与形式化表达" class="headerlink" title="网络属性与形式化表达"></a>网络属性与形式化表达</h2><p>$Gragonfly$网络可以用$DF(p,a,h,g)$来形式化表达，例如上图中的例子可以用$DF(p=2,a=4,h=2,g=9)$来表达。一个$Gragonfly$网络最佳的参数配置是：</p><script type="math/tex; mode=display">a=2p=2h</script><p>因此可以得到如下的性质：</p><ul><li>每个交换机端口的数量为$p+h+(a-1)$</li><li>每个虚拟交换机（一个$Group$）中的外接端口数量为$ah$，整个网络的全局链路数为$\frac{a\cdot{h}\cdot{g}}{2}$</li><li>$Group$的数量为$g=ah+1$（由前面的公式$h=\frac{g-1}{a}$推导可得）</li><li>$DF(p,a,h,g)$网络中一共有$P=p\cdot{a}\cdot{g}=ap(ah+1)$个节点，因此$DF(n,2n,n,g)$这种最佳配置的网络中的计算节点的数量为$P=2p^2(2p^2+1)$</li></ul><h2 id="Dragonfly网络的拓扑感知集合通信算法"><a href="#Dragonfly网络的拓扑感知集合通信算法" class="headerlink" title="Dragonfly网络的拓扑感知集合通信算法"></a>Dragonfly网络的拓扑感知集合通信算法</h2><p>$Dragonfly$网络上做集合通信算法的工作不多，论文只有寥寥几篇。最早的论文发表在$\verb+2012 EuroMPI+$上。这几篇论文设计的集合通信算法中，唯独没有$Allreduce$操作，所以我的师兄才抓住了这个点，在$Dragonfly$网络上设计$\vebr+Allreduce$算法，发了一篇$\verb+ISPA+$的会议论文，在我看来是非常好的想法了。</p><h3 id="Collectives-on-Two-Tier-Direct-Networks"><a href="#Collectives-on-Two-Tier-Direct-Networks" class="headerlink" title="Collectives on Two-Tier Direct Networks"></a><a href="https://link.springer.com/chapter/10.1007/978-3-642-33518-1_12">Collectives on Two-Tier Direct Networks</a></h3><p>该工作在$Dragonfly$以及$IBM PERCS$这两个双层的网络上对常规的集合通信操作（包括$\verb+Scatter Gather Allgather Broadcast Reduce-Scatter Reduce+$这6中操作）针对网络拓扑的特点设计了拓扑感知算法。其思想主要是利用了局部链路($Local Link$)比全局链路($Global Link$)快很多得特点，而且算法设计得比较简单，优化空间很多。</p><h1 id="Bcube网络"><a href="#Bcube网络" class="headerlink" title="Bcube网络"></a>Bcube网络</h1><h1 id="BigGraph网络"><a href="#BigGraph网络" class="headerlink" title="BigGraph网络"></a>BigGraph网络</h1>]]></content>
     
     
     <summary type="html">This page is for Topologies for HPC Networks and Topology-Aware collective communication algorithms.</summary>
@@ -132,29 +132,6 @@
   </entry>
   
   <entry>
-    <title>操作系统启动过程简述</title>
-    <link href="http://synchrosky.com/2022/04/10/OS_Starting/"/>
-    <id>http://synchrosky.com/2022/04/10/OS_Starting/</id>
-    <published>2022-04-09T16:00:00.000Z</published>
-    <updated>2022-04-14T14:11:21.119Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="一、操作系统启动生成的进程树"><a href="#一、操作系统启动生成的进程树" class="headerlink" title="一、操作系统启动生成的进程树"></a>一、操作系统启动生成的进程树</h1><p>下图是我在做实验时调试出来的操作系统生成的进程树，计算机在刚开始启动时执行的是汇编代码，然后执行的第一行C代码是<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start_kernel</span><br></pre></td></tr></table></figure><br>在执行这个函数之后，正在执行的程序成为0号进程，0号进程会先后调用<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__do_fork</span><br><span class="line">do_execve</span><br></pre></td></tr></table></figure><br>两个函数去执行$\verb+fork+$和$\verb+exec+$两个系统调用，生成1号和2号进程，1号进程就是大名鼎鼎的$init$进程，所有用户程序的根进程（包括$shell$进程和用户登录进程等等）。2号进程负责创建和维护所有内核线程（在本图中是960号及之前的进程）。最后0号进程调用<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cpu_dile</span><br></pre></td></tr></table></figure><br>函数进入休眠状态，CPU在没有活跃任务可调度时就执行它。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBaa78b81deaec02c397484e8a2a5b43d4?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt="操作系统启动时生成的进程树"></p><h1 id="二、计算机启动过程"><a href="#二、计算机启动过程" class="headerlink" title="二、计算机启动过程"></a>二、计算机启动过程</h1><p>本科做实验时画的图，描绘的时MBR启动的图，计算机先执行BIOS，然后跳转到$\verb+0x7c00+$地址执行MBR，然后执行Loader，完成实模式向保护模式切换、页表初始化等工作，然后进入内核。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEB06869dacb48da066cbcdabfb88241216?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt="MBR启动过程"></p>]]></content>
-    
-    
-    <summary type="html">这是小王同学的第1篇操作系统知识：OS启动过程简析</summary>
-    
-    
-    
-    <category term="计算机基础知识" scheme="http://synchrosky.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    
-    <category term="操作系统" scheme="http://synchrosky.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
-    
-    
-    <category term="操作系统" scheme="http://synchrosky.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
-    
-  </entry>
-  
-  <entry>
     <title>MPI集合通信论文整理</title>
     <link href="http://synchrosky.com/2022/04/10/MPI_Collectives_Thesis/"/>
     <id>http://synchrosky.com/2022/04/10/MPI_Collectives_Thesis/</id>
@@ -180,14 +157,37 @@
   </entry>
   
   <entry>
-    <title>In-Network Collective Communication论文整理</title>
-    <link href="http://synchrosky.com/2022/04/10/In_Network_Collectives_Thesis/"/>
-    <id>http://synchrosky.com/2022/04/10/In_Network_Collectives_Thesis/</id>
+    <title>操作系统启动过程简述</title>
+    <link href="http://synchrosky.com/2022/04/10/OS_Starting/"/>
+    <id>http://synchrosky.com/2022/04/10/OS_Starting/</id>
     <published>2022-04-09T16:00:00.000Z</published>
-    <updated>2022-04-10T12:23:14.850Z</updated>
+    <updated>2022-04-14T14:11:21.119Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="一、操作系统启动生成的进程树"><a href="#一、操作系统启动生成的进程树" class="headerlink" title="一、操作系统启动生成的进程树"></a>一、操作系统启动生成的进程树</h1><p>下图是我在做实验时调试出来的操作系统生成的进程树，计算机在刚开始启动时执行的是汇编代码，然后执行的第一行C代码是<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start_kernel</span><br></pre></td></tr></table></figure><br>在执行这个函数之后，正在执行的程序成为0号进程，0号进程会先后调用<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__do_fork</span><br><span class="line">do_execve</span><br></pre></td></tr></table></figure><br>两个函数去执行$\verb+fork+$和$\verb+exec+$两个系统调用，生成1号和2号进程，1号进程就是大名鼎鼎的$init$进程，所有用户程序的根进程（包括$shell$进程和用户登录进程等等）。2号进程负责创建和维护所有内核线程（在本图中是960号及之前的进程）。最后0号进程调用<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cpu_dile</span><br></pre></td></tr></table></figure><br>函数进入休眠状态，CPU在没有活跃任务可调度时就执行它。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEBaa78b81deaec02c397484e8a2a5b43d4?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt="操作系统启动时生成的进程树"></p><h1 id="二、计算机启动过程"><a href="#二、计算机启动过程" class="headerlink" title="二、计算机启动过程"></a>二、计算机启动过程</h1><p>本科做实验时画的图，描绘的时MBR启动的图，计算机先执行BIOS，然后跳转到$\verb+0x7c00+$地址执行MBR，然后执行Loader，完成实模式向保护模式切换、页表初始化等工作，然后进入内核。<br><img data-src="https://note.youdao.com/yws/api/personal/file/WEB06869dacb48da066cbcdabfb88241216?method=download&amp;shareKey=69113f8f61e335d1864757cf6d288929" alt="MBR启动过程"></p>]]></content>
     
     
-    <summary type="html">本文全面整理In-Network Collective Communication的论文。</summary>
+    <summary type="html">这是小王同学的第1篇操作系统知识：OS启动过程简析</summary>
+    
+    
+    
+    <category term="计算机基础知识" scheme="http://synchrosky.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="操作系统" scheme="http://synchrosky.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+    
+    <category term="操作系统" scheme="http://synchrosky.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>In-Network Collective Communication</title>
+    <link href="http://synchrosky.com/2022/04/10/In-Network_Collective_Summary/"/>
+    <id>http://synchrosky.com/2022/04/10/In-Network_Collective_Summary/</id>
+    <published>2022-04-09T16:00:00.000Z</published>
+    <updated>2022-04-10T12:22:23.960Z</updated>
+    
+    
+    <summary type="html">本文系统整理了利用In-Network(在网计算)方式设计的集合通信。</summary>
     
     
     
@@ -207,14 +207,14 @@
   </entry>
   
   <entry>
-    <title>In-Network Collective Communication</title>
-    <link href="http://synchrosky.com/2022/04/10/In-Network_Collective_Summary/"/>
-    <id>http://synchrosky.com/2022/04/10/In-Network_Collective_Summary/</id>
+    <title>In-Network Collective Communication论文整理</title>
+    <link href="http://synchrosky.com/2022/04/10/In_Network_Collectives_Thesis/"/>
+    <id>http://synchrosky.com/2022/04/10/In_Network_Collectives_Thesis/</id>
     <published>2022-04-09T16:00:00.000Z</published>
-    <updated>2022-04-10T12:22:23.960Z</updated>
+    <updated>2022-04-10T12:23:14.850Z</updated>
     
     
-    <summary type="html">本文系统整理了利用In-Network(在网计算)方式设计的集合通信。</summary>
+    <summary type="html">本文全面整理In-Network Collective Communication的论文。</summary>
     
     
     
