@@ -201,13 +201,33 @@
   <div class="post-block">
     <div class="posts-collapse">
       <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 20 篇日志。 继续努力。</span>
+        <span class="collection-header">嗯..! 目前共计 21 篇日志。 继续努力。</span>
       </div>
 
       
     <div class="collection-year">
       <span class="collection-header">2022</span>
     </div>
+
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2022-04-13T00:00:00+08:00"
+              content="2022-04-13">
+          04-13
+        </time>
+      </div>
+
+      <div class="post-title">
+          <a class="post-title-link" href="/2022/04/13/OpenMPI&MPICH_Allreduce/" itemprop="url">
+            <span itemprop="name">MPI_Allreduce的在OpenMPI、MPICH中的实现</span>
+          </a>
+      </div>
+
+    </header>
+  </article>
 
   <article itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
@@ -241,8 +261,8 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2022/04/10/In-Network_Collective_Summary/" itemprop="url">
-            <span itemprop="name">In-Network Collective Communication</span>
+          <a class="post-title-link" href="/2022/04/10/In_Network_Collectives_Thesis/" itemprop="url">
+            <span itemprop="name">In-Network Collective Communication论文整理</span>
           </a>
       </div>
 
@@ -261,8 +281,8 @@
       </div>
 
       <div class="post-title">
-          <a class="post-title-link" href="/2022/04/10/In_Network_Collectives_Thesis/" itemprop="url">
-            <span itemprop="name">In-Network Collective Communication论文整理</span>
+          <a class="post-title-link" href="/2022/04/10/In-Network_Collective_Summary/" itemprop="url">
+            <span itemprop="name">In-Network Collective Communication</span>
           </a>
       </div>
 
@@ -389,26 +409,6 @@
     </header>
   </article>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2022-03-26T00:00:00+08:00"
-              content="2022-03-26">
-          03-26
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/03/26/xjtu/" itemprop="url">
-            <span itemprop="name">在西交的四年光影</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
 
     </div>
   </div>
@@ -418,7 +418,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/2022/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/archives/2022/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/archives/2022/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/archives/2022/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/2022/page/3/">3</a><a class="extend next" rel="next" href="/archives/2022/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -486,7 +486,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -593,7 +593,7 @@ $(document).ready(function() {
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共24.3k字</span>
+  <span class="post-count">博客全站共28.2k字</span>
 </div>
         
 <div class="busuanzi-count">
@@ -697,13 +697,33 @@ $(document).ready(function() {
 
 
 
+<script>
+document.querySelectorAll('.pdfobject-container').forEach(element => {
+  let url = element.dataset.target;
+  let pdfOpenParams = {
+    navpanes : 0,
+    toolbar  : 0,
+    statusbar: 0,
+    pagemode : 'thumbs',
+    view     : 'FitH'
+  };
+  let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
+  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+
+  if (NexT.utils.supportsPDFs()) {
+    element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
+  } else {
+    element.innerHTML = `<iframe src="${fullURL}" style="height: ${element.dataset.height};" frameborder="0"></iframe>`;
+  }
+});
+</script>
 
 
 <script>
 if (document.querySelectorAll('pre.mermaid').length) {
   NexT.utils.getScript('//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js', () => {
     mermaid.initialize({
-      theme    : 'default',
+      theme    : 'forest',
       logLevel : 3,
       flowchart: { curve     : 'linear' },
       gantt    : { axisFormat: '%m/%d/%Y' },
