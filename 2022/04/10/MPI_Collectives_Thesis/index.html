@@ -20,13 +20,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"synchrosky.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"chudod.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="本文全面列举出了MPI集合通信的相关论文，对每篇论文做出一个概述而不是详细介绍">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MPI集合通信论文整理">
-<meta property="og:url" content="http://synchrosky.com/2022/04/10/MPI_Collectives_Thesis/index.html">
+<meta property="og:url" content="http://chudod.github.io/2022/04/10/MPI_Collectives_Thesis/index.html">
 <meta property="og:site_name" content="Computing Dynamics">
 <meta property="og:description" content="本文全面列举出了MPI集合通信的相关论文，对每篇论文做出一个概述而不是详细介绍">
 <meta property="og:locale" content="zh_CN">
@@ -37,7 +37,7 @@
 <meta property="article:tag" content="并行计算">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://synchrosky.com/2022/04/10/MPI_Collectives_Thesis/">
+<link rel="canonical" href="http://chudod.github.io/2022/04/10/MPI_Collectives_Thesis/">
 
 
 <script id="page-configurations">
@@ -202,7 +202,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://synchrosky.com/2022/04/10/MPI_Collectives_Thesis/">
+    <link itemprop="mainEntityOfPage" href="http://chudod.github.io/2022/04/10/MPI_Collectives_Thesis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -261,7 +261,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文全面列举出了MPI集合通信的相关论文，对每篇论文做出一个概述而不是详细介绍，详细的MPI集合通信算法设计可以参考：<a href="https://synchrosky.com/2022/03/27/MPI_Allreduce%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">MPI_Allreuce的前世今生</a>。  </p>
+        <h1 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h1><p>本文全面列举出了MPI集合通信的相关论文，对每篇论文做出一个概述而不是详细介绍，详细的MPI集合通信算法设计可以参考：<a target="_blank" rel="noopener" href="https://synchrosky.com/2022/03/27/MPI_Allreduce%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/">MPI_Allreuce的前世今生</a>。  </p>
 <h1 id="MPI集合通信论文"><a href="#MPI集合通信论文" class="headerlink" title="MPI集合通信论文"></a>MPI集合通信论文</h1><h2 id="1、2005-Optimization-of-Collective-Communication-Operations-in-MPICH"><a href="#1、2005-Optimization-of-Collective-Communication-Operations-in-MPICH" class="headerlink" title="1、2005: Optimization of Collective Communication Operations in MPICH"></a><a target="_blank" rel="noopener" href="https://journals.sagepub.com/doi/10.1177/1094342005051521">1、2005: Optimization of Collective Communication Operations in MPICH</a></h2><p>经典的$MPI$集合通信综述论文，介绍了常用的集合通信操作和对应的算法：$Allgather$, $Broadcast$, $All$-$to$-$all$, $Reduce$-$Scatter$, $Reduce$和$Allreduce$，并进一步的讨论了 $MPI$_$Reduce$ 和$MPI$_$Allreduce$的优化。评估模型为：$T=\alpha+n\beta$。  </p>
 <h2 id="2、-SC17-Why-is-MPI-so-slow-Analyzing-the-fundamental-limits-in-implementing-MPI-3-1"><a href="#2、-SC17-Why-is-MPI-so-slow-Analyzing-the-fundamental-limits-in-implementing-MPI-3-1" class="headerlink" title="2、(SC17) Why is MPI so slow?: Analyzing the fundamental limits in implementing MPI-3.1"></a><a target="_blank" rel="noopener" href="https://dl.acm.org/doi/10.1145/3126908.3126963">2、(SC17) Why is MPI so slow?: Analyzing the fundamental limits in implementing MPI-3.1</a></h2><p>这篇文章主要介绍了MPI-3.1标准的主要制约因素，针对MPI-3.1标准的不足重新设计了MPI-CH4软件栈，实现对于深入理解MPI的实现很有帮助。</p>
 
@@ -289,7 +289,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://synchrosky.com/2022/04/10/MPI_Collectives_Thesis/" title="MPI集合通信论文整理">http://synchrosky.com/2022/04/10/MPI_Collectives_Thesis/</a>
+    <a href="http://chudod.github.io/2022/04/10/MPI_Collectives_Thesis/" title="MPI集合通信论文整理">http://chudod.github.io/2022/04/10/MPI_Collectives_Thesis/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！

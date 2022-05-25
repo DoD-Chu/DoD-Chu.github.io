@@ -3,11 +3,11 @@
   <title>Computing Dynamics</title>
   
   <subtitle>小王同学的工作站</subtitle>
-  <link href="http://synchrosky.com/atom.xml" rel="self"/>
+  <link href="http://chudod.github.io/atom.xml" rel="self"/>
   
-  <link href="http://synchrosky.com/"/>
+  <link href="http://chudod.github.io/"/>
   <updated>2022-05-24T03:58:39.325Z</updated>
-  <id>http://synchrosky.com/</id>
+  <id>http://chudod.github.io/</id>
   
   <author>
     <name>虎王</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Русская Граммаатика(俄语语法)</title>
-    <link href="http://synchrosky.com/2022/05/24/Russian_Grammar/"/>
-    <id>http://synchrosky.com/2022/05/24/Russian_Grammar/</id>
+    <link href="http://chudod.github.io/2022/05/24/Russian_Grammar/"/>
+    <id>http://chudod.github.io/2022/05/24/Russian_Grammar/</id>
     <published>2022-05-23T16:00:00.000Z</published>
     <updated>2022-05-24T03:58:39.325Z</updated>
     
@@ -30,17 +30,17 @@
     
     
     
-    <category term="Россия" scheme="http://synchrosky.com/categories/%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D1%8F/"/>
+    <category term="Россия" scheme="http://chudod.github.io/categories/%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D1%8F/"/>
     
     
-    <category term="Россия" scheme="http://synchrosky.com/tags/%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D1%8F/"/>
+    <category term="Россия" scheme="http://chudod.github.io/tags/%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D1%8F/"/>
     
   </entry>
   
   <entry>
     <title>文件系统概念和Ext2文件系统</title>
-    <link href="http://synchrosky.com/2022/05/18/OS_FileSystem/"/>
-    <id>http://synchrosky.com/2022/05/18/OS_FileSystem/</id>
+    <link href="http://chudod.github.io/2022/05/18/OS_FileSystem/"/>
+    <id>http://chudod.github.io/2022/05/18/OS_FileSystem/</id>
     <published>2022-05-17T16:00:00.000Z</published>
     <updated>2022-05-21T03:38:42.804Z</updated>
     
@@ -51,19 +51,19 @@
     
     
     
-    <category term="计算机基础知识" scheme="http://synchrosky.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    <category term="计算机基础知识" scheme="http://chudod.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
     
-    <category term="操作系统" scheme="http://synchrosky.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    <category term="操作系统" scheme="http://chudod.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
     
-    <category term="操作系统" scheme="http://synchrosky.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    <category term="操作系统" scheme="http://chudod.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
   <entry>
     <title>English Sentences</title>
-    <link href="http://synchrosky.com/2022/05/14/English_Sentences/"/>
-    <id>http://synchrosky.com/2022/05/14/English_Sentences/</id>
+    <link href="http://chudod.github.io/2022/05/14/English_Sentences/"/>
+    <id>http://chudod.github.io/2022/05/14/English_Sentences/</id>
     <published>2022-05-13T16:00:00.000Z</published>
     <updated>2022-05-14T14:43:10.698Z</updated>
     
@@ -74,17 +74,17 @@
     
     
     
-    <category term="English" scheme="http://synchrosky.com/categories/English/"/>
+    <category term="English" scheme="http://chudod.github.io/categories/English/"/>
     
     
-    <category term="English Writing" scheme="http://synchrosky.com/tags/English-Writing/"/>
+    <category term="English Writing" scheme="http://chudod.github.io/tags/English-Writing/"/>
     
   </entry>
   
   <entry>
     <title>English Vocabulary</title>
-    <link href="http://synchrosky.com/2022/05/11/English_Vocabulary/"/>
-    <id>http://synchrosky.com/2022/05/11/English_Vocabulary/</id>
+    <link href="http://chudod.github.io/2022/05/11/English_Vocabulary/"/>
+    <id>http://chudod.github.io/2022/05/11/English_Vocabulary/</id>
     <published>2022-05-10T16:00:00.000Z</published>
     <updated>2022-05-17T14:11:52.217Z</updated>
     
@@ -95,17 +95,17 @@
     
     
     
-    <category term="English" scheme="http://synchrosky.com/categories/English/"/>
+    <category term="English" scheme="http://chudod.github.io/categories/English/"/>
     
     
-    <category term="English Vocabulary" scheme="http://synchrosky.com/tags/English-Vocabulary/"/>
+    <category term="English Vocabulary" scheme="http://chudod.github.io/tags/English-Vocabulary/"/>
     
   </entry>
   
   <entry>
     <title>Русские Слова(俄语单词)</title>
-    <link href="http://synchrosky.com/2022/05/11/Russian_Vocabulary/"/>
-    <id>http://synchrosky.com/2022/05/11/Russian_Vocabulary/</id>
+    <link href="http://chudod.github.io/2022/05/11/Russian_Vocabulary/"/>
+    <id>http://chudod.github.io/2022/05/11/Russian_Vocabulary/</id>
     <published>2022-05-10T16:00:00.000Z</published>
     <updated>2022-05-12T11:52:12.222Z</updated>
     
@@ -116,17 +116,17 @@
     
     
     
-    <category term="Россия" scheme="http://synchrosky.com/categories/%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D1%8F/"/>
+    <category term="Россия" scheme="http://chudod.github.io/categories/%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D1%8F/"/>
     
     
-    <category term="Россия" scheme="http://synchrosky.com/tags/%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D1%8F/"/>
+    <category term="Россия" scheme="http://chudod.github.io/tags/%D0%A0%D0%BE%D1%81%D1%81%D0%B8%D1%8F/"/>
     
   </entry>
   
   <entry>
     <title>Linux程序执行与进程创建</title>
-    <link href="http://synchrosky.com/2022/05/06/OS_ELF_execve/"/>
-    <id>http://synchrosky.com/2022/05/06/OS_ELF_execve/</id>
+    <link href="http://chudod.github.io/2022/05/06/OS_ELF_execve/"/>
+    <id>http://chudod.github.io/2022/05/06/OS_ELF_execve/</id>
     <published>2022-05-05T16:00:00.000Z</published>
     <updated>2022-05-22T12:32:19.261Z</updated>
     
@@ -137,19 +137,19 @@
     
     
     
-    <category term="计算机基础知识" scheme="http://synchrosky.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    <category term="计算机基础知识" scheme="http://chudod.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
     
-    <category term="操作系统" scheme="http://synchrosky.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    <category term="操作系统" scheme="http://chudod.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
     
-    <category term="操作系统" scheme="http://synchrosky.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    <category term="操作系统" scheme="http://chudod.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
   <entry>
     <title>使用触发操作卸载集合通信</title>
-    <link href="http://synchrosky.com/2022/04/28/Triggered_Operation/"/>
-    <id>http://synchrosky.com/2022/04/28/Triggered_Operation/</id>
+    <link href="http://chudod.github.io/2022/04/28/Triggered_Operation/"/>
+    <id>http://chudod.github.io/2022/04/28/Triggered_Operation/</id>
     <published>2022-04-27T16:00:00.000Z</published>
     <updated>2022-04-28T09:25:57.914Z</updated>
     
@@ -160,23 +160,23 @@
     
     
     
-    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="In-Network Collectives" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/In-Network-Collectives/"/>
+    <category term="In-Network Collectives" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/In-Network-Collectives/"/>
     
     
-    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="集合通信" scheme="http://synchrosky.com/tags/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1/"/>
+    <category term="集合通信" scheme="http://chudod.github.io/tags/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1/"/>
     
-    <category term="高性能计算" scheme="http://synchrosky.com/tags/%E9%AB%98%E6%80%A7%E8%83%BD%E8%AE%A1%E7%AE%97/"/>
+    <category term="高性能计算" scheme="http://chudod.github.io/tags/%E9%AB%98%E6%80%A7%E8%83%BD%E8%AE%A1%E7%AE%97/"/>
     
   </entry>
   
   <entry>
     <title>高性能互连网络与拓扑感知算法</title>
-    <link href="http://synchrosky.com/2022/04/25/Topology_Aware_Collectives/"/>
-    <id>http://synchrosky.com/2022/04/25/Topology_Aware_Collectives/</id>
+    <link href="http://chudod.github.io/2022/04/25/Topology_Aware_Collectives/"/>
+    <id>http://chudod.github.io/2022/04/25/Topology_Aware_Collectives/</id>
     <published>2022-04-24T16:00:00.000Z</published>
     <updated>2022-04-28T03:22:49.186Z</updated>
     
@@ -187,25 +187,25 @@
     
     
     
-    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="Topology-Aware Algorithms" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/Topology-Aware-Algorithms/"/>
+    <category term="Topology-Aware Algorithms" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/Topology-Aware-Algorithms/"/>
     
     
-    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="集合通信" scheme="http://synchrosky.com/tags/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1/"/>
+    <category term="集合通信" scheme="http://chudod.github.io/tags/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1/"/>
     
-    <category term="高性能计算" scheme="http://synchrosky.com/tags/%E9%AB%98%E6%80%A7%E8%83%BD%E8%AE%A1%E7%AE%97/"/>
+    <category term="高性能计算" scheme="http://chudod.github.io/tags/%E9%AB%98%E6%80%A7%E8%83%BD%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="Topology-Aware" scheme="http://synchrosky.com/tags/Topology-Aware/"/>
+    <category term="Topology-Aware" scheme="http://chudod.github.io/tags/Topology-Aware/"/>
     
   </entry>
   
   <entry>
     <title>硬核狠人之Torsten Heofler</title>
-    <link href="http://synchrosky.com/2022/04/20/TorstenHeofler/"/>
-    <id>http://synchrosky.com/2022/04/20/TorstenHeofler/</id>
+    <link href="http://chudod.github.io/2022/04/20/TorstenHeofler/"/>
+    <id>http://chudod.github.io/2022/04/20/TorstenHeofler/</id>
     <published>2022-04-19T16:00:00.000Z</published>
     <updated>2022-04-20T08:55:19.192Z</updated>
     
@@ -214,17 +214,17 @@
     
     
     
-    <category term="硬核狠人" scheme="http://synchrosky.com/categories/%E7%A1%AC%E6%A0%B8%E7%8B%A0%E4%BA%BA/"/>
+    <category term="硬核狠人" scheme="http://chudod.github.io/categories/%E7%A1%AC%E6%A0%B8%E7%8B%A0%E4%BA%BA/"/>
     
     
-    <category term="硬核狠人" scheme="http://synchrosky.com/tags/%E7%A1%AC%E6%A0%B8%E7%8B%A0%E4%BA%BA/"/>
+    <category term="硬核狠人" scheme="http://chudod.github.io/tags/%E7%A1%AC%E6%A0%B8%E7%8B%A0%E4%BA%BA/"/>
     
   </entry>
   
   <entry>
     <title>操作系统内存管理</title>
-    <link href="http://synchrosky.com/2022/04/14/OS_Memory_Management/"/>
-    <id>http://synchrosky.com/2022/04/14/OS_Memory_Management/</id>
+    <link href="http://chudod.github.io/2022/04/14/OS_Memory_Management/"/>
+    <id>http://chudod.github.io/2022/04/14/OS_Memory_Management/</id>
     <published>2022-04-13T16:00:00.000Z</published>
     <updated>2022-04-20T08:46:35.078Z</updated>
     
@@ -235,19 +235,19 @@
     
     
     
-    <category term="计算机基础知识" scheme="http://synchrosky.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    <category term="计算机基础知识" scheme="http://chudod.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
     
-    <category term="操作系统" scheme="http://synchrosky.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    <category term="操作系统" scheme="http://chudod.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
     
-    <category term="操作系统" scheme="http://synchrosky.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    <category term="操作系统" scheme="http://chudod.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
   <entry>
     <title>MPI_Allreduce的在OpenMPI、MPICH中的实现</title>
-    <link href="http://synchrosky.com/2022/04/13/OpenMPI&amp;MPICH_Allreduce/"/>
-    <id>http://synchrosky.com/2022/04/13/OpenMPI&amp;MPICH_Allreduce/</id>
+    <link href="http://chudod.github.io/2022/04/13/OpenMPI&amp;MPICH_Allreduce/"/>
+    <id>http://chudod.github.io/2022/04/13/OpenMPI&amp;MPICH_Allreduce/</id>
     <published>2022-04-12T16:00:00.000Z</published>
     <updated>2022-05-01T09:13:20.991Z</updated>
     
@@ -258,21 +258,21 @@
     
     
     
-    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="MPI集合通信算法" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/"/>
+    <category term="MPI集合通信算法" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/"/>
     
     
-    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
+    <category term="MPI" scheme="http://chudod.github.io/tags/MPI/"/>
     
-    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
   </entry>
   
   <entry>
     <title>Read Me（导航栏）</title>
-    <link href="http://synchrosky.com/2022/04/10/Guiding_Board/"/>
-    <id>http://synchrosky.com/2022/04/10/Guiding_Board/</id>
+    <link href="http://chudod.github.io/2022/04/10/Guiding_Board/"/>
+    <id>http://chudod.github.io/2022/04/10/Guiding_Board/</id>
     <published>2022-04-09T16:00:00.000Z</published>
     <updated>2022-04-28T03:32:07.000Z</updated>
     
@@ -283,15 +283,15 @@
     
     
     
-    <category term="导航" scheme="http://synchrosky.com/categories/%E5%AF%BC%E8%88%AA/"/>
+    <category term="导航" scheme="http://chudod.github.io/categories/%E5%AF%BC%E8%88%AA/"/>
     
     
   </entry>
   
   <entry>
     <title>In-Network Collective Communication</title>
-    <link href="http://synchrosky.com/2022/04/10/In-Network_Collective_Summary/"/>
-    <id>http://synchrosky.com/2022/04/10/In-Network_Collective_Summary/</id>
+    <link href="http://chudod.github.io/2022/04/10/In-Network_Collective_Summary/"/>
+    <id>http://chudod.github.io/2022/04/10/In-Network_Collective_Summary/</id>
     <published>2022-04-09T16:00:00.000Z</published>
     <updated>2022-04-28T07:47:07.949Z</updated>
     
@@ -300,25 +300,25 @@
     
     
     
-    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="In-Network Collectives" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/In-Network-Collectives/"/>
+    <category term="In-Network Collectives" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/In-Network-Collectives/"/>
     
     
-    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
+    <category term="MPI" scheme="http://chudod.github.io/tags/MPI/"/>
     
-    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="在网计算" scheme="http://synchrosky.com/tags/%E5%9C%A8%E7%BD%91%E8%AE%A1%E7%AE%97/"/>
+    <category term="在网计算" scheme="http://chudod.github.io/tags/%E5%9C%A8%E7%BD%91%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="集合通信" scheme="http://synchrosky.com/tags/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1/"/>
+    <category term="集合通信" scheme="http://chudod.github.io/tags/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1/"/>
     
   </entry>
   
   <entry>
     <title>In-Network Collective Communication论文整理</title>
-    <link href="http://synchrosky.com/2022/04/10/In_Network_Collectives_Thesis/"/>
-    <id>http://synchrosky.com/2022/04/10/In_Network_Collectives_Thesis/</id>
+    <link href="http://chudod.github.io/2022/04/10/In_Network_Collectives_Thesis/"/>
+    <id>http://chudod.github.io/2022/04/10/In_Network_Collectives_Thesis/</id>
     <published>2022-04-09T16:00:00.000Z</published>
     <updated>2022-04-28T07:47:31.359Z</updated>
     
@@ -327,25 +327,25 @@
     
     
     
-    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="In-Network Collectives" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/In-Network-Collectives/"/>
+    <category term="In-Network Collectives" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/In-Network-Collectives/"/>
     
     
-    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
+    <category term="MPI" scheme="http://chudod.github.io/tags/MPI/"/>
     
-    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="在网计算" scheme="http://synchrosky.com/tags/%E5%9C%A8%E7%BD%91%E8%AE%A1%E7%AE%97/"/>
+    <category term="在网计算" scheme="http://chudod.github.io/tags/%E5%9C%A8%E7%BD%91%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="集合通信" scheme="http://synchrosky.com/tags/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1/"/>
+    <category term="集合通信" scheme="http://chudod.github.io/tags/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1/"/>
     
   </entry>
   
   <entry>
     <title>MPI集合通信论文整理</title>
-    <link href="http://synchrosky.com/2022/04/10/MPI_Collectives_Thesis/"/>
-    <id>http://synchrosky.com/2022/04/10/MPI_Collectives_Thesis/</id>
+    <link href="http://chudod.github.io/2022/04/10/MPI_Collectives_Thesis/"/>
+    <id>http://chudod.github.io/2022/04/10/MPI_Collectives_Thesis/</id>
     <published>2022-04-09T16:00:00.000Z</published>
     <updated>2022-04-10T03:48:45.231Z</updated>
     
@@ -356,21 +356,21 @@
     
     
     
-    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="MPI集合通信算法" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/"/>
+    <category term="MPI集合通信算法" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/"/>
     
     
-    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
+    <category term="MPI" scheme="http://chudod.github.io/tags/MPI/"/>
     
-    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
   </entry>
   
   <entry>
     <title>操作系统启动过程简述</title>
-    <link href="http://synchrosky.com/2022/04/10/OS_Starting/"/>
-    <id>http://synchrosky.com/2022/04/10/OS_Starting/</id>
+    <link href="http://chudod.github.io/2022/04/10/OS_Starting/"/>
+    <id>http://chudod.github.io/2022/04/10/OS_Starting/</id>
     <published>2022-04-09T16:00:00.000Z</published>
     <updated>2022-04-14T14:11:21.119Z</updated>
     
@@ -381,19 +381,19 @@
     
     
     
-    <category term="计算机基础知识" scheme="http://synchrosky.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    <category term="计算机基础知识" scheme="http://chudod.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
     
-    <category term="操作系统" scheme="http://synchrosky.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    <category term="操作系统" scheme="http://chudod.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
     
-    <category term="操作系统" scheme="http://synchrosky.com/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
+    <category term="操作系统" scheme="http://chudod.github.io/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/"/>
     
   </entry>
   
   <entry>
     <title>深入理解MPI实现</title>
-    <link href="http://synchrosky.com/2022/03/30/Deeply_Understand_MPI/"/>
-    <id>http://synchrosky.com/2022/03/30/Deeply_Understand_MPI/</id>
+    <link href="http://chudod.github.io/2022/03/30/Deeply_Understand_MPI/"/>
+    <id>http://chudod.github.io/2022/03/30/Deeply_Understand_MPI/</id>
     <published>2022-03-29T16:00:00.000Z</published>
     <updated>2022-03-31T09:08:22.101Z</updated>
     
@@ -404,21 +404,21 @@
     
     
     
-    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="MPI软件栈设计" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E8%BD%AF%E4%BB%B6%E6%A0%88%E8%AE%BE%E8%AE%A1/"/>
+    <category term="MPI软件栈设计" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E8%BD%AF%E4%BB%B6%E6%A0%88%E8%AE%BE%E8%AE%A1/"/>
     
     
-    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
+    <category term="MPI" scheme="http://chudod.github.io/tags/MPI/"/>
     
-    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
   </entry>
   
   <entry>
     <title>First Allreduce Application</title>
-    <link href="http://synchrosky.com/2022/03/30/First_MPI_Program/"/>
-    <id>http://synchrosky.com/2022/03/30/First_MPI_Program/</id>
+    <link href="http://chudod.github.io/2022/03/30/First_MPI_Program/"/>
+    <id>http://chudod.github.io/2022/03/30/First_MPI_Program/</id>
     <published>2022-03-29T16:00:00.000Z</published>
     <updated>2022-04-10T13:21:36.606Z</updated>
     
@@ -429,21 +429,21 @@
     
     
     
-    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="MPI程序设计" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"/>
+    <category term="MPI程序设计" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/"/>
     
     
-    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
+    <category term="MPI" scheme="http://chudod.github.io/tags/MPI/"/>
     
-    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
   </entry>
   
   <entry>
     <title>MPI_Allreduce的前世今生</title>
-    <link href="http://synchrosky.com/2022/03/27/MPI_Allreduce_Summary/"/>
-    <id>http://synchrosky.com/2022/03/27/MPI_Allreduce_Summary/</id>
+    <link href="http://chudod.github.io/2022/03/27/MPI_Allreduce_Summary/"/>
+    <id>http://chudod.github.io/2022/03/27/MPI_Allreduce_Summary/</id>
     <published>2022-03-26T16:00:00.000Z</published>
     <updated>2022-05-12T09:30:49.842Z</updated>
     
@@ -454,21 +454,21 @@
     
     
     
-    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="MPI集合通信算法" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/"/>
+    <category term="MPI集合通信算法" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1%E7%AE%97%E6%B3%95/"/>
     
     
-    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
+    <category term="MPI" scheme="http://chudod.github.io/tags/MPI/"/>
     
-    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
   </entry>
   
   <entry>
     <title>Cannon矩阵乘法</title>
-    <link href="http://synchrosky.com/2022/03/26/Cannon/"/>
-    <id>http://synchrosky.com/2022/03/26/Cannon/</id>
+    <link href="http://chudod.github.io/2022/03/26/Cannon/"/>
+    <id>http://chudod.github.io/2022/03/26/Cannon/</id>
     <published>2022-03-25T16:00:00.000Z</published>
     <updated>2022-04-10T13:21:46.106Z</updated>
     
@@ -479,16 +479,16 @@
     
     
     
-    <category term="并行计算" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="MPI程序设计与并行算法" scheme="http://synchrosky.com/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%B9%B6%E8%A1%8C%E7%AE%97%E6%B3%95/"/>
+    <category term="MPI程序设计与并行算法" scheme="http://chudod.github.io/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/MPI%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%B9%B6%E8%A1%8C%E7%AE%97%E6%B3%95/"/>
     
     
-    <category term="MPI" scheme="http://synchrosky.com/tags/MPI/"/>
+    <category term="MPI" scheme="http://chudod.github.io/tags/MPI/"/>
     
-    <category term="并行计算" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
+    <category term="并行计算" scheme="http://chudod.github.io/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/"/>
     
-    <category term="并行算法" scheme="http://synchrosky.com/tags/%E5%B9%B6%E8%A1%8C%E7%AE%97%E6%B3%95/"/>
+    <category term="并行算法" scheme="http://chudod.github.io/tags/%E5%B9%B6%E8%A1%8C%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
