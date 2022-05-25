@@ -5,28 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 6.1.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/chudod/chudod.git/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/chudod/chudod.git/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/chudod/chudod.git/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/chudod/chudod.git/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/chudod/chudod.git/css/main.css">
 
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Consolas:300,300italic,400,400italic,700,700italic|PingFang SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/chudod/chudod.git/lib/font-awesome/css/all.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
-  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css">
-  <script src="/lib/pace/pace.min.js"></script>
+  <link rel="stylesheet" href="/chudod/chudod.git/lib/pace/pace-theme-bounce.min.css">
+  <script src="/chudod/chudod.git/lib/pace/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"synchrosky.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"gitee.com","root":"/chudod/chudod.git/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":true,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="本文系统整理了利用In-Network(在网计算)方式设计的集合通信。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="In-Network Collective Communication">
-<meta property="og:url" content="http://synchrosky.com/2022/04/10/In-Network_Collective_Summary/index.html">
+<meta property="og:url" content="https://gitee.com/chudod/chudod.git/2022/04/10/In-Network_Collective_Summary/index.html">
 <meta property="og:site_name" content="Computing Dynamics">
 <meta property="og:description" content="本文系统整理了利用In-Network(在网计算)方式设计的集合通信。">
 <meta property="og:locale" content="zh_CN">
@@ -39,7 +39,7 @@
 <meta property="article:tag" content="集合通信">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://synchrosky.com/2022/04/10/In-Network_Collective_Summary/">
+<link rel="canonical" href="https://gitee.com/chudod/chudod.git/2022/04/10/In-Network_Collective_Summary/">
 
 
 <script id="page-configurations">
@@ -83,7 +83,7 @@
   </style>
 </noscript>
 
-<link rel="alternate" href="/atom.xml" title="Computing Dynamics" type="application/atom+xml">
+<link rel="alternate" href="/chudod/chudod.git/atom.xml" title="Computing Dynamics" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -102,7 +102,7 @@
 
   <div class="site-meta">
 
-    <a href="/" class="brand" rel="start">
+    <a href="/chudod/chudod.git/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <h1 class="site-title">Computing Dynamics</h1>
       <span class="logo-line-after"><i></i></span>
@@ -124,32 +124,32 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+    <a href="/chudod/chudod.git/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-about">
 
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+    <a href="/chudod/chudod.git/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
 
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+    <a href="/chudod/chudod.git/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+    <a href="/chudod/chudod.git/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+    <a href="/chudod/chudod.git/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
         <li class="menu-item menu-item-schedule">
 
-    <a href="/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
+    <a href="/chudod/chudod.git/schedule/" rel="section"><i class="fa fa-calendar fa-fw"></i>日程表</a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -204,10 +204,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://synchrosky.com/2022/04/10/In-Network_Collective_Summary/">
+    <link itemprop="mainEntityOfPage" href="https://gitee.com/chudod/chudod.git/2022/04/10/In-Network_Collective_Summary/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="image" content="/chudod/chudod.git/images/avatar.png">
       <meta itemprop="name" content="虎王">
       <meta itemprop="description" content="喜欢造飞机、导弹和计算机的大学生">
     </span>
@@ -242,11 +242,11 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/" itemprop="url" rel="index"><span itemprop="name">并行计算</span></a>
+                  <a href="/chudod/chudod.git/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/" itemprop="url" rel="index"><span itemprop="name">并行计算</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/In-Network-Collectives/" itemprop="url" rel="index"><span itemprop="name">In-Network Collectives</span></a>
+                  <a href="/chudod/chudod.git/categories/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/In-Network-Collectives/" itemprop="url" rel="index"><span itemprop="name">In-Network Collectives</span></a>
                 </span>
             </span>
 
@@ -294,7 +294,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://synchrosky.com/2022/04/10/In-Network_Collective_Summary/" title="In-Network Collective Communication">http://synchrosky.com/2022/04/10/In-Network_Collective_Summary/</a>
+    <a href="https://gitee.com/chudod/chudod.git/2022/04/10/In-Network_Collective_Summary/" title="In-Network Collective Communication">https://gitee.com/chudod/chudod.git/2022/04/10/In-Network_Collective_Summary/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -334,10 +334,10 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/MPI/" rel="tag"># MPI</a>
-              <a href="/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/" rel="tag"># 并行计算</a>
-              <a href="/tags/%E5%9C%A8%E7%BD%91%E8%AE%A1%E7%AE%97/" rel="tag"># 在网计算</a>
-              <a href="/tags/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1/" rel="tag"># 集合通信</a>
+              <a href="/chudod/chudod.git/tags/MPI/" rel="tag"># MPI</a>
+              <a href="/chudod/chudod.git/tags/%E5%B9%B6%E8%A1%8C%E8%AE%A1%E7%AE%97/" rel="tag"># 并行计算</a>
+              <a href="/chudod/chudod.git/tags/%E5%9C%A8%E7%BD%91%E8%AE%A1%E7%AE%97/" rel="tag"># 在网计算</a>
+              <a href="/chudod/chudod.git/tags/%E9%9B%86%E5%90%88%E9%80%9A%E4%BF%A1/" rel="tag"># 集合通信</a>
           </div>
 
         
@@ -346,12 +346,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/10/In_Network_Collectives_Thesis/" rel="prev" title="In-Network Collective Communication论文整理">
-      <i class="fa fa-chevron-left"></i> In-Network Collective Communication论文整理
+    <a href="/chudod/chudod.git/2022/04/10/MPI_Collectives_Thesis/" rel="prev" title="MPI集合通信论文整理">
+      <i class="fa fa-chevron-left"></i> MPI集合通信论文整理
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/04/10/Guiding_Board/" rel="next" title="Read Me（导航栏）">
-      Read Me（导航栏） <i class="fa fa-chevron-right"></i>
+    <a href="/chudod/chudod.git/2022/04/10/In_Network_Collectives_Thesis/" rel="next" title="In-Network Collective Communication论文整理">
+      In-Network Collective Communication论文整理 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -422,27 +422,27 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="虎王"
-      src="/images/avatar.png">
+      src="/chudod/chudod.git/images/avatar.png">
   <p class="site-author-name" itemprop="name">虎王</p>
   <div class="site-description" itemprop="description">喜欢造飞机、导弹和计算机的大学生</div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives/">
+          <a href="/chudod/chudod.git/archives/">
         
           <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-            <a href="/categories/">
+            <a href="/chudod/chudod.git/categories/">
           
         <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
-            <a href="/tags/">
+            <a href="/chudod/chudod.git/tags/">
           
         <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
@@ -574,28 +574,28 @@ $(document).ready(function() {
   </div>
 
   
-  <script src="/lib/anime.min.js"></script>
+  <script src="/chudod/chudod.git/lib/anime.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/chudod/chudod.git/lib/velocity/velocity.min.js"></script>
+  <script src="/chudod/chudod.git/lib/velocity/velocity.ui.min.js"></script>
 
-<script src="/js/utils.js"></script>
+<script src="/chudod/chudod.git/js/utils.js"></script>
 
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
+<script src="/chudod/chudod.git/js/motion.js"></script>
 
 
-<script src="/js/next-boot.js"></script>
-
-<script src="/js/bookmark.js"></script>
+<script src="/chudod/chudod.git/js/schemes/pisces.js"></script>
 
 
-  <script defer src="/lib/three/three.min.js"></script>
-    <script defer src="/lib/three/three-waves.min.js"></script>
+<script src="/chudod/chudod.git/js/next-boot.js"></script>
+
+<script src="/chudod/chudod.git/js/bookmark.js"></script>
+
+
+  <script defer src="/chudod/chudod.git/lib/three/three.min.js"></script>
+    <script defer src="/chudod/chudod.git/lib/three/three-waves.min.js"></script>
 
 
   
@@ -631,7 +631,7 @@ $(document).ready(function() {
   
 <script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
 <script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
-<script src="/js/algolia-search.js"></script>
+<script src="/chudod/chudod.git/js/algolia-search.js"></script>
 
 
 
@@ -653,7 +653,7 @@ document.querySelectorAll('.pdfobject-container').forEach(element => {
     view     : 'FitH'
   };
   let pdfOpenFragment = '#' + Object.entries(pdfOpenParams).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&');
-  let fullURL = `/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
+  let fullURL = `/chudod/chudod.git/lib/pdf/web/viewer.html?file=${encodeURIComponent(url)}${pdfOpenFragment}`;
 
   if (NexT.utils.supportsPDFs()) {
     element.innerHTML = `<embed class="pdfobject" src="${url + pdfOpenFragment}" type="application/pdf" style="height: ${element.dataset.height};">`;
