@@ -350,12 +350,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/10/MPI_Collectives_Thesis/" rel="prev" title="MPI集合通信论文整理">
-      <i class="fa fa-chevron-left"></i> MPI集合通信论文整理
+    <a href="/2022/04/10/Guiding_Board/" rel="prev" title="Read Me（导航栏）">
+      <i class="fa fa-chevron-left"></i> Read Me（导航栏）
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/04/10/In_Network_Collectives_Thesis/" rel="next" title="In-Network Collective Communication论文整理">
-      In-Network Collective Communication论文整理 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/04/13/OpenMPI&MPICH_Allreduce/" rel="next" title="MPI_Allreduce的在OpenMPI、MPICH中的实现">
+      MPI_Allreduce的在OpenMPI、MPICH中的实现 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -685,58 +685,8 @@ if (document.querySelectorAll('pre.mermaid').length) {
 
   
       
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css">
 
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 
